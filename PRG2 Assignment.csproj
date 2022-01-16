@@ -6,4 +6,16 @@
     <RootNamespace>PRG2_Assignment</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="Cinema.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Movie.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Screening.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
