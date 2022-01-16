@@ -7,7 +7,6 @@ namespace PRG2_Assignment
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            
         }
     }
 }
