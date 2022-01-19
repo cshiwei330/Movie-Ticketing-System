@@ -9,7 +9,6 @@ namespace PRG2_Assignment
     class Adult:Ticket
     {
         private bool popcornOffer;
-
         public bool PopcornOffer
         {
             get { return popcornOffer; }
@@ -26,7 +25,7 @@ namespace PRG2_Assignment
             DateTime date = Screening.ScreeningDateTime;
             string screeningtype = Screening.ScreeningType;
 
-            string x; // x will represent either weekday or weekend
+            string x; //------ x will represent either weekday or weekend ------
             if (date.DayOfWeek == DayOfWeek.Friday)
             {
                 x = "weekend";
@@ -44,35 +43,43 @@ namespace PRG2_Assignment
                 x = "weekday";
             }
 
-            //based on weekday/weekend:
+            //------ based on weekday/weekend: ------
+            double price;
             if (x == "weekday") //if weekday
             {
                 if (screeningtype == "2D")
                 {
-                    return 8.5;
+                    price= 8.5;
                 }
                 else
                 {  
-                    return 11.0;
+                    price= 11.0;
   
                 }
             }
-
-            else //if weekend
+            else //------ if weekend ------
             {
                 if (screeningtype == "2D")
                 {
-                    return 12.5;
+                    price = 12.5;
                 }
                 else
                 {
-                    return 14.0;
+                    price = 14.0;
                 }
+            }
+            if (popcornOffer==true)
+            {
+                return price+3.0;
+            }
+            else
+            {
+                return price;
             }
         }
         public override string ToString()
         {
-            return base.ToString();
+            return base.ToString()+"\tPopcorn Offer: "+PopcornOffer;
         }
     }
 }
