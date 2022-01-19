@@ -74,7 +74,7 @@ namespace PRG2_Assignment
 
                 List<string> genreResults = generateGenre(genreGiven);
 
-                mList.Add(new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), DateTime.ParseExact(mvalues[4], "dd-MMM-yyyy", null), genreResults));
+                mList.Add(new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults));
             }
         }
         static void DisplayMovie(List<Movie> mList)  //to be deleted
