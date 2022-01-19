@@ -24,14 +24,14 @@ namespace PRG2_Assignment
         public List<Screening> screeningList { get; set; } = new List<Screening>();
 
         public Movie() { }
-        public Movie (string Title, int Duration, string Classification, DateTime OpeningDate, List<string> gList)
+        public Movie(string tit, int dur, string cla, DateTime opn, List<string> gList)
         {
-            title = Title;
-            duration=Duration;
-            classification=Classification;
-            openingDate=OpeningDate;
-            genreList=gList;
- 
+            Title = tit;
+            Duration = dur;
+            Classification = cla;
+            OpeningDate = opn;
+            genreList = gList;
+
         }
 
         public void AddGenre(string genre)
@@ -49,8 +49,10 @@ namespace PRG2_Assignment
             return "Title:" + Title +
                   "\tDuration:" + Duration +
                   "\tClassification:" + Classification +
-                  "\tOpeningDate:" + OpeningDate +
-                  "\tGenre:" + "replacepls";
+                  "\tOpeningDate:" + OpeningDate;
+
+
+
         }
     }
 }
