@@ -48,7 +48,14 @@ namespace PRG2_Assignment
             for (int i = 1; i < mdata.Length; i++)
             {
                 string[] mvalues = mdata[i].Split(",");
-                mList.Add(new Movie(mvalues[0],Convert.ToInt32(mvalues[1]),Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]),mvalues[2]));
+                string slash = "/";
+                Boolean sResult = mvalues[2].Contains(slash);
+                if (sResult == true)
+                {
+                    string[] genres = mvalues[2].Split("/");
+                    // add loop to add genre to list
+                }
+                mList.Add(new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), mvalues[2]));
             }
         }
         static void DisplayMovie(List<Movie> mList)  //to be deleted
