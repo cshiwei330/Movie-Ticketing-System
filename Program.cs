@@ -6,6 +6,8 @@ namespace PRG2_Assignment
 {
     class Program
     {
+        static int OrderNo = 1;
+        static int ScreeningNo = 1001;
         static void Main(string[] args)
         {
             List<Cinema> cList = new List<Cinema>();
@@ -56,6 +58,14 @@ namespace PRG2_Assignment
         }
 
         // ------------------- Load Screening Data -------------------
-
+        //static void ReadScreening(List<Screening> sList)
+        //{
+        //    string[] sdata = File.ReadAllLines("Screening.csv");
+        //    for (int i = 1; i < sdata.Length; i++)
+        //    {
+        //        string[] svalues = sdata[i].Split(",");
+        //        sList.Add(new Screening(ScreeningNo,Convert.ToDateTime(svalues[0]),svalues[1],svalues[2],)
+        //    }
+        //}
     }
 }
