@@ -18,13 +18,15 @@ namespace PRG2_Assignment
             Console.WriteLine("\n");
             ReadMovie(mList);
             DisplayMovie(mList);
+            Console.WriteLine("\n");
+            DisplayAllMovies(mList, sList);
             //ReadScreening(sList, cList, mList);
             //DisplayScreening(sList);
             //
         }
 
 
-        // ------------------- Load Cinema Data -------------------
+        // ------------------- Load Movie and Cinema Data -------------------
         static void ReadCinema(List<Cinema> cList)
         {
             string[] cdata = File.ReadAllLines("Cinema.csv");
@@ -34,16 +36,6 @@ namespace PRG2_Assignment
                 cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
             }
         }
-        static void DisplayCinema(List<Cinema> cList) // ------------ To be shifted ------------
-        {
-            Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
-            foreach (Cinema c in cList)
-            {
-                Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
-            }
-        }
-
-        // ------------------- Load Movie Data -------------------
         static void ReadMovie(List<Movie> mList)
         {
             string[] mdata = File.ReadAllLines("Movie.csv");
@@ -80,12 +72,12 @@ namespace PRG2_Assignment
                 mList.Add(m);
             }
         }
-        static void DisplayMovie(List<Movie> mList)  //------------ To be shifted ------------
+        static void DisplayCinema(List<Cinema> cList) // ------------ To be shifted ------------
         {
-            Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
-            foreach (Movie m in mList)
+            Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
+            foreach (Cinema c in cList)
             {
-                Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, m.genreList);
+                Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
             }
         }
 
@@ -138,10 +130,68 @@ namespace PRG2_Assignment
         //}
         //static void DisplayScreening(List<Screening> sList)  //to be deleted
         //{
+        //    Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", "Screening No: ","DateTime: ", "Screening Type: ","Cinema Name: ","Movie Title: ");
         //    foreach (Screening s in sList)
         //    {
         //        Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
         //    }
         //}
+
+
+        // ------------------- List all Movies -------------------
+        static void DisplayMovie(List<Movie> mList)
+        {
+            Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
+            foreach (Movie m in mList)
+            {
+                Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, m.genreList);
+            }
+        }
+
+
+        // ------------------- List Movie Screenings -------------------
+        static void DisplayAllMovies(List<Movie> mList, List<Screening> sList)
+        {
+            Console.WriteLine("{0,5}{1,-35}", "", "Title");
+            int count = 01;
+            foreach (Movie m in mList)
+            {
+                Console.WriteLine("[{0,-2}] {1,-35}", count, m.Title);
+                count++;
+            }
+
+            Console.WriteLine("\nSelect a Movie: ");
+            int option = Convert.ToInt32(Console.ReadLine()); // --------- If chosen from Movie Number
+            for (int i = 0; i < mList.Count; i++)
+            {
+                int k = option - 1;
+                if (mList[k].Title == sList[k].Movie.Title)
+                {
+                    DisplayScreening(sList);
+                }
+            }
+
+            //string option = Console.ReadLine(); // --------- If chosen from Movie Title
+            //for (int i = 0; i < mList.Count; i++)
+            //{
+            //    if (option == mList[i].Title)
+            //    {
+            //        for (int k = 0; k < sList.Count; k++)
+            //        {
+            //            if (mList[i].Title == sList[k].Movie.Title)
+            //            {
+            //                DisplayScreening(sList);
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+        // ------------------- Add a Movie Screening Session -------------------
+        static void AddScreeningSession(List<Movie> mList, List<Screening> sList)
+        {
+            DisplayAllMovies(mList, sList);
+            Console.WriteLine
+        }
     }
 }
