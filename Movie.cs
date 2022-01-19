@@ -24,7 +24,7 @@ namespace PRG2_Assignment
         public List<Screening> screeningList { get; set; } = new List<Screening>();
 
         public Movie() { }
-        public Movie (string tit, int dur, string cla, DateTime opn, List<string> gList)
+        public Movie (string tit, int dur, List<string> gList, string cla, DateTime opn)
         {
             Title = tit;
             Duration = dur;

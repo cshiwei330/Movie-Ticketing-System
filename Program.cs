@@ -51,7 +51,7 @@ namespace PRG2_Assignment
         {
             foreach (Movie m in mList)
             {
-                Console.WriteLine("{0,-40}{1,-7}{2,40}{3,-8}{4,-12}", m.Title, m.Duration, m.Genre, m.Classification, m.OpeningDate);
+                Console.WriteLine("{0,-40}{1,-7}{2,40}{3,-8}{4,-12}", m.Title, m.Duration, m.genreList, m.Classification, m.OpeningDate);
             }
         }
 
