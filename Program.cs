@@ -19,12 +19,13 @@ namespace PRG2_Assignment
             ReadMovie(mList);
             DisplayMovie(mList);
             Console.WriteLine("\n");
-            DisplayAllMovies(mList, sList);
             //ReadScreening(sList, cList, mList);
             //DisplayScreening(sList);
-            //
+            Console.WriteLine("\n");
+            DisplayAllMovies(mList, sList);
         }
 
+        //======== General ========
 
         // ------------------- Load Movie and Cinema Data -------------------
         static void ReadCinema(List<Cinema> cList)
@@ -72,7 +73,7 @@ namespace PRG2_Assignment
                 mList.Add(m);
             }
         }
-        static void DisplayCinema(List<Cinema> cList) // ------------ To be shifted ------------
+        static void DisplayCinema(List<Cinema> cList)
         {
             Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
             foreach (Cinema c in cList)
@@ -188,10 +189,21 @@ namespace PRG2_Assignment
         }
 
         // ------------------- Add a Movie Screening Session -------------------
-        static void AddScreeningSession(List<Movie> mList, List<Screening> sList)
+        static void AddScreeningSession(List<Movie> mList, List<Screening> sList, List<Cinema> cList)
         {
             DisplayAllMovies(mList, sList);
-            Console.WriteLine
+            Console.WriteLine("\nSelect a Movie: ");
+            int option2 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter screening type (2D/3D): ");
+            string sType = Console.ReadLine();
+            Console.WriteLine("Enter screening date and time: ");
+            DateTime sdateTime = Convert.ToDateTime(Console.ReadLine());
+            for (int i = 0; i < mList.Count; i++)
+            {
+                // Test if DateTime is after Opening date
+            }
+
+            DisplayCinema(cList);
         }
     }
 }
