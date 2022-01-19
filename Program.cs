@@ -34,7 +34,7 @@ namespace PRG2_Assignment
                 cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
             }
         }
-        static void DisplayCinema(List<Cinema> cList) //to be deleted
+        static void DisplayCinema(List<Cinema> cList) // ------------ To be shifted ------------
         {
             Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
             foreach (Cinema c in cList)
@@ -50,11 +50,11 @@ namespace PRG2_Assignment
             for (int i = 1; i < mdata.Length; i++)
             {
                 string[] mvalues = mdata[i].Split(",");
-                string genreGiven = mvalues[2]; //store the genre given in csv
+                string genreGiven = mvalues[2]; // ------------ Store the genre given in csv 
 
-                static List<string> generateGenre(string genreGiven) //method to return genre list for movies obj
+                static List<string> generateGenre(string genreGiven) // ------------ Method to return genre list for movies obj 
                 {
-                    List<string> genrelist = new List<string>(); //create a new string everytime 
+                    List<string> genrelist = new List<string>(); // ------------ Create a new string everytime 
                     string slash = "/";
                     Boolean sResult = genreGiven.Contains(slash);
 
@@ -63,7 +63,7 @@ namespace PRG2_Assignment
                         string[] genres = genreGiven.Split("/");
                         for (int j = 0; j < genres.Length; j++)
                         {
-                            genrelist.Add(genres[j]); //add each genre into list 
+                            genrelist.Add(genres[j]); // ------------ Add each genre into list
                         }
                     }
                     else
@@ -80,7 +80,7 @@ namespace PRG2_Assignment
                 mList.Add(m);
             }
         }
-        static void DisplayMovie(List<Movie> mList)  //to be deleted
+        static void DisplayMovie(List<Movie> mList)  //------------ To be shifted ------------
         {
             Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
             foreach (Movie m in mList)
@@ -115,33 +115,33 @@ namespace PRG2_Assignment
         //        }
         //        Cinema result = CinemaSearch(cList, cinemaName);
 
-                string movieName = svalues[3];
-                static Movie MovieSearch(List<Movie> mList, string movieName)
-                {
-                    for (int a = 0; a < mList.Count; a++)
-                    {
-                        Movie m = mList[a];
-                        if (movieName == m.Title)
-                        {
-                            return m;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    return null;
-                }
-                Movie result2 = MovieSearch(mList, movieName);
-                sList.Add(new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result,result2));
-            }
-        }
-        static void DisplayScreening(List<Screening> sList)  //to be deleted
-        {
-            foreach (Screening s in sList)
-            {
-                Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
-            }
-        }
+        //        string movieName = svalues[3];
+        //        static Movie MovieSearch(List<Movie> mList, string movieName)
+        //        {
+        //            for (int a = 0; a < mList.Count; a++)
+        //            {
+        //                Movie m = mList[a];
+        //                if (movieName == m.Title)
+        //                {
+        //                    return m;
+        //                }
+        //                else
+        //                {
+        //                    continue;
+        //                }
+        //            }
+        //            return null;
+        //        }
+        //        Movie result2 = MovieSearch(mList, movieName);
+        //        sList.Add(new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result,result2));
+        //    }
+        //}
+        //static void DisplayScreening(List<Screening> sList)  //to be deleted
+        //{
+        //    foreach (Screening s in sList)
+        //    {
+        //        Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
+        //    }
+        //}
     }
 }
