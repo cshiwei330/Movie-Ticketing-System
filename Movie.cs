@@ -30,7 +30,7 @@ namespace PRG2_Assignment
             Duration = dur;
             Classification = cla;
             OpeningDate = opn;
-            //genreList = gList;
+            genreList = gList;
  
         }
 
@@ -46,7 +46,13 @@ namespace PRG2_Assignment
 
         public override string ToString()
         {
-            return base.ToString();
+            return "Title:" + Title +
+                  "\tDuration:" + Duration +
+                  "\tClassification:" + Classification +
+                  "\tOpeningDate:" + OpeningDate +
+                  "\tGenre:" + Genre;
+
+
         }
     }
 }

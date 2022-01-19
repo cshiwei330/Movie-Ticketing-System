@@ -23,7 +23,52 @@ namespace PRG2_Assignment
         }
         public override double CalculatePrice()
         {
-            return base.CalculatePrice();
+            DateTime date = Screening.ScreeningDateTime;
+            string screeningtype = Screening.ScreeningType;
+
+            string x; // x will represent either weekday or weekend
+            if (date.DayOfWeek == DayOfWeek.Friday)
+            {
+                x = "weekend";
+            }
+            else if (date.DayOfWeek == DayOfWeek.Saturday)
+            {
+                x = "weekend";
+            }
+            else if (date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                x = "weekend";
+            }
+            else
+            {
+                x = "weekday";
+            }
+
+            //based on weekday/weekend:
+            if (x == "weekday") //if weekday
+            {
+                if (screeningtype == "2D")
+                {
+                    return 8.5;
+                }
+                else
+                {  
+                    return 11.0;
+  
+                }
+            }
+
+            else //if weekend
+            {
+                if (screeningtype == "2D")
+                {
+                    return 12.5;
+                }
+                else
+                {
+                    return 14.0;
+                }
+            }
         }
         public override string ToString()
         {
