@@ -50,7 +50,7 @@ namespace PRG2_Assignment
                   "\tDuration:" + Duration +
                   "\tClassification:" + Classification +
                   "\tOpeningDate:" + OpeningDate +
-                  "\tGenre:" + Genre;
+                  "\tGenre:" + "replacepls";
 
 
         }

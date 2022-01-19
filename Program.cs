@@ -15,10 +15,10 @@ namespace PRG2_Assignment
             List<Screening> sList = new List<Screening>();
             //ReadCinema(cList);
             //DisplayCinema(cList);
-            //ReadMovie(mList);
-            //DisplayMovie(mList);
-            ReadScreening(sList, cList, mList);
-            DisplayScreening(sList);
+            ReadMovie(mList);
+            DisplayMovie(mList);
+            //ReadScreening(sList, cList, mList);
+            //DisplayScreening(sList);
         }
 
 
@@ -48,14 +48,33 @@ namespace PRG2_Assignment
             for (int i = 1; i < mdata.Length; i++)
             {
                 string[] mvalues = mdata[i].Split(",");
-                string slash = "/";
-                Boolean sResult = mvalues[2].Contains(slash);
-                if (sResult == true)
+                string genreGiven = mvalues[2]; //store the genre given in csv
+
+                static List<string> generateGenre (string genreGiven) //method to return genre list for movies obj
                 {
-                    string[] genres = mvalues[2].Split("/");
-                    // add loop to add genre to list
+                    List<string> genrelist = new List<string>(); //create a new string everytime 
+                    string slash = "/";
+                    Boolean sResult = genreGiven.Contains(slash);
+
+                    if (sResult == true)
+                    {
+                        string[] genres = genreGiven.Split("/");
+                        for (int j = 0; j < genres.Length; j++)
+                        {
+                            genrelist.Add(genres[j]); //add each genre into list 
+                        }
+                    }
+                    else
+                    {
+                        genrelist.Add(genreGiven);
+                    }
+
+                    return genrelist;
                 }
-                mList.Add(new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), mvalues[2]));
+
+                List<string> genreResults = generateGenre(genreGiven);
+
+                mList.Add(new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), DateTime.ParseExact(mvalues[4], "dd-MMM-yyyy", null), genreResults));
             }
         }
         static void DisplayMovie(List<Movie> mList)  //to be deleted
@@ -63,7 +82,7 @@ namespace PRG2_Assignment
             Console.WriteLine("{0,-40}{1,-7}{2,40}{3,-8}{4,-12}", "Title", "Duration (mins)", "Genre", "Classification", "Opening Date");
             foreach (Movie m in mList)
             {
-                Console.WriteLine("{0,-40}{1,-7}{2,40}{3,-8}{4,-12}", m.Title, m.Duration, m.genreList, m.Classification, m.OpeningDate);
+                Console.WriteLine("{0,-40}{1,-7}{2,40}{3,-8}{4,-12}", m.Title, m.Duration, m.Classification, m.OpeningDate, m.genreList);
             }
         }
 
