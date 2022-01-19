@@ -15,6 +15,19 @@ namespace PRG2_Assignment
             get { return yearOfBirth; }
             set { yearOfBirth = value; }
         }
-
+        public SeniorCitizen() : base() { }
+        public SeniorCitizen(Screening s, int YearOfBirth)
+        {
+            Screening = s;
+            yearOfBirth = YearOfBirth;
+        }
+        public override double CalculatePrice()
+        {
+            return base.CalculatePrice();
+        }
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

@@ -8,13 +8,18 @@ namespace PRG2_Assignment
 {
     class Ticket:Screening
     {
+        private Screening screening;
 
-        public Ticket() : base();
-        public Ticket()
+        public Screening Screening
         {
-
+            get { return screening; }
+            set { screening = value; }
         }
-
+        public Ticket() : base() { }
+        public Ticket(Screening s)
+        {
+            Screening = s;
+        }
         public virtual double CalculatePrice()
         {
             return 1.0;

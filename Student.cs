@@ -15,17 +15,19 @@ namespace PRG2_Assignment
             get { return levelOfStudy; }
             set { levelOfStudy = value; }
         }
-        public Student():base()
+        public Student() : base() { }
+        public Student(Screening s, string LevelOfStudy):base()
         {
-            LevelOfStudy = "Tertiary";
-        }
-        public Student(string l):base()
-        {
-
+            Screening = s;
+            levelOfStudy = LevelOfStudy;
         }
         public override double CalculatePrice()
         {
             return base.CalculatePrice();
+        }
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }
