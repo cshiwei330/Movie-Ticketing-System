@@ -51,7 +51,7 @@ namespace PRG2_Assignment
                 string[] mvalues = mdata[i].Split(",");
                 string genreGiven = mvalues[2]; //store the genre given in csv
 
-                static List<string> generateGenre (string genreGiven) //method to return genre list for movies obj
+                static List<string> generateGenre(string genreGiven) //method to return genre list for movies obj
                 {
                     List<string> genrelist = new List<string>(); //create a new string everytime 
                     string slash = "/";
@@ -132,7 +132,7 @@ namespace PRG2_Assignment
                     return null;
                 }
                 Movie result2 = MovieSearch(mList, movieName);
-                sList.Add(new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result,result2));
+                sList.Add(new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2));
             }
         }
         static void DisplayScreening(List<Screening> sList)  //to be deleted
