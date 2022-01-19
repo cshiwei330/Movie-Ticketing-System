@@ -19,19 +19,30 @@ namespace PRG2_Assignment
         // ------------------- Load Cinema Data -------------------
         static void ReadCinema(List<Cinema> cList)
         {
-            string[] data = File.ReadAllLines("Cinema.csv");
-            for (int i = 1; i < data.Length; i++)
+            string[] cdata = File.ReadAllLines("Cinema.csv");
+            for (int i = 1; i < cdata.Length; i++)
             {
-                string[] values = data[i].Split(",");
-                cList.Add(new Cinema(values[0], Convert.ToInt32(values[1]), Convert.ToInt32(values[2])));
+                string[] cvalues = cdata[i].Split(",");
+                cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
             }
         }
-        static void DisplayCinema(List<Cinema> cList)
+        static void DisplayCinema(List<Cinema> cList) //to be deleted
         {
             Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
             foreach (Cinema c in cList)
             {
                 Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+            }
+        }
+
+        // ------------------- Load Movie Data -------------------
+        static void ReadMovie(List<Movie> mList)
+        {
+            string[] mdata = File.ReadAllLines("Movie.csv");
+            for (int i = 1; i < mdata.Length; i++)
+            {
+                string[] mvalues = mdata[i].Split(",");
+                mList.Add(new Movie())
             }
         }
     }
