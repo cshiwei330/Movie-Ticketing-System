@@ -13,8 +13,8 @@ namespace PRG2_Assignment
             List<Screening> sList = new List<Screening>();
             ReadCinema(cList);
             DisplayCinema(cList);
-            ReadMovie(mList);
-            DisplayMovie(mList);
+            //ReadMovie(mList);
+            //DisplayMovie(mList);
         }
 
 
@@ -44,7 +44,7 @@ namespace PRG2_Assignment
             for (int i = 1; i < mdata.Length; i++)
             {
                 string[] mvalues = mdata[i].Split(",");
-                mList.Add(new Movie(mvalues[0],Convert.ToInt32(mvalues[1]),mvalues[2],Convert.ToString(mvalues[3]),Convert.ToDateTime(mvalues[4])));
+                mList.Add(new Movie(mvalues[0],Convert.ToInt32(mvalues[1]),Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]),mvalues[2]));
             }
         }
         static void DisplayMovie(List<Movie> mList)  //to be deleted

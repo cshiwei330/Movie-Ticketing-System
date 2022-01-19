@@ -24,13 +24,14 @@ namespace PRG2_Assignment
         public List<Screening> screeningList { get; set; } = new List<Screening>();
 
         public Movie() { }
-        public Movie (string tit, int dur, List<string> gList, string cla, DateTime opn)
+        public Movie (string tit, int dur, string cla, DateTime opn, List<string> gList)
         {
             Title = tit;
             Duration = dur;
             Classification = cla;
             OpeningDate = opn;
-            genreList = gList;
+            //genreList = gList;
+ 
         }
 
         public void AddGenre(string genre)
