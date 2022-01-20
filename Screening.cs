@@ -27,12 +27,11 @@ namespace PRG2_Assignment
         public Movie Movie { get; set; }
 
         public Screening() { }
-        public Screening(int ScreeningNo, DateTime ScreeningDateTime, string ScreeningType, Cinema c, Movie m)
+        public Screening(int sn, DateTime sdt, string st, Cinema c, Movie m)
         {
-            screeningno=ScreeningNo;
-            screeningDateTime=ScreeningDateTime;
-            screeningType=ScreeningType;
-            Cinema = c;
+            ScreeningNo=sn;
+            ScreeningDateTime=sdt;
+            ScreeningType = st;
             Movie = m;
         }
 
