@@ -109,7 +109,7 @@ namespace PRG2_Assignment
                 }
                 Cinema result = CinemaSearch(cList, cinemaName);
 
-                string movieName = svalues[3];
+                string movieName = svalues[4];
                 static Movie MovieSearch(List<Movie> mList, string movieName)
                 {
                     for (int a = 0; a < mList.Count; a++)
@@ -130,15 +130,14 @@ namespace PRG2_Assignment
                 Screening newscr = new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2);
                 sList.Add(newscr);
                 ScreeningNo++;
-                Console.WriteLine("read");
+           
             }
         }
         static void DisplayScreening(List<Screening> sList)  //to be deleted
         {
             Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
             foreach (Screening s in sList)
-            {
-                Console.WriteLine(s.ScreeningNo);
+            { 
                 Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
             }
         }

@@ -32,6 +32,7 @@ namespace PRG2_Assignment
             ScreeningNo=sn;
             ScreeningDateTime=sdt;
             ScreeningType = st;
+            Cinema = c;
             Movie = m;
         }
 
