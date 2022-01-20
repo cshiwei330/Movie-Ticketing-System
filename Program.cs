@@ -260,55 +260,13 @@ namespace PRG2_Assignment
                 }
             }
 
-            //static Screening screeningSearch(List<Screening> sList, Movie m)
-            //{
-            //    for (int s = 0; s < sList.Count; s++)
-            //    {
-            //        Screening screen = sList[s];
-            //        if (movieName == s.Title)
-            //        {
-            //            return m;
-            //        }
-            //        else
-            //        {
-            //            continue;
-            //        }
-            //    }
-            //    return null;
-            //}
-            //Movie result2 = MovieSearch(mList, movieName);
 
-
-
-                //for (int i = 0; i < mList.Count; i++)
-                //{
-                //    int k = movieOption - 1;
-                //    if (mList[k].Title == sList[k].Movie.Title)
-                //    {
-                //        DisplayScreening(sList);
-                //    }
-                //}
-
-                //string option = Console.ReadLine(); // --------- If chosen from Movie Title
-                //for (int i = 0; i < mList.Count; i++)
-                //{
-                //    if (option == mList[i].Title)
-                //    {
-                //        for (int k = 0; k < sList.Count; k++)
-                //        {
-                //            if (mList[i].Title == sList[k].Movie.Title)
-                //            {
-                //                DisplayScreening(sList);
-                //            }
-                //        }
-                //    }
-                //}
         }
 
-        // ------------------- Add a Movie Screening Session -------------------
+        // ------------------- 5) Add a Movie Screening Session -------------------
         static void AddScreeningSession(List<Movie> mList, List<Screening> sList, List<Cinema> cList)
         {
-            DisplayAllMovies(mList, sList);
+            DisplayMovieDetails(mList);
             Console.WriteLine("\nSelect a Movie: ");
             int option2 = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Enter screening type (2D/3D): ");
@@ -324,11 +282,17 @@ namespace PRG2_Assignment
         }
 
 
-        // ------------------- Order Ticket/s -------------------
+        // ------------------- 6) Delete a Movie Screening Session -------------------
+
+
+        //=====================================================  Screening  ===================================================
+
+        // ------------------- 7) Order Ticket/s -------------------
         static void OrderTicket(List<Movie> mList, List<Screening> sList)
         {
-            DisplayAllMovies(mList, sList);
+            DisplayMovieDetails(mList);
             Console.Write("\nSelect a Movie Screening: ");
+            ListMovieScreenings(mList, sList);
         }
     }
 }
