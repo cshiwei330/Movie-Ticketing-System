@@ -331,7 +331,7 @@ namespace PRG2_Assignment
                     }
                 }
 
-                //7. 7. create a Screening object with the information given and add to the relevantscreening list
+                //7. create a Screening object with the information given and add to the relevantscreening list
                 if (success == true)
                 {
                     Screening newS = new Screening(ScreeningNo, newSDateTime, sType, cinema, movie);
@@ -362,9 +362,16 @@ namespace PRG2_Assignment
         // ------------------- 7) Order Ticket/s -------------------
         static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList,List<Ticket> tList)
         {
+            //1.list all movies
+            //2. prompt user to select a movie
+            //3.list all movie screenings of the selected movie
             ListMovieScreenings(mList, sList);
+
+            //4. prompt user to select movie screening
             Console.WriteLine("Select a movie screening: ");
             int screeningOption = Convert.ToInt32(Console.ReadLine());
+
+            //5. retrieve the selected movie screening
             for (int i = 0; i < sList.Count; i++)
             {
                 Screening screen = sList[i];
@@ -374,13 +381,14 @@ namespace PRG2_Assignment
                 }
             }
 
+            //6. prompt user to enter the total number of tickets to order
             Console.WriteLine("Enter number of tickets to order: ");
             int toOrder=Convert.ToInt32(Console.ReadLine());
             for (int i=0;i<cList.Count;i++)
             {
                 Screening screen = sList[i];
                 cList[i].Capacity = screen.SeatsRemaining;
-                if (toOrder > screen.SeatsRemaining)
+                if (toOrder > screen.SeatsRemaining)           //check if figure entered is more than the available seats for the screening
                 {
                     Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
                 }
@@ -389,7 +397,8 @@ namespace PRG2_Assignment
                     continue;
                 }
             }
-            
+
+            //7. prompt user if all ticket holders meet the movie classification requirements 
             for (int i = 0; i < toOrder; i++)
             {
                 Movie m = mList[i];
@@ -410,11 +419,12 @@ namespace PRG2_Assignment
                 }
             }
 
+            //8. create an Order object with the status “Unpaid”
             Order newOrder = new Order(OrderNo, DateTime.Now);
             newOrder.Status = "Unpaid";
             for (int i = 0; i < toOrder; i++)
             {
-                Ticket t = tList[i];
+                Ticket t = tList[i];      //a. prompt user for a response depending on the type of ticket ordered:
                 if ()
                 {
                     Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
@@ -439,7 +449,7 @@ namespace PRG2_Assignment
                         bool popcornOffer = false;
                     }
                 }
-
+                //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
                 tList.Add(new Student());
             }
         }
