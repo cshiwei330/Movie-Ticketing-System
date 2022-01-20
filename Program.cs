@@ -209,5 +209,13 @@ namespace PRG2_Assignment
 
             DisplayCinema(cList);
         }
+
+
+        // ------------------- Order Ticket/s -------------------
+        static void OrderTicket(List<Movie> mList, List<Screening> sList)
+        {
+            DisplayAllMovies(mList, sList);
+            Console.Write("\nSelect a Movie Screening: ");
+        }
     }
 }
