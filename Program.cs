@@ -35,7 +35,7 @@ namespace PRG2_Assignment
 
                 else if (userOption == "2") //display movie screenings
                 {
-                    DisplayScreening(sList);
+                    ListMovieScreenings(mList, sList);
                 }
 
                 else if (userOption == "3") //add movie screening
@@ -102,8 +102,8 @@ namespace PRG2_Assignment
         {
             Console.WriteLine("Movie Tickting System" +
                 "\n----------------------------" +
-                "\n1. Display Movies" +
-                "\n2. Display all Movies Screenings" +
+                "\n1. View All Movies" +
+                "\n2. View Available Screening for Movie" +
                 "\n3. Add Movie Screening" +
                 "\n4. Delete Movie Screening" +
                 "\n5. Order Movie Tickets" +
@@ -226,41 +226,83 @@ namespace PRG2_Assignment
 
 
         // ------------------- 4) List Movie Screenings -------------------
-        static void DisplayAllMovies(List<Movie> mList, List<Screening> sList)
+        static void ListMovieScreenings(List<Movie> mList, List<Screening> sList)
         {
+            //1. list all movies 
             Console.WriteLine("{0,5}{1,-35}", "", "Title");
             int count = 01;
-            foreach (Movie m in mList)
+            for (int x = 0; x <mList.Count; x++)
             {
-                Console.WriteLine("[" + count + "]  " + m.Title);
+                Movie movie = mList[x];
+                Console.WriteLine("[" + count + "]" + "\t" + movie.Title);
                 count++;
             }
 
-            Console.Write("\nSelect a Movie: ");
-            int option = Convert.ToInt32(Console.ReadLine()); // --------- If chosen from Movie Number
-            for (int i = 0; i < mList.Count; i++)
+            //2.prompt user to select a movie
+            Console.Write("\nPlease select a Movie: ");
+            int movieOption = Convert.ToInt32(Console.ReadLine());
+
+            //3. retreive movie object
+            Movie m = mList[movieOption - 1];
+
+            //4. retrieve and display screening sessions for that movie
+            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
+            for (int s = 0; s < sList.Count; s++)
             {
-                int k = option - 1;
-                if (mList[k].Title == sList[k].Movie.Title)
+                Screening screen = sList[s];
+                if (screen.Movie == m)
                 {
-                    DisplayScreening(sList);
+                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Movie.Title);
+                }
+                else
+                {
+                    continue;
                 }
             }
 
-            //string option = Console.ReadLine(); // --------- If chosen from Movie Title
-            //for (int i = 0; i < mList.Count; i++)
+            //static Screening screeningSearch(List<Screening> sList, Movie m)
             //{
-            //    if (option == mList[i].Title)
+            //    for (int s = 0; s < sList.Count; s++)
             //    {
-            //        for (int k = 0; k < sList.Count; k++)
+            //        Screening screen = sList[s];
+            //        if (movieName == s.Title)
             //        {
-            //            if (mList[i].Title == sList[k].Movie.Title)
-            //            {
-            //                DisplayScreening(sList);
-            //            }
+            //            return m;
+            //        }
+            //        else
+            //        {
+            //            continue;
             //        }
             //    }
+            //    return null;
             //}
+            //Movie result2 = MovieSearch(mList, movieName);
+
+
+
+                //for (int i = 0; i < mList.Count; i++)
+                //{
+                //    int k = movieOption - 1;
+                //    if (mList[k].Title == sList[k].Movie.Title)
+                //    {
+                //        DisplayScreening(sList);
+                //    }
+                //}
+
+                //string option = Console.ReadLine(); // --------- If chosen from Movie Title
+                //for (int i = 0; i < mList.Count; i++)
+                //{
+                //    if (option == mList[i].Title)
+                //    {
+                //        for (int k = 0; k < sList.Count; k++)
+                //        {
+                //            if (mList[i].Title == sList[k].Movie.Title)
+                //            {
+                //                DisplayScreening(sList);
+                //            }
+                //        }
+                //    }
+                //}
         }
 
         // ------------------- Add a Movie Screening Session -------------------
