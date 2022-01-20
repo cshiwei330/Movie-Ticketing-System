@@ -7,22 +7,22 @@ namespace PRG2_Assignment
     class Program
     {
         static int OrderNo = 1;
-        static int ScreeningNo = 1001;
+        public static int ScreeningNo = 1001;
         static void Main(string[] args)
         {
             List<Cinema> cList = new List<Cinema>();
             List<Movie> mList = new List<Movie>();
             List<Screening> sList = new List<Screening>();
             ReadCinema(cList);
-            DisplayCinema(cList);
-            Console.WriteLine("\n");
+            //DisplayCinema(cList);
+            //Console.WriteLine("\n");
             ReadMovie(mList);
-            DisplayMovie(mList);
-            Console.WriteLine("\n");
-            //ReadScreening(sList, cList, mList);
-            //DisplayScreening(sList);
-            Console.WriteLine("\n");
-            DisplayAllMovies(mList, sList);
+            //DisplayMovie(mList);
+            //Console.WriteLine("\n");
+            ReadScreening(sList, cList, mList);
+            DisplayScreening(sList);
+            //Console.WriteLine("\n");
+            //DisplayAllMovies(mList, sList);
         }
 
         //======== General ========
@@ -71,6 +71,7 @@ namespace PRG2_Assignment
 
                 Movie m = new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults);
                 mList.Add(m);
+                Console.WriteLine("read");
             }
         }
         static void DisplayCinema(List<Cinema> cList)
@@ -126,7 +127,10 @@ namespace PRG2_Assignment
                     return null;
                 }
                 Movie result2 = MovieSearch(mList, movieName);
-                sList.Add(new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2));
+                Screening newscr = new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2);
+                sList.Add(newscr);
+                ScreeningNo++;
+                Console.WriteLine("read");
             }
         }
         static void DisplayScreening(List<Screening> sList)  //to be deleted
@@ -134,6 +138,7 @@ namespace PRG2_Assignment
             Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
             foreach (Screening s in sList)
             {
+                Console.WriteLine(s.ScreeningNo);
                 Console.WriteLine("{0,-30}{1,-20}{2,-6}{3,-30}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
             }
         }
@@ -161,7 +166,7 @@ namespace PRG2_Assignment
                 count++;
             }
 
-            Console.WriteLine("\nSelect a Movie: ");
+            Console.Write("\nSelect a Movie: ");
             int option = Convert.ToInt32(Console.ReadLine()); // --------- If chosen from Movie Number
             for (int i = 0; i < mList.Count; i++)
             {
