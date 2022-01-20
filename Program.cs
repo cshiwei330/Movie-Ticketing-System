@@ -73,6 +73,28 @@ namespace PRG2_Assignment
             }
         }
 
+        //=====================================================  To be removed/might be useful  ===================================================
+
+        //------------------- Display Screening (for checking) ------------------------------
+        static void DisplayScreening(List<Screening> sList)  //to be deleted
+        {
+            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
+            foreach (Screening s in sList)
+            {
+                Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
+            }
+        }
+
+        // ------------------- Displays cinema details (for checking) --------------------------------------------------
+        static void DisplayCinema(List<Cinema> cList)
+        {
+            Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
+            foreach (Cinema c in cList)
+            {
+                Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+            }
+        }
+
         //=====================================================  General  ===================================================
 
         // ------------------- Display Main Menu -------------------
@@ -90,7 +112,7 @@ namespace PRG2_Assignment
                 "\n----------------------------");
         }
 
-        // ------------------- Load Cinema Data & Populate Cinema List -----------------------------------------------------
+        // ------------------- 1) Load Cinema Data & Populate Cinema List -----------------------------------------------------
         static void ReadCinema(List<Cinema> cList)
         {
             string[] cdata = File.ReadAllLines("Cinema.csv");
@@ -101,17 +123,8 @@ namespace PRG2_Assignment
             }
         }
 
-        // ------------------- Displays cinema details ------------------- (do we need this?) -------------------------------
-        static void DisplayCinema(List<Cinema> cList)
-        {
-            Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
-            foreach (Cinema c in cList)
-            {
-                Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
-            }
-        }
 
-        // ------------------- Load Movie Data & Populate Movie List --------------------------------------------------------
+        // ------------------- 1) Load Movie Data & Populate Movie List --------------------------------------------------------
         static void ReadMovie(List<Movie> mList)
         {
             string[] mdata = File.ReadAllLines("Movie.csv");
@@ -149,7 +162,7 @@ namespace PRG2_Assignment
             }
         }
 
-        //------------------- Load Screening Data & Populate Screening List --------------------------------------------------
+        //------------------- 2) Load Screening Data & Populate Screening List --------------------------------------------------
         static void ReadScreening(List<Screening> sList, List<Cinema> cList, List<Movie> mList)
         {
             string[] sdata = File.ReadAllLines("Screening.csv");
@@ -200,18 +213,8 @@ namespace PRG2_Assignment
             }
         }
 
-        //------------------- Display Screening --------------------------------------------------
-        static void DisplayScreening(List<Screening> sList)  //to be deleted
-        {
-            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
-            foreach (Screening s in sList)
-            { 
-                Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
-            }
-        }
 
-
-        // ------------------- List all Movies Details -------------------
+        // ------------------- 3) List all Movies Details -------------------
         static void DisplayMovieDetails(List<Movie> mList)
         {
             Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
@@ -222,7 +225,7 @@ namespace PRG2_Assignment
         }
 
 
-        // ------------------- List Movie Screenings -------------------
+        // ------------------- 4) List Movie Screenings -------------------
         static void DisplayAllMovies(List<Movie> mList, List<Screening> sList)
         {
             Console.WriteLine("{0,5}{1,-35}", "", "Title");
