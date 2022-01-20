@@ -10,24 +10,87 @@ namespace PRG2_Assignment
         public static int ScreeningNo = 1001;
         static void Main(string[] args)
         {
+            //----------- Setting up lists -----------
             List<Cinema> cList = new List<Cinema>();
             List<Movie> mList = new List<Movie>();
             List<Screening> sList = new List<Screening>();
+
+            //----------- Reading CSV & storing as objects + Populate lists -----------
             ReadCinema(cList);
-            //DisplayCinema(cList);
-            //Console.WriteLine("\n");
             ReadMovie(mList);
-            //DisplayMovie(mList);
-            //Console.WriteLine("\n");
             ReadScreening(sList, cList, mList);
-            DisplayScreening(sList);
-            //Console.WriteLine("\n");
-            //DisplayAllMovies(mList, sList);
+
+            Boolean bookingover = false;
+
+            while (bookingover == false)
+            {
+                DisplayMenu();
+                Console.Write("Enter your option: ");
+                string userOption = Console.ReadLine();
+
+                if (userOption == "1") //display movies
+                {
+                    DisplayMovieDetails(mList);
+                }
+
+                else if (userOption == "2") //display movie screenings
+                {
+                    DisplayScreening(sList);
+                }
+
+                else if (userOption == "3") //add movie screening
+                {
+                    Console.WriteLine("waiting to implement heh");
+                }
+
+                else if (userOption == "4") //delete movie screening
+                {
+                    Console.WriteLine("waiting to implement heh");
+                }
+
+                else if (userOption == "5") //order movie tickets
+                { 
+                    Console.WriteLine("waiting to implement heh");
+                }
+
+                else if (userOption == "6") //cancel ticket
+                {
+                    Console.WriteLine("waiting to implement heh");
+                }
+
+                else if (userOption == "0") //exit
+                {
+                    Console.WriteLine("Thanks for using our Movie Ticket System! We hope to see you again :)");
+                    bookingover = true;
+                }
+
+                else
+                {
+                    Console.WriteLine("Invalid choice.");
+                    
+                }
+
+            }
         }
 
-        //======== General ========
+        //=====================================================  General  ===================================================
 
-        // ------------------- Load Movie and Cinema Data -------------------
+        // ------------------- Display Main Menu -------------------
+        static void DisplayMenu()
+        {
+            Console.WriteLine("Movie Tickting System" +
+                "\n----------------------------" +
+                "\n1. Display Movies" +
+                "\n2. Display all Movies Screenings" +
+                "\n3. Add Movie Screening" +
+                "\n4. Delete Movie Screening" +
+                "\n5. Order Movie Tickets" +
+                "\n6. Cancel Ticket" +
+                "\n0. Exit" +
+                "\n----------------------------");
+        }
+
+        // ------------------- Load Cinema Data & Populate Cinema List -----------------------------------------------------
         static void ReadCinema(List<Cinema> cList)
         {
             string[] cdata = File.ReadAllLines("Cinema.csv");
@@ -37,17 +100,29 @@ namespace PRG2_Assignment
                 cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
             }
         }
+
+        // ------------------- Displays cinema details ------------------- (do we need this?) -------------------------------
+        static void DisplayCinema(List<Cinema> cList)
+        {
+            Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
+            foreach (Cinema c in cList)
+            {
+                Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+            }
+        }
+
+        // ------------------- Load Movie Data & Populate Movie List --------------------------------------------------------
         static void ReadMovie(List<Movie> mList)
         {
             string[] mdata = File.ReadAllLines("Movie.csv");
             for (int i = 1; i < mdata.Length; i++)
             {
                 string[] mvalues = mdata[i].Split(",");
-                string genreGiven = mvalues[2]; // ------------ Store the genre given in csv 
+                string genreGiven = mvalues[2]; // ------------ stores the genre given in csv 
 
                 static List<string> generateGenre(string genreGiven) //method to return genre list for movies obj
                 {
-                    List<string> genrelist = new List<string>(); // ------------ Create a new string everytime 
+                    List<string> genrelist = new List<string>(); // ------------ create a new string everytime 
                     string slash = "/";
                     Boolean sResult = genreGiven.Contains(slash);
 
@@ -56,7 +131,7 @@ namespace PRG2_Assignment
                         string[] genres = genreGiven.Split("/");
                         for (int j = 0; j < genres.Length; j++)
                         {
-                            genrelist.Add(genres[j]); // ------------ Add each genre into list
+                            genrelist.Add(genres[j]); // ------------ add each genre into list
                         }
                     }
                     else
@@ -71,19 +146,10 @@ namespace PRG2_Assignment
 
                 Movie m = new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults);
                 mList.Add(m);
-                Console.WriteLine("read");
-            }
-        }
-        static void DisplayCinema(List<Cinema> cList)
-        {
-            Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
-            foreach (Cinema c in cList)
-            {
-                Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
             }
         }
 
-         //------------------- Load Screening Data -------------------
+        //------------------- Load Screening Data & Populate Screening List --------------------------------------------------
         static void ReadScreening(List<Screening> sList, List<Cinema> cList, List<Movie> mList)
         {
             string[] sdata = File.ReadAllLines("Screening.csv");
@@ -133,6 +199,8 @@ namespace PRG2_Assignment
            
             }
         }
+
+        //------------------- Display Screening --------------------------------------------------
         static void DisplayScreening(List<Screening> sList)  //to be deleted
         {
             Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
@@ -143,8 +211,8 @@ namespace PRG2_Assignment
         }
 
 
-        // ------------------- List all Movies -------------------
-        static void DisplayMovie(List<Movie> mList)
+        // ------------------- List all Movies Details -------------------
+        static void DisplayMovieDetails(List<Movie> mList)
         {
             Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
             foreach (Movie m in mList)
