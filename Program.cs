@@ -14,6 +14,7 @@ namespace PRG2_Assignment
             List<Cinema> cList = new List<Cinema>();
             List<Movie> mList = new List<Movie>();
             List<Screening> sList = new List<Screening>();
+            List<Ticket> tList = new List<Ticket>();
 
             //----------- Reading CSV & storing as objects + Populate lists -----------
             ReadCinema(cList);
@@ -229,7 +230,7 @@ namespace PRG2_Assignment
         static void ListMovieScreenings(List<Movie> mList, List<Screening> sList)
         {
             //1. list all movies 
-            Console.WriteLine("{0,5}{1,-35}", "", "Title");
+            Console.WriteLine("\n{0,5}{1,-35}", "", "Title");
             int count = 01;
             for (int x = 0; x <mList.Count; x++)
             {
@@ -246,7 +247,7 @@ namespace PRG2_Assignment
             Movie m = mList[movieOption - 1];
 
             //4. retrieve and display screening sessions for that movie
-            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
+            Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
             for (int s = 0; s < sList.Count; s++)
             {
                 Screening screen = sList[s];
@@ -288,11 +289,88 @@ namespace PRG2_Assignment
         //=====================================================  Screening  ===================================================
 
         // ------------------- 7) Order Ticket/s -------------------
-        static void OrderTicket(List<Movie> mList, List<Screening> sList)
+        static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList,List<Ticket> tList)
         {
-            DisplayMovieDetails(mList);
-            Console.Write("\nSelect a Movie Screening: ");
             ListMovieScreenings(mList, sList);
+            Console.WriteLine("Select a movie screening: ");
+            int screeningOption = Convert.ToInt32(Console.ReadLine());
+            for (int i = 0; i < sList.Count; i++)
+            {
+                Screening screen = sList[i];
+                if (screeningOption==screen.ScreeningNo)
+                {
+                    continue;
+                }
+            }
+
+            Console.WriteLine("Enter number of tickets to order: ");
+            int toOrder=Convert.ToInt32(Console.ReadLine());
+            for (int i=0;i<cList.Count;i++)
+            {
+                Screening screen = sList[i];
+                cList[i].Capacity = screen.SeatsRemaining;
+                if (toOrder > screen.SeatsRemaining)
+                {
+                    Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            
+            for (int i = 0; i < toOrder; i++)
+            {
+                Movie m = mList[i];
+                if (m.Classification == "PG13")
+                {
+                    Console.WriteLine("Are all ticket holders above the age of 13?[Y/N] : ");
+                    string metRequirements = Console.ReadLine();
+                }
+                else if (m.Classification == "M18")
+                {
+                    Console.WriteLine("Are all ticket holders above the age of 18?[Y/N] : ");
+                    string metRequirements = Console.ReadLine();
+                }
+                else if (m.Classification == "R21")
+                {
+                    Console.WriteLine("Are all ticket holders above the age of 21?[Y/N] : ");
+                    string metRequirements = Console.ReadLine();
+                }
+            }
+
+            Order newOrder = new Order(OrderNo, DateTime.Now);
+            newOrder.Status = "Unpaid";
+            for (int i = 0; i < toOrder; i++)
+            {
+                Ticket t = tList[i];
+                if ()
+                {
+                    Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                    string levelOfStudy = Console.ReadLine();
+                }
+                else if ()
+                {
+                    Console.WriteLine("Enter your year of birth: ");
+                    int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+                    int age = DateTime.Now.Year - yearOfBirth;
+                }
+                else
+                {
+                    Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                    string pOffer = Console.ReadLine();
+                    if (pOffer == "Y")
+                    {
+                        bool popcornOffer = true;
+                    }
+                    else
+                    {
+                        bool popcornOffer = false;
+                    }
+                }
+
+                tList.Add(new Student());
+            }
         }
     }
 }
