@@ -40,7 +40,7 @@ namespace PRG2_Assignment
 
                 else if (userOption == "3") //add movie screening
                 {
-                    Console.WriteLine("waiting to implement heh");
+                    AddScreeningSession(mList, sList, cList);
                 }
 
                 else if (userOption == "4") //delete movie screening
@@ -239,7 +239,7 @@ namespace PRG2_Assignment
             }
 
             //2.prompt user to select a movie
-            Console.Write("\nPlease select a Movie: ");
+            Console.Write("\nPlease select a Movie: "); //******need validations
             int movieOption = Convert.ToInt32(Console.ReadLine());
 
             //3. retreive movie object
@@ -263,29 +263,100 @@ namespace PRG2_Assignment
 
         }
 
+        //=====================================================  Screening  ===================================================
+
         // ------------------- 5) Add a Movie Screening Session -------------------
         static void AddScreeningSession(List<Movie> mList, List<Screening> sList, List<Cinema> cList)
         {
-            DisplayMovieDetails(mList);
-            Console.WriteLine("\nSelect a Movie: ");
-            int option2 = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter screening type (2D/3D): ");
-            string sType = Console.ReadLine();
-            Console.WriteLine("Enter screening date and time: ");
-            DateTime sdateTime = Convert.ToDateTime(Console.ReadLine());
-            for (int i = 0; i < mList.Count; i++)
+            //1. list all movies 
+            int count = 01;
+
+            foreach (Movie m in mList)
             {
-                // Test if DateTime is after Opening date
+                Console.WriteLine("[" + count + "]" + "{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, m.genreList);
+                count++;
             }
 
-            DisplayCinema(cList);
-        }
+            //2. prompt user to select a movie
+            Console.Write("\nSelect a Movie: "); //******need validations
+            int movieOption2 = Convert.ToInt32(Console.ReadLine());
+            Movie movie = mList[movieOption2 - 1]; //get movie obj
 
+            //3. prompt user to enter a screening type 
+            Console.Write("Enter screening type (2D/3D): "); //******need validations
+            string sType = Console.ReadLine();
+
+            //4. prompt user to enter a screening date and time (check to see if the datetime entered is after the opening date of the movie)
+            Console.Write("Enter screening date and time: ");
+            DateTime newSDateTime = Convert.ToDateTime(Console.ReadLine()); //******need validations
+
+            int count2 = 01; 
+            if (movie.OpeningDate < newSDateTime)
+            {
+                //5. list all cinema halls
+                foreach (Cinema c in cList)
+                {
+                    Console.WriteLine("[" + count2 + "]" + "{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+                    count2++;
+                }
+
+                //6. prompt user to select a cinema hall (check to see if the cinema hall is available at the datetime entered in point 4)
+                //[need to consider the movie duration and cleaning time]
+                Console.Write("Select a Cinema & Hall: ");
+                int cinemaOption = Convert.ToInt32(Console.ReadLine());
+                Cinema cinema = cList[cinemaOption - 1];
+
+                bool success = true;
+                for (int j = 0; j < sList.Count; j++)  
+                {
+                    Screening screening = sList[j];
+                    if (screening.Cinema == cinema)/*&& screening.ScreeningDateTime.Date == newSDateTime.Date)*/ //find that day n the cinema hall 
+                    {
+                        DateTime screeningtime = screening.ScreeningDateTime;
+                        DateTime blockoff = screeningtime.AddMinutes(Convert.ToDouble(movie.Duration + 30)); //30mins for cleaning
+                        Console.WriteLine("yo");
+
+                        if (newSDateTime!< screeningtime && newSDateTime!> blockoff)
+                        {
+                            success = false;
+                            Console.WriteLine("hey");
+                            break;
+                        }
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("huh");
+                    }
+                }
+
+                //7. 7. create a Screening object with the information given and add to the relevantscreening list
+                if (success == true)
+                {
+                    Screening newS = new Screening(ScreeningNo, newSDateTime, sType, cinema, movie);
+                    sList.Add(newS);
+                    ScreeningNo++;
+                    movie.AddScreening(newS);
+                    Console.WriteLine("Screening created successfully!");
+                }
+
+                else;
+                {
+                    Console.WriteLine("Your selected cinema hall is not unavailable to screen at the screening date and time you want.");
+                }
+            }
+
+            else
+            {
+                Console.WriteLine("Screening date and time must be after opening date");
+            }
+
+        }
 
         // ------------------- 6) Delete a Movie Screening Session -------------------
 
 
-        //=====================================================  Screening  ===================================================
+        //=====================================================  Order  ===================================================
 
         // ------------------- 7) Order Ticket/s -------------------
         static void OrderTicket(List<Movie> mList, List<Screening> sList)
