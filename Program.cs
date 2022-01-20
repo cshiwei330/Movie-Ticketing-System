@@ -161,7 +161,7 @@ namespace PRG2_Assignment
                 count++;
             }
 
-            Console.WriteLine("\nSelect a Movie: ");
+            Console.Write("\nSelect a Movie: ");
             int option = Convert.ToInt32(Console.ReadLine()); // --------- If chosen from Movie Number
             for (int i = 0; i < mList.Count; i++)
             {
@@ -204,6 +204,14 @@ namespace PRG2_Assignment
             }
 
             DisplayCinema(cList);
+        }
+
+
+        // ------------------- Order Ticket/s -------------------
+        static void OrderTicket(List<Movie> mList, List<Screening> sList)
+        {
+            DisplayAllMovies(mList, sList);
+            Console.Write("\nSelect a Movie Screening: ");
         }
     }
 }
