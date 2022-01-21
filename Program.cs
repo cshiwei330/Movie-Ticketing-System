@@ -22,7 +22,7 @@ namespace PRG2_Assignment
             ReadScreening(sList, cList, mList);
 
             Boolean bookingover = false;
-            //DisplayScreening(sList);
+            DisplayScreening(sList);
             while (bookingover == false)
             {
                 DisplayMenu();
@@ -160,6 +160,7 @@ namespace PRG2_Assignment
 
                 Movie m = new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults);
                 mList.Add(m);
+                m.AddGenre(genreGiven);
             }
         }
 
@@ -223,7 +224,13 @@ namespace PRG2_Assignment
             Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
             foreach (Movie m in mList)
             {
-                Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, m.genreList);
+                string genres = null;
+
+                for ( int g = 0; g < m.genreList.Count; g++)
+                {
+                    genres = m.genreList[g];
+                }
+                Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
             }
         }
 
