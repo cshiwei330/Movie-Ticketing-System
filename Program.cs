@@ -478,6 +478,10 @@ namespace PRG2_Assignment
                     }
                 }
                 double totalPrice = 0;
+                //8. create an Order object with the status “Unpaid”
+                Order newOrder = new Order(OrderNo, DateTime.Now);
+                newOrder.Status = "Unpaid";
+                //9.
                 for (int k = 1; k <= toOrder; k++)
                 {
                     Console.Write("\n[1] Student\n[2] Adult\n[3] Senior Citizen");
@@ -490,7 +494,8 @@ namespace PRG2_Assignment
                     {
                         Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
                         string levelOfStudy = Console.ReadLine();
-                        Ticket t=new Student(findScreening, levelOfStudy);
+                        Ticket t = new Student(findScreening, levelOfStudy);
+                        newOrder.AddTicket(t);
                         totalPrice += t.CalculatePrice();
                         findScreening.SeatsRemaining--;
                     }
@@ -499,9 +504,10 @@ namespace PRG2_Assignment
                         Console.Write("Enter your year of birth: ");
                         int yearOfBirth = Convert.ToInt32(Console.ReadLine());
                         int accepted = DateTime.Now.Year - 55;
-                        if (yearOfBirth<accepted)
+                        if (yearOfBirth < accepted)
                         {
                             Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
+                            newOrder.AddTicket(t);
                             totalPrice += t.CalculatePrice();
                             findScreening.SeatsRemaining--;
                         }
@@ -518,20 +524,19 @@ namespace PRG2_Assignment
                         {
                             bool popcornOffer = true;
                             Ticket t = new Adult(findScreening, popcornOffer);
+                            newOrder.AddTicket(t);
                             totalPrice += t.CalculatePrice();
                         }
                         else
                         {
                             bool popcornOffer = false;
                             Ticket t = new Adult(findScreening, popcornOffer);
+                            newOrder.AddTicket(t);
                             totalPrice += t.CalculatePrice();
                         }
                         findScreening.SeatsRemaining--;
                     }
                 }
-                //8. create an Order object with the status “Unpaid”
-                Order newOrder = new Order(OrderNo, DateTime.Now);
-                newOrder.Status = "Unpaid";
 
                 //10. list amount payable
                 if (totalPrice>0)
@@ -539,7 +544,7 @@ namespace PRG2_Assignment
                     Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
                     //11. prompt user to press any key to make payment
                     Console.Write("Press any key to make payment ");
-                    string paymentMade = Console.ReadLine();
+                    Console.ReadKey();
 
                     //12. fill in the necessary details to the new order (e.g amount)
                     newOrder.Amount = totalPrice;
