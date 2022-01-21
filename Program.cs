@@ -238,7 +238,7 @@ namespace PRG2_Assignment
         static void ListMovieScreenings(List<Movie> mList, List<Screening> sList)
         {
             //1. list all movies 
-            Console.WriteLine("\n{0,5}{1,-35}", "", "Title");
+            Console.WriteLine("\n{0,8}{1,-35}", "", "Title");
             int count = 01;
             for (int x = 0; x < mList.Count; x++)
             {
@@ -457,7 +457,7 @@ namespace PRG2_Assignment
                         continue;
                     }
                 }
-                Console.WriteLine("Enter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
+                Console.Write("\nEnter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
                 string ticketType = Console.ReadLine();
                 double price = 0;
                 //a. prompt user for a response depending on the type of ticket ordered:
