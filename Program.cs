@@ -402,13 +402,13 @@ namespace PRG2_Assignment
                 Order newOrder = new Order(OrderNo, DateTime.Now);
                 newOrder.Status = "Unpaid";
                 //7. prompt user if all ticket holders meet the movie classification requirements 
+                Movie z = screen.Movie;
                 for (int j = 1; j <= toOrder; j++)
                 {
-                    Movie m = mList[j];
-                    Console.WriteLine(m.Classification);
-                    if (m.Classification == "PG13")
+                    Console.WriteLine(z.Classification);
+                    if (z.Classification == "PG13")
                     {
-                        Console.WriteLine("Is the ticket holder above the age of 13?[Y/N] : ");
+                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
                         string metRequirements = Console.ReadLine().ToUpper();
                         if (metRequirements == "Y")
                         {
@@ -417,11 +417,12 @@ namespace PRG2_Assignment
                         else
                         {
                             Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
+                            break;
                         }
                     }
-                    else if (m.Classification == "M18")
+                    else if (z.Classification == "M18")
                     {
-                        Console.WriteLine("Is the ticket holder above the age of 18?[Y/N] : ");
+                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
                         string metRequirements = Console.ReadLine().ToUpper();
                         if (metRequirements == "Y")
                         {
@@ -430,11 +431,12 @@ namespace PRG2_Assignment
                         else
                         {
                             Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
+                            break;
                         }
                     }
-                    else if (m.Classification == "R21")
+                    else if (z.Classification == "R21")
                     {
-                        Console.WriteLine("Is the ticket holder above the age of 21?[Y/N] : ");
+                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
                         string metRequirements = Console.ReadLine().ToUpper();
                         if (metRequirements == "Y")
                         {
@@ -443,62 +445,64 @@ namespace PRG2_Assignment
                         else
                         {
                             Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
+                            break;
                         }
-                    }
-
-                    Console.WriteLine("Enter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
-                    string ticketType = Console.ReadLine();
-                    double price = 0;
-                    //a. prompt user for a response depending on the type of ticket ordered:
-                    //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                    if (ticketType == "Student")
-                    {
-                        Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
-                        string levelOfStudy = Console.ReadLine();
-                        Student s;
-                        s = new Student(screen, levelOfStudy);
-                        price += s.CalculatePrice();
-
-                    }
-                    else if (ticketType == "Senior Citizen")
-                    {
-                        Console.WriteLine("Enter your year of birth: ");
-                        int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-                        int age = DateTime.Now.Year - yearOfBirth;
-                        SeniorCitizen sc;
-                        sc = new SeniorCitizen(screen, age);
-                        price += sc.CalculatePrice();
-                        tList.Add(sc);
-
                     }
                     else
                     {
-                        Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                        string pOffer = Console.ReadLine();
-                        if (pOffer == "Y")
-                        {
-                            bool popcornOffer = true;
-                            Adult a;
-                            a = new Adult(screen, popcornOffer);
-                            price += a.CalculatePrice();
-                            tList.Add(a);
-                        }
-                        else
-                        {
-                            bool popcornOffer = false;
-                            Adult a;
-                            a = new Adult(screen, popcornOffer);
-                            price += a.CalculatePrice();
-                            tList.Add(a);
-                        }
+                        continue;
                     }
                 }
-                screen.SeatsRemaining--;
-                //10. list amount payable
-                foreach (Ticket t in tList)
+                Console.WriteLine("Enter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
+                string ticketType = Console.ReadLine();
+                double price = 0;
+                //a. prompt user for a response depending on the type of ticket ordered:
+                //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
+                if (ticketType == "Student")
                 {
-                    t.CalculatePrice();
+                    Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                    string levelOfStudy = Console.ReadLine();
+                    Student s;
+                    s = new Student(screen, levelOfStudy);
+                    price += s.CalculatePrice();
+
                 }
+                else if (ticketType == "Senior Citizen")
+                {
+                    Console.WriteLine("Enter your year of birth: ");
+                    int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+                    int age = DateTime.Now.Year - yearOfBirth;
+                    SeniorCitizen sc;
+                    sc = new SeniorCitizen(screen, age);
+                    price += sc.CalculatePrice();
+                    tList.Add(sc);
+
+                }
+                else
+                {
+                    Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                    string pOffer = Console.ReadLine();
+                    if (pOffer == "Y")
+                    {
+                        bool popcornOffer = true;
+                        Adult a;
+                        a = new Adult(screen, popcornOffer);
+                        price += a.CalculatePrice();
+                        tList.Add(a);
+                    }
+                    else
+                    {
+                        bool popcornOffer = false;
+                        Adult a;
+                        a = new Adult(screen, popcornOffer);
+                        price += a.CalculatePrice();
+                        tList.Add(a);
+                    }
+                }
+
+                screen.SeatsRemaining--;
+                Console.WriteLine(screen.SeatsRemaining);
+                //10. list amount payable
 
                 //    //Console.WriteLine("Amount payable ($): {0:C2}", amount);
                 //    //Console.WriteLine("Press any key to make payment");
