@@ -323,7 +323,10 @@ namespace PRG2_Assignment
                     {
                         DateTime screeningtime = screening.ScreeningDateTime;
                         DateTime blockoff = screeningtime.AddMinutes(Convert.ToDouble(screening.Movie.Duration + 30)); //30mins for cleaning, newSDateTime must be after 
-                        DateTime blockoff2 = screeningtime.AddMinutes(-Convert.ToDouble(screening.Movie.Duration + 30)); //movie must end before next screening 
+                        DateTime blockoff2 = screeningtime.AddMinutes(-Convert.ToDouble(movie.Duration + 30)); //movie must end before next screening 
+
+                        Console.WriteLine(blockoff2);
+                        Console.WriteLine(blockoff);
 
                         if (newSDateTime < blockoff2 || newSDateTime > blockoff) // if newSDateTime is valid
                         {
