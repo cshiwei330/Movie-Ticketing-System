@@ -22,7 +22,6 @@ namespace PRG2_Assignment
             ReadScreening(sList, cList, mList);
 
             Boolean bookingover = false;
-            DisplayScreening(sList);
             while (bookingover == false)
             {
                 DisplayMenu();
@@ -355,7 +354,7 @@ namespace PRG2_Assignment
 
                 else if (success == false)
                 {
-                    Console.WriteLine("Your selected cinema hall is not unavailable to screen at the screening date and time you want.");
+                    Console.WriteLine("Your selected cinema hall is unavailable to screen at the screening date and time you want.");
                 }
             }
 
