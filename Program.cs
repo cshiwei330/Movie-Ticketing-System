@@ -279,10 +279,14 @@ namespace PRG2_Assignment
         {
             //1. list all movies 
             int count = 01;
-
+            string genres = null;
             foreach (Movie m in mList)
             {
-                Console.WriteLine("[" + count + "]" + "{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, m.genreList);
+                for ( int g = 0; g < m.genreList.Count; g++ )
+                {
+                    genres = m.genreList[g];
+                }
+                Console.WriteLine("[" + count + "]" + "{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
                 count++;
             }
 
