@@ -1,4 +1,10 @@
-﻿using System;
+﻿//============================================================
+// Student Number : S10221902D, S10221849H
+// Student Name : Alethea Chan, Chew Shi Wei
+// Module Group : P10
+//============================================================
+
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -391,7 +397,7 @@ namespace PRG2_Assignment
         static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList, List<Ticket> tList)
         {
             //1.list all movies
-            //2. prompt user to select a movie
+            //2.prompt user to select a movie
             //3.list all movie screenings of the selected movie
             ListMovieScreenings(mList, sList);
 
@@ -550,10 +556,11 @@ namespace PRG2_Assignment
                     newOrder.Amount = totalPrice;
                     //13. change order status to “Paid”
                     newOrder.Status = "Paid";
+                    Console.WriteLine("Order successful.");
                 }
                 else
                 {
-                    Console.WriteLine("Failed ticket purchase.");
+                    Console.WriteLine("Order unsuccessful, please try again.");
                 }
             }
         } 
