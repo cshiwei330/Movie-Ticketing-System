@@ -306,45 +306,46 @@ namespace PRG2_Assignment
                 Console.Write("Select a Cinema & Hall: ");
                 int cinemaOption = Convert.ToInt32(Console.ReadLine());
                 Cinema cinema = cList[cinemaOption - 1];
+                Console.WriteLine(cinema.Name);
 
-                bool success = true;
-                for (int j = 0; j < sList.Count; j++)  
-                {
-                    Screening screening = sList[j];
-                    if (screening.Cinema == cinema)/*&& screening.ScreeningDateTime.Date == newSDateTime.Date)*/ //find that day n the cinema hall 
-                    {
-                        DateTime screeningtime = screening.ScreeningDateTime;
-                        DateTime blockoff = screeningtime.AddMinutes(Convert.ToDouble(movie.Duration + 30)); //30mins for cleaning
-                        Console.WriteLine("yo");
+                //bool success = true;
+                //for (int j = 0; j < sList.Count; j++)  
+                //{
+                //    Screening screening = sList[j];
+                //    if (screening.Cinema == cinema)/*&& screening.ScreeningDateTime.Date == newSDateTime.Date)*/ //find that day n the cinema hall 
+                //    {
+                //        DateTime screeningtime = screening.ScreeningDateTime;
+                //        DateTime blockoff = screeningtime.AddMinutes(Convert.ToDouble(movie.Duration + 30)); //30mins for cleaning
+                //        Console.WriteLine("yo");
 
-                        if (newSDateTime!< screeningtime && newSDateTime!> blockoff)
-                        {
-                            success = false;
-                            Console.WriteLine("hey");
-                            break;
-                        }
-                    }
+                //        if (newSDateTime!< screeningtime && newSDateTime!> blockoff)
+                //        {
+                //            success = false;
+                //            Console.WriteLine("hey");
+                //            break;
+                //        }
+                //    }
 
-                    else
-                    {
-                        Console.WriteLine("huh");
-                    }
-                }
+                //    else
+                //    {
+                //        Console.WriteLine("huh");
+                //    }
+                //}
 
-                //7. create a Screening object with the information given and add to the relevantscreening list
-                if (success == true)
-                {
-                    Screening newS = new Screening(ScreeningNo, newSDateTime, sType, cinema, movie);
-                    sList.Add(newS);
-                    ScreeningNo++;
-                    movie.AddScreening(newS);
-                    Console.WriteLine("Screening created successfully!");
-                }
+                ////7. create a Screening object with the information given and add to the relevantscreening list
+                //if (success == true)
+                //{
+                //    Screening newS = new Screening(ScreeningNo, newSDateTime, sType, cinema, movie);
+                //    sList.Add(newS);
+                //    ScreeningNo++;
+                //    movie.AddScreening(newS);
+                //    Console.WriteLine("Screening created successfully!");
+                //}
 
-                else;
-                {
-                    Console.WriteLine("Your selected cinema hall is not unavailable to screen at the screening date and time you want.");
-                }
+                //else;
+                //{
+                //    Console.WriteLine("Your selected cinema hall is not unavailable to screen at the screening date and time you want.");
+                //}
             }
 
             else
