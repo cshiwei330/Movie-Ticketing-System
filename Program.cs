@@ -469,55 +469,61 @@ namespace PRG2_Assignment
                         continue;
                     }
                 }
-                Console.Write("\nEnter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
-                string ticketType = Console.ReadLine();
-                double price = 0;
-                //a. prompt user for a response depending on the type of ticket ordered:
-                //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                //if (ticketType == "Student")
-                //{
-                //    Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
-                //    string levelOfStudy = Console.ReadLine();
-                //    Student s;
-                //    s = new Student(screen, levelOfStudy);
-                //    price += s.CalculatePrice();
+                for (int k = 1; k <= toOrder; k++)
+                {
+                    Console.Write("\nEnter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
+                    string ticketType = Console.ReadLine();
+                    double totalPrice = 0;
+                    //a. prompt user for a response depending on the type of ticket ordered:
+                    //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
+                    if (ticketType == "Student")
+                    {
+                        Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                        string levelOfStudy = Console.ReadLine();
+                        Ticket newsTicket = new Student(findScreening, levelOfStudy);
+                        totalPrice += newsTicket.CalculatePrice();
+                    }
+                    else if (ticketType == "Senior Citizen")
+                    {
+                        Console.WriteLine("Enter your year of birth: ");
+                        int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+                        int age = DateTime.Now.Year - yearOfBirth;
+                        if (age>=55)
+                        {
+                            Ticket newscTicket = new SeniorCitizen(findScreening, age);
+                            totalPrice += newscTicket.CalculatePrice();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                        string pOffer = Console.ReadLine();
+                        if (pOffer == "Y")
+                        {
+                            bool popcornOffer = true;
+                            Adult a;
+                            a = new Adult(findScreening, popcornOffer);
+                            totalPrice += a.CalculatePrice();
+                            tList.Add(a);
+                        }
+                        else
+                        {
+                            bool popcornOffer = false;
+                            Adult a;
+                            a = new Adult(findScreening, popcornOffer);
+                            totalPrice += a.CalculatePrice();
+                            tList.Add(a);
+                        }
+                    }
 
-                //}
-                //else if (ticketType == "Senior Citizen")
-                //{
-                //    Console.WriteLine("Enter your year of birth: ");
-                //    int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-                //    int age = DateTime.Now.Year - yearOfBirth;
-                //    SeniorCitizen sc;
-                //    sc = new SeniorCitizen(screen, age);
-                //    price += sc.CalculatePrice();
-                //    tList.Add(sc);
+                }
 
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                //    string pOffer = Console.ReadLine();
-                //    if (pOffer == "Y")
-                //    {
-                //        bool popcornOffer = true;
-                //        Adult a;
-                //        a = new Adult(screen, popcornOffer);
-                //        price += a.CalculatePrice();
-                //        tList.Add(a);
-                //    }
-                //    else
-                //    {
-                //        bool popcornOffer = false;
-                //        Adult a;
-                //        a = new Adult(screen, popcornOffer);
-                //        price += a.CalculatePrice();
-                //        tList.Add(a);
-                //    }
-                //}
-
-                //screen.SeatsRemaining--;
-                //Console.WriteLine(screen.SeatsRemaining);
+                findScreening.SeatsRemaining--;
+                Console.WriteLine(findScreening.SeatsRemaining);
                 //10. list amount payable
 
                 //    //Console.WriteLine("Amount payable ($): {0:C2}", amount);

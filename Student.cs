@@ -25,7 +25,7 @@ namespace PRG2_Assignment
         {
             DateTime date = Screening.ScreeningDateTime;
             string screeningtype = Screening.ScreeningType;
-            DateTime openingdate7 = Movie.OpeningDate.AddDays(7);
+            DateTime openingdate7 = Screening.Movie.OpeningDate.AddDays(7);
             string x;
             if (date.DayOfWeek == DayOfWeek.Friday)
             {
