@@ -24,6 +24,7 @@ namespace PRG2_Assignment
             Boolean bookingover = false;
             while (bookingover == false)
             {
+                Console.WriteLine("\n"); //better formatting
                 DisplayMenu();
                 Console.Write("Enter your option: ");
                 string userOption = Console.ReadLine();
@@ -85,15 +86,6 @@ namespace PRG2_Assignment
             }
         }
 
-        // ------------------- Displays cinema details (for checking) --------------------------------------------------
-        static void DisplayCinema(List<Cinema> cList)
-        {
-            Console.WriteLine("{0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
-            foreach (Cinema c in cList)
-            {
-                Console.WriteLine("{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
-            }
-        }
 
         //=====================================================  General  ===================================================
 
@@ -220,16 +212,48 @@ namespace PRG2_Assignment
         // ------------------- 3) List all Movies Details -------------------
         static void DisplayMovieDetails(List<Movie> mList)
         {
-            Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
+            Console.WriteLine("     {0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", "Title", "Duration (mins)", "Classification", "Opening Date", "Genre");
+            int count = 1;
             foreach (Movie m in mList)
             {
                 string genres = null;
-
                 for (int g = 0; g < m.genreList.Count; g++)
                 {
                     genres = m.genreList[g];
                 }
-                Console.WriteLine("{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
+
+                if (count <= 9)
+                {
+                    Console.WriteLine("[" + count + "]" + "  {0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
+                    count++;
+                }
+
+                else
+                {
+                    Console.WriteLine("[" + count + "]" + " {0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
+                    count++;
+                }
+            }
+        }
+
+        // ------------------- 4) Display Cinema -----------------------------------------------------
+        static void DisplayCinema(List<Cinema> cList)
+        {
+            Console.WriteLine("     {0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
+            int count = 1;
+            foreach (Cinema c in cList)
+            {
+                if (count <= 9)
+                {
+                    Console.WriteLine("[" + count + "]" + "  {0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+                    count++;
+                }
+
+                else
+                {
+                    Console.WriteLine("[" + count + "]" + " {0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+                    count++;
+                }
             }
         }
 
@@ -238,14 +262,7 @@ namespace PRG2_Assignment
         static void ListMovieScreenings(List<Movie> mList, List<Screening> sList)
         {
             //1. list all movies 
-            Console.WriteLine("\n{0,8}{1,-35}", "", "Title");
-            int count = 01;
-            for (int x = 0; x < mList.Count; x++)
-            {
-                Movie movie = mList[x];
-                Console.WriteLine("[" + count + "]" + "\t" + movie.Title);
-                count++;
-            }
+            DisplayMovieDetails(mList);
 
             //2.prompt user to select a movie
             Console.Write("\nPlease select a Movie: "); //******need validations
@@ -278,17 +295,7 @@ namespace PRG2_Assignment
         static void AddScreeningSession(List<Movie> mList, List<Screening> sList, List<Cinema> cList)
         {
             //1. list all movies 
-            int count = 01;
-            string genres = null;
-            foreach (Movie m in mList)
-            {
-                for ( int g = 0; g < m.genreList.Count; g++ )
-                {
-                    genres = m.genreList[g];
-                }
-                Console.WriteLine("[" + count + "]" + "{0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
-                count++;
-            }
+            DisplayMovieDetails(mList);
 
             //2. prompt user to select a movie
             Console.Write("\nSelect a Movie: "); //******need validations
@@ -308,11 +315,7 @@ namespace PRG2_Assignment
             if (movie.OpeningDate < newSDateTime)
             {
                 //5. list all cinema halls
-                foreach (Cinema c in cList)
-                {
-                    Console.WriteLine("[" + count2 + "]" + "{0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
-                    count2++;
-                }
+                DisplayCinema(cList);
 
                 //6. prompt user to select a cinema hall (check to see if the cinema hall is available at the datetime entered in point 4)
                 //[need to consider the movie duration and cleaning time]
