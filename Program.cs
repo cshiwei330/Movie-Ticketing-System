@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PRG2_Assignment
 {
@@ -278,14 +279,14 @@ namespace PRG2_Assignment
             Movie m = mList[movieOption - 1];
 
             //4. retrieve and display screening sessions for that movie
-            Console.WriteLine("\n{0,5}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+            Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
             int count2 = 01;
             for (int s = 0; s < sList.Count; s++)
             {
                 Screening screen = sList[s];
                 if (screen.Movie == m)
                 {
-                    Console.WriteLine("[" + count2 + "]" + "  {0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo);
+                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo);
                     count2++;
                 }
                 else
@@ -395,7 +396,7 @@ namespace PRG2_Assignment
             ListMovieScreenings(mList, sList);
 
             //4. prompt user to select movie screening
-            Console.Write("Enter the screening number: ");
+            Console.Write("\nSelect a Movie Screening: ");
             int screeningOption = Convert.ToInt32(Console.ReadLine());
 
             Screening findScreening = null;
@@ -423,14 +424,12 @@ namespace PRG2_Assignment
             }
             else
             {
-                //8. create an Order object with the status “Unpaid”
-                Order newOrder = new Order(OrderNo, DateTime.Now);
-                newOrder.Status = "Unpaid";
                 //7. prompt user if all ticket holders meet the movie classification requirements 
                 Movie z = findScreening.Movie;
                 for (int j = 1; j <= toOrder; j++)
                 {
                     Console.WriteLine(z.Classification);
+                    Console.WriteLine("Seats initially: "+findScreening.SeatsRemaining);
                     if (z.Classification == "PG13")
                     {
                         Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
@@ -478,29 +477,33 @@ namespace PRG2_Assignment
                         continue;
                     }
                 }
+                double totalPrice = 0;
                 for (int k = 1; k <= toOrder; k++)
                 {
+                    Console.Write("\n[1] Student\n[2] Adult\n[3] Senior Citizen");
                     Console.Write("\nEnter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
-                    string ticketType = Console.ReadLine();
-                    double totalPrice = 0;
+                    int ticketType = Convert.ToInt32(Console.ReadLine());
                     //a. prompt user for a response depending on the type of ticket ordered:
                     //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                    if (ticketType == "Student")
+                    //d. update seats remaining for the movie screening
+                    if (ticketType == 1)
                     {
                         Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
                         string levelOfStudy = Console.ReadLine();
-                        Ticket newsTicket = new Student(findScreening, levelOfStudy);
-                        totalPrice += newsTicket.CalculatePrice();
+                        Ticket t=new Student(findScreening, levelOfStudy);
+                        totalPrice += t.CalculatePrice();
+                        findScreening.SeatsRemaining--;
                     }
-                    else if (ticketType == "Senior Citizen")
+                    else if (ticketType == 3)
                     {
-                        Console.WriteLine("Enter your year of birth: ");
+                        Console.Write("Enter your year of birth: ");
                         int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-                        int age = DateTime.Now.Year - yearOfBirth;
-                        if (age>=55)
+                        int accepted = DateTime.Now.Year - 55;
+                        if (yearOfBirth<accepted)
                         {
-                            Ticket newscTicket = new SeniorCitizen(findScreening, age);
-                            totalPrice += newscTicket.CalculatePrice();
+                            Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
+                            totalPrice += t.CalculatePrice();
+                            findScreening.SeatsRemaining--;
                         }
                         else
                         {
@@ -510,36 +513,46 @@ namespace PRG2_Assignment
                     else
                     {
                         Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                        string pOffer = Console.ReadLine();
+                        string pOffer = Console.ReadLine().ToUpper();
                         if (pOffer == "Y")
                         {
                             bool popcornOffer = true;
-                            Adult a;
-                            a = new Adult(findScreening, popcornOffer);
-                            totalPrice += a.CalculatePrice();
-                            tList.Add(a);
+                            Ticket t = new Adult(findScreening, popcornOffer);
+                            totalPrice += t.CalculatePrice();
                         }
                         else
                         {
                             bool popcornOffer = false;
-                            Adult a;
-                            a = new Adult(findScreening, popcornOffer);
-                            totalPrice += a.CalculatePrice();
-                            tList.Add(a);
+                            Ticket t = new Adult(findScreening, popcornOffer);
+                            totalPrice += t.CalculatePrice();
                         }
+                        findScreening.SeatsRemaining--;
                     }
-
                 }
+                //8. create an Order object with the status “Unpaid”
+                Order newOrder = new Order(OrderNo, DateTime.Now);
+                newOrder.Status = "Unpaid";
 
-                findScreening.SeatsRemaining--;
-                Console.WriteLine(findScreening.SeatsRemaining);
                 //10. list amount payable
+                if (totalPrice>0)
+                {
+                    Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
+                    //11. prompt user to press any key to make payment
+                    Console.Write("Press any key to make payment ");
+                    string paymentMade = Console.ReadLine();
 
-                //    //Console.WriteLine("Amount payable ($): {0:C2}", amount);
-                //    //Console.WriteLine("Press any key to make payment");
-                //    //newOrder.Amount = amount;
-                //    //newOrder.Status = "Paid";
+                    //12. fill in the necessary details to the new order (e.g amount)
+                    newOrder.Amount = totalPrice;
+                    //13. change order status to “Paid”
+                    newOrder.Status = "Paid";
+                }
+                else
+                {
+                    Console.WriteLine("Failed ticket purchase.");
+                }
             }
-        }  // ------------------- 8) Cancel order of ticket -------------------
+        } 
+
+        // ------------------- 8) Cancel order of ticket -------------------
     }
 }
