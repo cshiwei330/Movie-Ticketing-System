@@ -382,17 +382,29 @@ namespace PRG2_Assignment
             ListMovieScreenings(mList, sList);
 
             //4. prompt user to select movie screening
-            Console.Write("Select a movie screening: ");
+            Console.Write("Enter the screening number: ");
             int screeningOption = Convert.ToInt32(Console.ReadLine());
 
+            Screening findScreening = null;
             //5. retrieve the selected movie screening
-            Screening screen = sList[screeningOption - 1];
+            for (int i=0;i<sList.Count;i++)
+            {
+                Screening s = sList[i];
+                if (s.ScreeningNo==screeningOption)
+                {
+                    findScreening = s;
+                }
+                else
+                {
+                    continue;
+                }
+            }
 
             //6. prompt user to enter the total number of tickets to order
             Console.Write("Enter number of tickets to order: ");
             int toOrder = Convert.ToInt32(Console.ReadLine());
 
-            if (toOrder > screen.SeatsRemaining)           //check if figure entered is more than the available seats for the screening
+            if (toOrder > findScreening.SeatsRemaining)           //check if figure entered is more than the available seats for the screening
             {
                 Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
             }
@@ -402,7 +414,7 @@ namespace PRG2_Assignment
                 Order newOrder = new Order(OrderNo, DateTime.Now);
                 newOrder.Status = "Unpaid";
                 //7. prompt user if all ticket holders meet the movie classification requirements 
-                Movie z = screen.Movie;
+                Movie z = findScreening.Movie;
                 for (int j = 1; j <= toOrder; j++)
                 {
                     Console.WriteLine(z.Classification);
@@ -458,50 +470,50 @@ namespace PRG2_Assignment
                 double price = 0;
                 //a. prompt user for a response depending on the type of ticket ordered:
                 //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                if (ticketType == "Student")
-                {
-                    Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
-                    string levelOfStudy = Console.ReadLine();
-                    Student s;
-                    s = new Student(screen, levelOfStudy);
-                    price += s.CalculatePrice();
+                //if (ticketType == "Student")
+                //{
+                //    Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                //    string levelOfStudy = Console.ReadLine();
+                //    Student s;
+                //    s = new Student(screen, levelOfStudy);
+                //    price += s.CalculatePrice();
 
-                }
-                else if (ticketType == "Senior Citizen")
-                {
-                    Console.WriteLine("Enter your year of birth: ");
-                    int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-                    int age = DateTime.Now.Year - yearOfBirth;
-                    SeniorCitizen sc;
-                    sc = new SeniorCitizen(screen, age);
-                    price += sc.CalculatePrice();
-                    tList.Add(sc);
+                //}
+                //else if (ticketType == "Senior Citizen")
+                //{
+                //    Console.WriteLine("Enter your year of birth: ");
+                //    int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+                //    int age = DateTime.Now.Year - yearOfBirth;
+                //    SeniorCitizen sc;
+                //    sc = new SeniorCitizen(screen, age);
+                //    price += sc.CalculatePrice();
+                //    tList.Add(sc);
 
-                }
-                else
-                {
-                    Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                    string pOffer = Console.ReadLine();
-                    if (pOffer == "Y")
-                    {
-                        bool popcornOffer = true;
-                        Adult a;
-                        a = new Adult(screen, popcornOffer);
-                        price += a.CalculatePrice();
-                        tList.Add(a);
-                    }
-                    else
-                    {
-                        bool popcornOffer = false;
-                        Adult a;
-                        a = new Adult(screen, popcornOffer);
-                        price += a.CalculatePrice();
-                        tList.Add(a);
-                    }
-                }
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                //    string pOffer = Console.ReadLine();
+                //    if (pOffer == "Y")
+                //    {
+                //        bool popcornOffer = true;
+                //        Adult a;
+                //        a = new Adult(screen, popcornOffer);
+                //        price += a.CalculatePrice();
+                //        tList.Add(a);
+                //    }
+                //    else
+                //    {
+                //        bool popcornOffer = false;
+                //        Adult a;
+                //        a = new Adult(screen, popcornOffer);
+                //        price += a.CalculatePrice();
+                //        tList.Add(a);
+                //    }
+                //}
 
-                screen.SeatsRemaining--;
-                Console.WriteLine(screen.SeatsRemaining);
+                //screen.SeatsRemaining--;
+                //Console.WriteLine(screen.SeatsRemaining);
                 //10. list amount payable
 
                 //    //Console.WriteLine("Amount payable ($): {0:C2}", amount);
