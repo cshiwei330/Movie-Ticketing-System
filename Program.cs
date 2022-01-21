@@ -50,8 +50,8 @@ namespace PRG2_Assignment
                 }
 
                 else if (userOption == "5") //order movie tickets
-                { 
-                    Console.WriteLine("waiting to implement heh");
+                {
+                    OrderTicket(mList,sList,cList,tList);
                 }
 
                 else if (userOption == "6") //cancel ticket
@@ -391,8 +391,11 @@ namespace PRG2_Assignment
                 {
                     continue;
                 }
+                //8. create an Order object with the status “Unpaid”
+                Order newOrder = new Order(OrderNo, DateTime.Now);
+                newOrder.Status = "Unpaid";
                 //7. prompt user if all ticket holders meet the movie classification requirements 
-                for (int j = 0; j < toOrder; j++)
+                for (int j = 1; j <= toOrder; j++)
                 {
                     Movie m = mList[j];
                     if (m.Classification == "PG13")
@@ -405,7 +408,7 @@ namespace PRG2_Assignment
                         }
                         else
                         {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement is not met.");
+                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
                         }
                     }
                     else if (m.Classification == "M18")
@@ -418,7 +421,7 @@ namespace PRG2_Assignment
                         }
                         else
                         {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement is not met.");
+                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
                         }
                     }
                     else if (m.Classification == "R21")
@@ -431,26 +434,34 @@ namespace PRG2_Assignment
                         }
                         else
                         {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement is not met.");
+                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
                         }
                     }
 
-                    //8. create an Order object with the status “Unpaid”
-                    Order newOrder = new Order(OrderNo, DateTime.Now);
-                    newOrder.Status = "Unpaid";
                     Console.WriteLine("Enter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
                     string ticketType = Console.ReadLine();
+                    double price = 0;
                     //a. prompt user for a response depending on the type of ticket ordered:
+                    //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
                     if (ticketType == "Student")
                     {
                         Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
                         string levelOfStudy = Console.ReadLine();
+                        Student s;
+                        s = new Student(screen, levelOfStudy);
+                        price+= s.CalculatePrice();
+                        tList.Add(s);
                     }
                     else if (ticketType=="Senior Citizen")
                     {
                         Console.WriteLine("Enter your year of birth: ");
                         int yearOfBirth = Convert.ToInt32(Console.ReadLine());
                         int age = DateTime.Now.Year - yearOfBirth;
+                        SeniorCitizen sc;
+                        sc = new SeniorCitizen(screen, age);
+                        price += sc.CalculatePrice();
+                        tList.Add(sc);
+
                     }
                     else
                     {
@@ -459,17 +470,35 @@ namespace PRG2_Assignment
                         if (pOffer == "Y")
                         {
                             bool popcornOffer = true;
+                            Adult a;
+                            a = new Adult(screen, popcornOffer);
+                            price += a.CalculatePrice();
+                            tList.Add(a);
                         }
                         else
                         {
                             bool popcornOffer = false;
+                            Adult a;
+                            a = new Adult(screen, popcornOffer);
+                            price += a.CalculatePrice();
+                            tList.Add(a);
                         }
                     }
-
-                    //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                    
                 }
+                screen.SeatsRemaining--;
+                //10. list amount payable
+                foreach (Ticket t in tList)
+                {
+                    t.CalculatePrice();
+                }
+
+                Console.WriteLine("Amount payable ($): {0:C2}", amount);
+                Console.WriteLine("Press any key to make payment");
+                newOrder.Amount = amount;
+                newOrder.Status = "Paid";
             }
         }
+
+        // ------------------- 8) Cancel order of ticket -------------------
     }
 }
