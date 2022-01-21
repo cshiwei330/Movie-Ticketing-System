@@ -380,14 +380,9 @@ namespace PRG2_Assignment
                 {
                     continue;
                 }
-            }
-
-            //6. prompt user to enter the total number of tickets to order
-            Console.WriteLine("Enter number of tickets to order: ");
-            int toOrder=Convert.ToInt32(Console.ReadLine());
-            for (int i=0;i<cList.Count;i++)
-            {
-                Screening screen = sList[i];
+                //6. prompt user to enter the total number of tickets to order
+                Console.WriteLine("Enter number of tickets to order: ");
+                int toOrder = Convert.ToInt32(Console.ReadLine());
                 cList[i].Capacity = screen.SeatsRemaining;
                 if (toOrder > screen.SeatsRemaining)           //check if figure entered is more than the available seats for the screening
                 {
@@ -397,61 +392,84 @@ namespace PRG2_Assignment
                 {
                     continue;
                 }
-            }
-
-            //7. prompt user if all ticket holders meet the movie classification requirements 
-            for (int i = 0; i < toOrder; i++)
-            {
-                Movie m = mList[i];
-                if (m.Classification == "PG13")
+                //7. prompt user if all ticket holders meet the movie classification requirements 
+                for (int j = 0; j < toOrder; j++)
                 {
-                    Console.WriteLine("Are all ticket holders above the age of 13?[Y/N] : ");
-                    string metRequirements = Console.ReadLine();
-                }
-                else if (m.Classification == "M18")
-                {
-                    Console.WriteLine("Are all ticket holders above the age of 18?[Y/N] : ");
-                    string metRequirements = Console.ReadLine();
-                }
-                else if (m.Classification == "R21")
-                {
-                    Console.WriteLine("Are all ticket holders above the age of 21?[Y/N] : ");
-                    string metRequirements = Console.ReadLine();
-                }
-            }
-
-            //8. create an Order object with the status “Unpaid”
-            Order newOrder = new Order(OrderNo, DateTime.Now);
-            newOrder.Status = "Unpaid";
-            for (int i = 0; i < toOrder; i++)
-            {
-                Ticket t = tList[i];      //a. prompt user for a response depending on the type of ticket ordered:
-                if ()
-                {
-                    Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
-                    string levelOfStudy = Console.ReadLine();
-                }
-                else if ()
-                {
-                    Console.WriteLine("Enter your year of birth: ");
-                    int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-                    int age = DateTime.Now.Year - yearOfBirth;
-                }
-                else
-                {
-                    Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                    string pOffer = Console.ReadLine();
-                    if (pOffer == "Y")
+                    Movie m = mList[j];
+                    if (m.Classification == "PG13")
                     {
-                        bool popcornOffer = true;
+                        Console.WriteLine("Is the ticket holder above the age of 13?[Y/N] : ");
+                        string metRequirements = Console.ReadLine();
+                        if (metRequirements=="Y")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement is not met.");
+                        }
+                    }
+                    else if (m.Classification == "M18")
+                    {
+                        Console.WriteLine("Is the ticket holder above the age of 18?[Y/N] : ");
+                        string metRequirements = Console.ReadLine();
+                        if (metRequirements == "Y")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement is not met.");
+                        }
+                    }
+                    else if (m.Classification == "R21")
+                    {
+                        Console.WriteLine("Is the ticket holder above the age of 21?[Y/N] : ");
+                        string metRequirements = Console.ReadLine();
+                        if (metRequirements == "Y")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement is not met.");
+                        }
+                    }
+
+                    //8. create an Order object with the status “Unpaid”
+                    Order newOrder = new Order(OrderNo, DateTime.Now);
+                    newOrder.Status = "Unpaid";
+                    Console.WriteLine("Enter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
+                    string ticketType = Console.ReadLine();
+                    //a. prompt user for a response depending on the type of ticket ordered:
+                    if (ticketType == "Student")
+                    {
+                        Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                        string levelOfStudy = Console.ReadLine();
+                    }
+                    else if (ticketType=="Senior Citizen")
+                    {
+                        Console.WriteLine("Enter your year of birth: ");
+                        int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+                        int age = DateTime.Now.Year - yearOfBirth;
                     }
                     else
                     {
-                        bool popcornOffer = false;
+                        Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                        string pOffer = Console.ReadLine();
+                        if (pOffer == "Y")
+                        {
+                            bool popcornOffer = true;
+                        }
+                        else
+                        {
+                            bool popcornOffer = false;
+                        }
                     }
+
+                    //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
+                    
                 }
-                //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                tList.Add(new Student());
             }
         }
     }
