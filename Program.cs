@@ -86,8 +86,7 @@ namespace PRG2_Assignment
             }
         }
 
-
-        //=====================================================  General  ===================================================
+        //*****************************************************  BASICS  **********************************************************
 
         // ------------------- Display Main Menu -------------------
         static void DisplayMenu()
@@ -103,6 +102,34 @@ namespace PRG2_Assignment
                 "\n0. Exit" +
                 "\n----------------------------");
         }
+        // ------------------- Display Cinemas -------------------
+        static void DisplayCinema(List<Cinema> cList)
+        {
+            Console.WriteLine("     {0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
+            int count = 1;
+            foreach (Cinema c in cList)
+            {
+                if (count <= 9)
+                {
+                    Console.WriteLine("[" + count + "]" + "  {0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+                    count++;
+                }
+
+                else
+                {
+                    Console.WriteLine("[" + count + "]" + " {0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
+                    count++;
+                }
+            }
+        }
+
+        // ------------------- Integer Validation -------------------
+        static bool BetweenRange (int min, int max, int option)
+        {
+            return (option <= max && option >= min);
+        }
+
+        //=====================================================  General  ===================================================
 
         // ------------------- 1) Load Cinema Data & Populate Cinema List -----------------------------------------------------
         static void ReadCinema(List<Cinema> cList)
@@ -231,27 +258,6 @@ namespace PRG2_Assignment
                 else
                 {
                     Console.WriteLine("[" + count + "]" + " {0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
-                    count++;
-                }
-            }
-        }
-
-        // ------------------- 4) Display Cinema -----------------------------------------------------
-        static void DisplayCinema(List<Cinema> cList)
-        {
-            Console.WriteLine("     {0,-18}{1,-15}{2,-10}", "Name", "Hall Number", "Capacity");
-            int count = 1;
-            foreach (Cinema c in cList)
-            {
-                if (count <= 9)
-                {
-                    Console.WriteLine("[" + count + "]" + "  {0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
-                    count++;
-                }
-
-                else
-                {
-                    Console.WriteLine("[" + count + "]" + " {0,-18}{1,-15}{2,-10}", c.Name, c.HallNo, c.Capacity);
                     count++;
                 }
             }
