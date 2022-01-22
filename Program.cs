@@ -32,7 +32,6 @@ namespace PRG2_Assignment
             bool bookingover = false;
             while (bookingover == false)
             {
-                Console.WriteLine("\n"); //better formatting
                 DisplayMenu();
                 Console.Write("Enter your option: ");
                 string userOption = Console.ReadLine();
@@ -40,31 +39,37 @@ namespace PRG2_Assignment
                 if (userOption == "1") //display movies
                 {
                     DisplayMovieDetails(mList);
+                    Console.WriteLine("\n"); //better formatting
                 }
 
                 else if (userOption == "2") //display movie screenings
                 {
                     ListMovieScreenings(mList, sList);
+                    Console.WriteLine("\n"); 
                 }
 
                 else if (userOption == "3") //add movie screening
                 {
                     AddScreeningSession(mList, sList, cList);
+                    Console.WriteLine("\n"); 
                 }
 
                 else if (userOption == "4") //delete movie screening
                 {
                     DeleteScreeningSession(oList, sList);
+                    Console.WriteLine("\n"); 
                 }
 
                 else if (userOption == "5") //order movie tickets
                 {
                     OrderTicket(mList, sList, oList);
+                    Console.WriteLine("\n"); 
                 }
 
                 else if (userOption == "6") //cancel ticket
                 {
                     CancelOrder(oList);
+                    Console.WriteLine("\n"); 
                 }
 
                 else if (userOption == "0") //exit
@@ -280,6 +285,7 @@ namespace PRG2_Assignment
 
             //2.prompt user to select a movie
             bool notValid = true; //[validation]
+            Movie m = null;
             while (notValid)
             {
                 try
@@ -288,29 +294,28 @@ namespace PRG2_Assignment
                     int movieOption = Convert.ToInt32(Console.ReadLine());
 
                     //3. retreive movie object
-                    Movie m = mList[movieOption - 1];
-
-                    //4. retrieve and display screening sessions for that movie
-                    Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
-                    int count2 = 01;
-                    for (int s = 0; s < sList.Count; s++)
-                    {
-                        Screening screen = sList[s];
-                        if (screen.Movie == m)
-                        {
-                            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo);
-                            count2++;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
+                    m = mList[movieOption - 1];
                     notValid = false;
                 }
                 catch
                 {
                     Console.WriteLine("Invalid choice. PLease enter the integer number next to the movie you want.");
+                }
+            }
+
+            //4. retrieve and display screening sessions for that movie
+            Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+
+            for (int s = 0; s < sList.Count; s++)
+            {
+                Screening screen = sList[s];
+                if (screen.Movie == m)
+                {
+                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo);
+                }
+                else
+                {
+                    continue;
                 }
             }
 
@@ -325,19 +330,52 @@ namespace PRG2_Assignment
             DisplayMovieDetails(mList);
 
             //2. prompt user to select a movie
-            Console.Write("\nSelect a Movie: "); //******need validations
-            int movieOption2 = Convert.ToInt32(Console.ReadLine());
-            Movie movie = mList[movieOption2 - 1]; //get movie obj
+            Movie movie = null;
+            bool validMovieOption = false; //[validation]
+            while (!validMovieOption)
+            {
+                try
+                {
+                    Console.Write("\nSelect a Movie: "); 
+                    int movieOption2 = Convert.ToInt32(Console.ReadLine());
+                    movie = mList[movieOption2 - 1]; //get movie obj
+                    validMovieOption = true;
+                }
+
+                catch
+                {
+                    Console.WriteLine("Invalid choice. PLease enter the integer number next to the movie you want.");
+                }
+            }
 
             //3. prompt user to enter a screening type 
-            Console.Write("Enter screening type (2D/3D): "); //******need validations
-            string sType = Console.ReadLine().ToUpper();
+            string sType = null;
+            bool validScreeningType = false; //[validation]
+            while (!validScreeningType)
+            {
+                Console.Write("\nEnter screening type (2D/3D): ");
+                sType = Console.ReadLine().ToUpper();
+
+                if (sType == "2D")
+                {
+                    validScreeningType = true;
+                }
+
+                else if (sType == "3D")
+                {
+                    validScreeningType = true;
+                }
+
+                else
+                {
+                    Console.WriteLine("Invalid Screening Type. Please try again.");
+                }
+            }
 
             //4. prompt user to enter a screening date and time (check to see if the datetime entered is after the opening date of the movie)
-            Console.Write("Enter screening date and time: ");
-            DateTime newSDateTime = Convert.ToDateTime(Console.ReadLine().ToUpper()); //******need validations
+            Console.Write("\nEnter screening date and time: ");
+            DateTime newSDateTime = Convert.ToDateTime(Console.ReadLine().ToUpper()); 
 
-            int count2 = 01;
             bool success = false; //for 6. 
             if (movie.OpeningDate < newSDateTime)
             {
