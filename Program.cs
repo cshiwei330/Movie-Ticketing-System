@@ -438,9 +438,10 @@ namespace PRG2_Assignment
         {
             //1. list all movie screening sessions that have not sold any tickets 
             List<int> ticketsSold = new List<int>();
-            foreach (Order o in oList)
+            for(int o =0; o < oList.Count;o++)
             {
-                ticketsSold.Add(o.tList[0].ScreeningNo); //add each screening number that has order
+                Order order = oList[o];
+                ticketsSold.Add(order.tList[0].Screening.ScreeningNo); //add screnning number to list 
             }
             ticketsSold.Distinct().ToList(); //remove duplicated screening number
 
@@ -462,8 +463,7 @@ namespace PRG2_Assignment
                 Screening screening = sList[s];
                 for (int i = 0; i < noTicketsSold.Count; i++)
                 {
-                    int sNo = noTicketsSold[i];
-                    if (screening.ScreeningNo == sNo)
+                    if (screening.ScreeningNo == noTicketsSold[i])
                     {
                         Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screening.ScreeningNo, screening.ScreeningDateTime, screening.ScreeningType, screening.Cinema.Name, screening.Cinema.HallNo);
                     }
