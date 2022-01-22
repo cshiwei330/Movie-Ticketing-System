@@ -54,7 +54,7 @@ namespace PRG2_Assignment
 
                 else if (userOption == "4") //delete movie screening
                 {
-                    Console.WriteLine("waiting to implement heh");
+                    DeleteScreeningSession(oList, sList);
                 }
 
                 else if (userOption == "5") //order movie tickets
@@ -488,7 +488,7 @@ namespace PRG2_Assignment
                 {
                     sList.Remove(s);
                     success = true;
-                    Console.WriteLine("Sucessful. Screening {} was removed!", s.ScreeningNo);
+                    Console.WriteLine("Sucessful. Screening {0} was removed!", s.ScreeningNo);
                 }
                 else
                 {
