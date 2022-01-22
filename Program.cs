@@ -59,12 +59,12 @@ namespace PRG2_Assignment
 
                 else if (userOption == "5") //order movie tickets
                 {
-                    OrderTicket(mList, sList, cList, tList, oList);
+                    OrderTicket(mList, sList, oList);
                 }
 
                 else if (userOption == "6") //cancel ticket
                 {
-                    CancelOrder(mList, sList, oList, tList);
+                    CancelOrder(oList);
                 }
 
                 else if (userOption == "0") //exit
@@ -507,7 +507,7 @@ namespace PRG2_Assignment
         //=====================================================  Order  ===================================================
 
         // ------------------- 7) Order Ticket/s -------------------
-        static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList, List<Ticket> tList, List<Order> oList)
+        static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Order> oList)
         {
             //1.list all movies
             //2.prompt user to select a movie
@@ -681,7 +681,7 @@ namespace PRG2_Assignment
         } 
 
         // ------------------- 8) Cancel order of ticket -------------------
-        static void CancelOrder(List<Movie> mList, List<Screening> sList,List<Order> oList, List<Ticket> tList)
+        static void CancelOrder(List<Order> oList)
         {
             //1. prompt user for order number
             Console.Write("Enter your order number: ");
