@@ -54,7 +54,7 @@ namespace PRG2_Assignment
 
                 else if (userOption == "4") //delete movie screening
                 {
-                    Console.WriteLine("waiting to implement heh");
+                    DeleteScreeningSession(oList, sList);
                 }
 
                 else if (userOption == "5") //order movie tickets
@@ -488,7 +488,7 @@ namespace PRG2_Assignment
                 {
                     sList.Remove(s);
                     success = true;
-                    Console.WriteLine("Sucessful. Screening {} was removed!", s.ScreeningNo);
+                    Console.WriteLine("Sucessful. Screening {0} was removed!", s.ScreeningNo);
                 }
                 else
                 {
@@ -546,7 +546,7 @@ namespace PRG2_Assignment
                 //7. prompt user if all ticket holders meet the movie classification requirements 
                 Movie z = findScreening.Movie;
                 Console.WriteLine(z.Classification);
-                int meetrq = 0;  // ++ if buyers meet age requirement to prompt for ticket type to purchase
+                bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
                 Console.WriteLine("Seats initially: " + findScreening.SeatsRemaining);
                 if (z.Classification == "PG13")
                 {
@@ -558,7 +558,7 @@ namespace PRG2_Assignment
                     }
                     else
                     {
-                        meetrq++;
+                        meetrq = true;
                     }
                 }
                 else if (z.Classification == "M18")
@@ -571,7 +571,7 @@ namespace PRG2_Assignment
                     }
                     else
                     {
-                        meetrq++;
+                        meetrq = true;
                     }
                 }
                 else if (z.Classification == "R21")
@@ -584,12 +584,12 @@ namespace PRG2_Assignment
                     }
                     else
                     {
-                        meetrq++;
+                        meetrq = true;
                     }
                 }
                 else
                 {
-                    meetrq++;
+                    meetrq = true;
                 }
 
                 double totalPrice = 0;
@@ -597,7 +597,7 @@ namespace PRG2_Assignment
                 Order newOrder = new Order(OrderNo, DateTime.Now);
                 newOrder.Status = "Unpaid";
                 //9.
-                if (meetrq==1)
+                if (meetrq == true)
                 {
                     for (int k = 1; k <= toOrder; k++)
                     {
@@ -660,6 +660,7 @@ namespace PRG2_Assignment
                     }
                     OrderNo++;
                 }
+               
                 
                 //10. list amount payable
                 if (totalPrice>0)
