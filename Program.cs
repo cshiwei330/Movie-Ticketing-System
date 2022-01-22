@@ -436,21 +436,14 @@ namespace PRG2_Assignment
         // ------------------- 6) Delete a Movie Screening Session -------------------
         static void DeleteScreeningSession (List<Order> oList, List<Screening> sList)
         {
-            Console.WriteLine(oList.Count());
             //1. list all movie screening sessions that have not sold any tickets 
             List<int> ticketsSold = new List<int>();
-            foreach (Order o in oList)
+            for(int o =0; o < oList.Count;o++)
             {
-                ticketsSold.Add(o.tList[0].ScreeningNo); //add each screening number that has order
-                Console.WriteLine(o.orderNo);
-                Console.WriteLine(o.tList[0].ScreeningNo);
+                Order order = oList[o];
+                ticketsSold.Add(order.tList[0].Screening.ScreeningNo); //add screnning number to list 
             }
             ticketsSold.Distinct().ToList(); //remove duplicated screening number
-            Console.WriteLine(ticketsSold.Count());
-            for (int k = 0; k<ticketsSold.Count; k++)
-            {
-                Console.WriteLine(ticketsSold[k]);
-            }
 
             List<int> noTicketsSold = new List<int>();
             foreach (Screening s in sList)
@@ -463,12 +456,6 @@ namespace PRG2_Assignment
                 noTicketsSold.Remove(i); //remove screening numbers that has order
                                            // noTicketsSold will be left with screening numbers that has no order
             }
-
-            for (int j= 0;j< noTicketsSold.Count; j++)
-            {
-                Console.WriteLine(noTicketsSold[j]);
-            }
-            Console.WriteLine(noTicketsSold.Count());
 
             Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
             for (int s = 0; s < sList.Count; s++)
