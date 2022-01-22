@@ -279,28 +279,41 @@ namespace PRG2_Assignment
             DisplayMovieDetails(mList);
 
             //2.prompt user to select a movie
-            Console.Write("\nPlease select a Movie: "); //******need validations
-            int movieOption = Convert.ToInt32(Console.ReadLine());
-
-            //3. retreive movie object
-            Movie m = mList[movieOption - 1];
-
-            //4. retrieve and display screening sessions for that movie
-            Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
-            int count2 = 01;
-            for (int s = 0; s < sList.Count; s++)
+            bool notValid = true; //[validation]
+            while (notValid)
             {
-                Screening screen = sList[s];
-                if (screen.Movie == m)
+                try
                 {
-                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo);
-                    count2++;
+                    Console.Write("\nPlease select a Movie: ");
+                    int movieOption = Convert.ToInt32(Console.ReadLine());
+
+                    //3. retreive movie object
+                    Movie m = mList[movieOption - 1];
+
+                    //4. retrieve and display screening sessions for that movie
+                    Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+                    int count2 = 01;
+                    for (int s = 0; s < sList.Count; s++)
+                    {
+                        Screening screen = sList[s];
+                        if (screen.Movie == m)
+                        {
+                            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo);
+                            count2++;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    notValid = false;
                 }
-                else
+                catch
                 {
-                    continue;
+                    Console.WriteLine("Invalid choice. PLease enter the integer number next to the movie you want.");
                 }
             }
+
         }
 
         //=====================================================  Screening  ===================================================
