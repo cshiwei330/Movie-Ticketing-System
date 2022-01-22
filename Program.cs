@@ -64,7 +64,7 @@ namespace PRG2_Assignment
 
                 else if (userOption == "6") //cancel ticket
                 {
-                    Console.WriteLine("waiting to implement heh");
+                    CancelOrder(mList, sList, oList);
                 }
 
                 else if (userOption == "0") //exit
@@ -545,57 +545,37 @@ namespace PRG2_Assignment
             {
                 //7. prompt user if all ticket holders meet the movie classification requirements 
                 Movie z = findScreening.Movie;
-                for (int j = 1; j <= toOrder; j++)
+                Console.WriteLine(z.Classification);
+                Console.WriteLine("Seats initially: " + findScreening.SeatsRemaining);
+                if (z.Classification == "PG13")
                 {
-                    Console.WriteLine(z.Classification);
-                    Console.WriteLine("Seats initially: "+findScreening.SeatsRemaining);
-                    if (z.Classification == "PG13")
+                    Console.Write("Are all ticket holders above the age of 13?[Y/N] : ");
+                    string metRequirements = Console.ReadLine().ToUpper();
+                    if (metRequirements == "N")
                     {
-                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
-                        string metRequirements = Console.ReadLine().ToUpper();
-                        if (metRequirements == "Y")
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
-                            break;
-                        }
+                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
                     }
-                    else if (z.Classification == "M18")
+                    
+                }
+                else if (z.Classification == "M18")
+                {
+                    Console.Write("Are all ticket holders above the age of 18?[Y/N] : ");
+                    string metRequirements = Console.ReadLine().ToUpper();
+                    if (metRequirements == "N")
                     {
-                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
-                        string metRequirements = Console.ReadLine().ToUpper();
-                        if (metRequirements == "Y")
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
-                            break;
-                        }
-                    }
-                    else if (z.Classification == "R21")
-                    {
-                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
-                        string metRequirements = Console.ReadLine().ToUpper();
-                        if (metRequirements == "Y")
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        continue;
+                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
                     }
                 }
+                else if (z.Classification == "R21")
+                {
+                    Console.Write("Are all ticket holders above the age of 21?[Y/N] : ");
+                    string metRequirements = Console.ReadLine().ToUpper();
+                    if (metRequirements == "N")
+                    {
+                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
+                    }
+                }
+
                 double totalPrice = 0;
                 //8. create an Order object with the status “Unpaid”
                 Order newOrder = new Order(OrderNo, DateTime.Now);
@@ -611,7 +591,7 @@ namespace PRG2_Assignment
                     //d. update seats remaining for the movie screening
                     if (ticketType == 1)
                     {
-                        Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                        Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
                         string levelOfStudy = Console.ReadLine();
                         Ticket t = new Student(findScreening, levelOfStudy);
                         newOrder.AddTicket(t);
@@ -637,7 +617,7 @@ namespace PRG2_Assignment
                     }
                     else
                     {
-                        Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                        Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
                         string pOffer = Console.ReadLine().ToUpper();
                         if (pOffer == "Y")
                         {
@@ -656,13 +636,13 @@ namespace PRG2_Assignment
                         findScreening.SeatsRemaining--;
                     }
                 }
-
+                OrderNo++;
                 //10. list amount payable
                 if (totalPrice>0)
                 {
                     Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
                     //11. prompt user to press any key to make payment
-                    Console.Write("Press any key to make payment ");
+                    Console.Write("\nPress any key to make payment ");
                     Console.ReadKey();
 
                     //12. fill in the necessary details to the new order (e.g amount)
@@ -670,15 +650,74 @@ namespace PRG2_Assignment
                     //13. change order status to “Paid”
                     newOrder.Status = "Paid";
                     oList.Add(newOrder);
-                    Console.WriteLine("Order successful.");
+                    Console.WriteLine("\nOrder successful.");
                 }
                 else
                 {
-                    Console.WriteLine("Order unsuccessful, please try again.");
+                    Console.WriteLine("\nOrder unsuccessful, please try again.");
                 }
             }
         } 
 
         // ------------------- 8) Cancel order of ticket -------------------
+        static void CancelOrder(List<Movie> mList, List<Screening> sList,List<Order> oList)
+        {
+            //1. prompt user for order number
+            Console.Write("Enter your order number: ");
+            int userOrderNo = Convert.ToInt32(Console.ReadLine());
+            //2. retrieve the selected order
+            Order findOrderNo = null;
+            for (int i = 0; i < oList.Count; i++)
+            {
+                Order o = oList[i];
+                if (o.orderNo==userOrderNo)
+                {
+                    Console.WriteLine("works");
+                    findOrderNo = o;
+                    Console.WriteLine(findOrderNo.orderNo);
+                }
+                else
+                {
+                    Console.WriteLine("The order number is invalid.");
+                }
+            }
+            //3.check if the screening in the selected order is screened
+            Screening findScreening = null;
+            // retrieve the selected movie screening
+            for (int j = 0; j < sList.Count; j++)
+            {
+                Screening s = sList[j];
+                if (findOrderNo.tList[0].ScreeningNo == s.ScreeningNo)
+                {
+                    findScreening = s;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            if (DateTime.Now>findScreening.ScreeningDateTime)
+            {
+                Console.WriteLine("Request to cancel order denied. The order has already been screened.");
+                //7. display the status of the cancelation (i.e. successful or unsuccessful)
+                Console.WriteLine("Order cancellation was unsuccessful.");
+            }
+            else
+            {
+                //4. update seat remaining for the movie screening based on the selected order
+                for (int k=0;k<findOrderNo.tList.Count;k++)
+                {
+                    findScreening.SeatsRemaining++;
+                    Console.WriteLine(findScreening.SeatsRemaining);
+                }
+
+                //5.change order status to “Cancelled”
+                findOrderNo.Status = "Cancelled";
+                //6.display a message indicating that the amount is refunded
+                Console.WriteLine("${0:c2} has been refunded.", findOrderNo.Amount);
+                Console.WriteLine("Order cancelled successfully.");
+                oList.Remove(findOrderNo);
+            }
+        }
     }
 }
