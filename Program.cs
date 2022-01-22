@@ -515,168 +515,338 @@ namespace PRG2_Assignment
             ListMovieScreenings(mList, sList);
 
             //4. prompt user to select movie screening
-            Console.Write("\nSelect a Movie Screening: ");
-            int screeningOption = Convert.ToInt32(Console.ReadLine());
-
-            Screening findScreening = null;
-            //5. retrieve the selected movie screening
-            for (int i=0;i<sList.Count;i++)
+            bool notValid = true;
+            while (notValid)
             {
-                Screening s = sList[i];
-                if (s.ScreeningNo==screeningOption)
+                try
                 {
-                    findScreening = s;
-                }
-                else
-                {
-                    continue;
-                }
-            }
+                    Console.Write("\nSelect a Movie Screening: ");
+                    int screeningOption = Convert.ToInt32(Console.ReadLine());
 
-            //6. prompt user to enter the total number of tickets to order
-            Console.Write("Enter number of tickets to order: ");
-            int toOrder = Convert.ToInt32(Console.ReadLine());
-
-            if (toOrder > findScreening.SeatsRemaining)           //check if figure entered is more than the available seats for the screening
-            {
-                Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
-            }
-            else
-            {
-                //7. prompt user if all ticket holders meet the movie classification requirements 
-                Movie z = findScreening.Movie;
-                bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
-                Console.WriteLine("Seats initially: " + findScreening.SeatsRemaining);
-                if (z.Classification == "PG13")
-                {
-                    Console.Write("Are all ticket holders above the age of 13?[Y/N] : ");
-                    string metRequirements = Console.ReadLine().ToUpper();
-                    if (metRequirements == "N")
+                    Screening findScreening = null;
+                    //5. retrieve the selected movie screening
+                    for (int i = 0; i < sList.Count; i++)
                     {
-                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
-                    }
-                    else
-                    {
-                        meetrq = true;
-                    }
-                }
-                else if (z.Classification == "M18")
-                {
-                    Console.Write("Are all ticket holders above the age of 18?[Y/N] : ");
-                    string metRequirements = Console.ReadLine().ToUpper();
-                    if (metRequirements == "N")
-                    {
-                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
-                    }
-                    else
-                    {
-                        meetrq = true;
-                    }
-                }
-                else if (z.Classification == "R21")
-                {
-                    Console.Write("Are all ticket holders above the age of 21?[Y/N] : ");
-                    string metRequirements = Console.ReadLine().ToUpper();
-                    if (metRequirements == "N")
-                    {
-                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
-                    }
-                    else
-                    {
-                        meetrq = true;
-                    }
-                }
-                else
-                {
-                    meetrq = true;
-                }
-
-                double totalPrice = 0;
-                //8. create an Order object with the status “Unpaid”
-                Order newOrder = new Order(OrderNo, DateTime.Now);
-                newOrder.Status = "Unpaid";
-                //9.
-                if (meetrq == true)
-                {
-                    for (int k = 1; k <= toOrder; k++)
-                    {
-                        Console.Write("\n[1] Student\n[2] Adult\n[3] Senior Citizen");
-                        Console.Write("\nEnter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
-                        int ticketType = Convert.ToInt32(Console.ReadLine());
-                        //a. prompt user for a response depending on the type of ticket ordered:
-                        //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                        //d. update seats remaining for the movie screening
-                        if (ticketType == 1)
+                        Screening s = sList[i];
+                        if (s.ScreeningNo == screeningOption)
                         {
-                            Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
-                            string levelOfStudy = Console.ReadLine();
-                            Ticket t = new Student(findScreening, levelOfStudy);
-                            newOrder.AddTicket(t);
-                            totalPrice += t.CalculatePrice();
-                            findScreening.SeatsRemaining--;
+                            findScreening = s;
                         }
-                        else if (ticketType == 3)
+                        else
                         {
-                            Console.Write("Enter your year of birth: ");
-                            int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-                            int accepted = DateTime.Now.Year - 55;
-                            if (yearOfBirth < accepted)
+                            continue;
+                        }
+                    }
+
+                    Console.Write("Enter number of tickets to order: ");
+                    int toOrder = Convert.ToInt32(Console.ReadLine());
+
+                    if (toOrder > findScreening.SeatsRemaining)           //check if figure entered is more than the available seats for the screening
+                    {
+                        Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
+                    }
+                    else
+                    {
+                        //7. prompt user if all ticket holders meet the movie classification requirements 
+                        Movie z = findScreening.Movie;
+                        bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
+                        Console.WriteLine("Seats initially: " + findScreening.SeatsRemaining);
+                        if (z.Classification == "PG13")
+                        {
+                            Console.Write("Are all ticket holders above the age of 13?[Y/N] : ");
+                            string metRequirements = Console.ReadLine().ToUpper();
+                            if (metRequirements == "N")
                             {
-                                Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
-                                newOrder.AddTicket(t);
-                                totalPrice += t.CalculatePrice();
-                                findScreening.SeatsRemaining--;
+                                Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
                             }
                             else
                             {
-                                break;
+                                meetrq = true;
+                            }
+                        }
+                        else if (z.Classification == "M18")
+                        {
+                            Console.Write("Are all ticket holders above the age of 18?[Y/N] : ");
+                            string metRequirements = Console.ReadLine().ToUpper();
+                            if (metRequirements == "N")
+                            {
+                                Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
+                            }
+                            else
+                            {
+                                meetrq = true;
+                            }
+                        }
+                        else if (z.Classification == "R21")
+                        {
+                            Console.Write("Are all ticket holders above the age of 21?[Y/N] : ");
+                            string metRequirements = Console.ReadLine().ToUpper();
+                            if (metRequirements == "N")
+                            {
+                                Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
+                            }
+                            else
+                            {
+                                meetrq = true;
                             }
                         }
                         else
                         {
-                            Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                            string pOffer = Console.ReadLine().ToUpper();
-                            if (pOffer == "Y")
+                            meetrq = true;
+                        }
+
+                        double totalPrice = 0;
+                        //8. create an Order object with the status “Unpaid”
+                        Order newOrder = new Order(OrderNo, DateTime.Now);
+                        newOrder.Status = "Unpaid";
+                        //9.
+                        if (meetrq == true)
+                        {
+                            for (int k = 1; k <= toOrder; k++)
                             {
-                                bool popcornOffer = true;
-                                Ticket t = new Adult(findScreening, popcornOffer);
-                                newOrder.AddTicket(t);
-                                totalPrice += t.CalculatePrice();
+                                Console.Write("\n[1] Student\n[2] Adult\n[3] Senior Citizen");
+                                Console.Write("\nEnter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
+                                int ticketType = Convert.ToInt32(Console.ReadLine());
+                                //a. prompt user for a response depending on the type of ticket ordered:
+                                //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
+                                //d. update seats remaining for the movie screening
+                                if (ticketType == 1)
+                                {
+                                    Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                                    string levelOfStudy = Console.ReadLine();
+                                    Ticket t = new Student(findScreening, levelOfStudy);
+                                    newOrder.AddTicket(t);
+                                    totalPrice += t.CalculatePrice();
+                                    findScreening.SeatsRemaining--;
+                                }
+                                else if (ticketType == 3)
+                                {
+                                    Console.Write("Enter your year of birth: ");
+                                    int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+                                    int accepted = DateTime.Now.Year - 55;
+                                    if (yearOfBirth < accepted)
+                                    {
+                                        Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
+                                        newOrder.AddTicket(t);
+                                        totalPrice += t.CalculatePrice();
+                                        findScreening.SeatsRemaining--;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                                    string pOffer = Console.ReadLine().ToUpper();
+                                    if (pOffer == "Y")
+                                    {
+                                        bool popcornOffer = true;
+                                        Ticket t = new Adult(findScreening, popcornOffer);
+                                        newOrder.AddTicket(t);
+                                        totalPrice += t.CalculatePrice();
+                                    }
+                                    else
+                                    {
+                                        bool popcornOffer = false;
+                                        Ticket t = new Adult(findScreening, popcornOffer);
+                                        newOrder.AddTicket(t);
+                                        totalPrice += t.CalculatePrice();
+                                    }
+                                    findScreening.SeatsRemaining--;
+                                }
                             }
-                            else
-                            {
-                                bool popcornOffer = false;
-                                Ticket t = new Adult(findScreening, popcornOffer);
-                                newOrder.AddTicket(t);
-                                totalPrice += t.CalculatePrice();
-                            }
-                            findScreening.SeatsRemaining--;
+                            OrderNo++;
+                        }
+                        //10. list amount payable
+                        if (totalPrice > 0)
+                        {
+                            Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
+                            //11. prompt user to press any key to make payment
+                            Console.Write("\nPress any key to make payment ");
+                            Console.ReadKey();
+
+                            //12. fill in the necessary details to the new order (e.g amount)
+                            newOrder.Amount = totalPrice;
+                            //13. change order status to “Paid”
+                            newOrder.Status = "Paid";
+                            oList.Add(newOrder);
+                            Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.", newOrder.orderNo);
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nOrder unsuccessful, please try again.");
                         }
                     }
-                    OrderNo++;
                 }
-               
-                
-                //10. list amount payable
-                if (totalPrice>0)
+                catch
                 {
-                    Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
-                    //11. prompt user to press any key to make payment
-                    Console.Write("\nPress any key to make payment ");
-                    Console.ReadKey();
-
-                    //12. fill in the necessary details to the new order (e.g amount)
-                    newOrder.Amount = totalPrice;
-                    //13. change order status to “Paid”
-                    newOrder.Status = "Paid";
-                    oList.Add(newOrder);
-                    Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.",newOrder.orderNo);
-                }
-                else
-                {
-                    Console.WriteLine("\nOrder unsuccessful, please try again.");
+                    Console.WriteLine("Invalid choice. Please enter the correct screening number.");
                 }
             }
+            //Console.Write("\nSelect a Movie Screening: ");
+            //int screeningOption = Convert.ToInt32(Console.ReadLine());
+
+            //Screening findScreening = null;
+            ////5. retrieve the selected movie screening
+            //for (int i=0;i<sList.Count;i++)
+            //{
+            //    Screening s = sList[i];
+            //    if (s.ScreeningNo==screeningOption)
+            //    {
+            //        findScreening = s;
+            //    }
+            //    else
+            //    {
+            //        continue;
+            //    }
+            //}
+
+            //6. prompt user to enter the total number of tickets to order
+            //Console.Write("Enter number of tickets to order: ");
+            //int toOrder = Convert.ToInt32(Console.ReadLine());
+
+            //if (toOrder > findScreening.SeatsRemaining)           //check if figure entered is more than the available seats for the screening
+            //{
+            //    Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
+            //}
+            //else
+            //{
+            //    //7. prompt user if all ticket holders meet the movie classification requirements 
+            //    Movie z = findScreening.Movie;
+            //    bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
+            //    Console.WriteLine("Seats initially: " + findScreening.SeatsRemaining);
+            //    if (z.Classification == "PG13")
+            //    {
+            //        Console.Write("Are all ticket holders above the age of 13?[Y/N] : ");
+            //        string metRequirements = Console.ReadLine().ToUpper();
+            //        if (metRequirements == "N")
+            //        {
+            //            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
+            //        }
+            //        else
+            //        {
+            //            meetrq = true;
+            //        }
+            //    }
+            //    else if (z.Classification == "M18")
+            //    {
+            //        Console.Write("Are all ticket holders above the age of 18?[Y/N] : ");
+            //        string metRequirements = Console.ReadLine().ToUpper();
+            //        if (metRequirements == "N")
+            //        {
+            //            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
+            //        }
+            //        else
+            //        {
+            //            meetrq = true;
+            //        }
+            //    }
+            //    else if (z.Classification == "R21")
+            //    {
+            //        Console.Write("Are all ticket holders above the age of 21?[Y/N] : ");
+            //        string metRequirements = Console.ReadLine().ToUpper();
+            //        if (metRequirements == "N")
+            //        {
+            //            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
+            //        }
+            //        else
+            //        {
+            //            meetrq = true;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        meetrq = true;
+            //    }
+
+            //    double totalPrice = 0;
+            //    //8. create an Order object with the status “Unpaid”
+            //    Order newOrder = new Order(OrderNo, DateTime.Now);
+            //    newOrder.Status = "Unpaid";
+            //    //9.
+            //    if (meetrq == true)
+            //    {
+            //        for (int k = 1; k <= toOrder; k++)
+            //        {
+            //            Console.Write("\n[1] Student\n[2] Adult\n[3] Senior Citizen");
+            //            Console.Write("\nEnter the type of ticket to purchase (Student/Adult/Senior Citizen): ");
+            //            int ticketType = Convert.ToInt32(Console.ReadLine());
+            //            //a. prompt user for a response depending on the type of ticket ordered:
+            //            //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
+            //            //d. update seats remaining for the movie screening
+            //            if (ticketType == 1)
+            //            {
+            //                Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
+            //                string levelOfStudy = Console.ReadLine();
+            //                Ticket t = new Student(findScreening, levelOfStudy);
+            //                newOrder.AddTicket(t);
+            //                totalPrice += t.CalculatePrice();
+            //                findScreening.SeatsRemaining--;
+            //            }
+            //            else if (ticketType == 3)
+            //            {
+            //                Console.Write("Enter your year of birth: ");
+            //                int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+            //                int accepted = DateTime.Now.Year - 55;
+            //                if (yearOfBirth < accepted)
+            //                {
+            //                    Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
+            //                    newOrder.AddTicket(t);
+            //                    totalPrice += t.CalculatePrice();
+            //                    findScreening.SeatsRemaining--;
+            //                }
+            //                else
+            //                {
+            //                    break;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+            //                string pOffer = Console.ReadLine().ToUpper();
+            //                if (pOffer == "Y")
+            //                {
+            //                    bool popcornOffer = true;
+            //                    Ticket t = new Adult(findScreening, popcornOffer);
+            //                    newOrder.AddTicket(t);
+            //                    totalPrice += t.CalculatePrice();
+            //                }
+            //                else
+            //                {
+            //                    bool popcornOffer = false;
+            //                    Ticket t = new Adult(findScreening, popcornOffer);
+            //                    newOrder.AddTicket(t);
+            //                    totalPrice += t.CalculatePrice();
+            //                }
+            //                findScreening.SeatsRemaining--;
+            //            }
+            //        }
+            //        OrderNo++;
+            //    }
+               
+                
+            //    //10. list amount payable
+            //    if (totalPrice>0)
+            //    {
+            //        Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
+            //        //11. prompt user to press any key to make payment
+            //        Console.Write("\nPress any key to make payment ");
+            //        Console.ReadKey();
+
+            //        //12. fill in the necessary details to the new order (e.g amount)
+            //        newOrder.Amount = totalPrice;
+            //        //13. change order status to “Paid”
+            //        newOrder.Status = "Paid";
+            //        oList.Add(newOrder);
+            //        Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.",newOrder.orderNo);
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("\nOrder unsuccessful, please try again.");
+            //    }
+            //}
         } 
 
         // ------------------- 8) Cancel order of ticket -------------------
