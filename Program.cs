@@ -391,6 +391,8 @@ namespace PRG2_Assignment
 
         // ------------------- 6) Delete a Movie Screening Session -------------------
 
+        //1. list all movie screening sessions that have not sold any tickets 
+
 
         //=====================================================  Order  ===================================================
 
@@ -557,8 +559,7 @@ namespace PRG2_Assignment
                     newOrder.Amount = totalPrice;
                     //13. change order status to “Paid”
                     newOrder.Status = "Paid";
-                    Console.WriteLine("\nOrder successful.");
-                    oList.Add(newOrder);  //add order to orderList so can cancel in 8
+                    Console.WriteLine("Order successful.");
                 }
                 else
                 {
