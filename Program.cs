@@ -435,57 +435,37 @@ namespace PRG2_Assignment
             {
                 //7. prompt user if all ticket holders meet the movie classification requirements 
                 Movie z = findScreening.Movie;
-                for (int j = 1; j <= toOrder; j++)
+                Console.WriteLine(z.Classification);
+                Console.WriteLine("Seats initially: " + findScreening.SeatsRemaining);
+                if (z.Classification == "PG13")
                 {
-                    Console.WriteLine(z.Classification);
-                    Console.WriteLine("Seats initially: "+findScreening.SeatsRemaining);
-                    if (z.Classification == "PG13")
+                    Console.Write("Are all ticket holders above the age of 13?[Y/N] : ");
+                    string metRequirements = Console.ReadLine().ToUpper();
+                    if (metRequirements == "N")
                     {
-                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
-                        string metRequirements = Console.ReadLine().ToUpper();
-                        if (metRequirements == "Y")
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
-                            break;
-                        }
+                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
                     }
-                    else if (z.Classification == "M18")
+                    
+                }
+                else if (z.Classification == "M18")
+                {
+                    Console.Write("Are all ticket holders above the age of 18?[Y/N] : ");
+                    string metRequirements = Console.ReadLine().ToUpper();
+                    if (metRequirements == "N")
                     {
-                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
-                        string metRequirements = Console.ReadLine().ToUpper();
-                        if (metRequirements == "Y")
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
-                            break;
-                        }
-                    }
-                    else if (z.Classification == "R21")
-                    {
-                        Console.WriteLine("Is ticket holder {0} above the age of 13?[Y/N] : ", j);
-                        string metRequirements = Console.ReadLine().ToUpper();
-                        if (metRequirements == "Y")
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        continue;
+                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
                     }
                 }
+                else if (z.Classification == "R21")
+                {
+                    Console.Write("Are all ticket holders above the age of 21?[Y/N] : ");
+                    string metRequirements = Console.ReadLine().ToUpper();
+                    if (metRequirements == "N")
+                    {
+                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
+                    }
+                }
+
                 double totalPrice = 0;
                 //8. create an Order object with the status “Unpaid”
                 Order newOrder = new Order(OrderNo, DateTime.Now);
@@ -559,7 +539,8 @@ namespace PRG2_Assignment
                     newOrder.Amount = totalPrice;
                     //13. change order status to “Paid”
                     newOrder.Status = "Paid";
-                    Console.WriteLine("Order successful.");
+                    oList.Add(newOrder);
+                    Console.WriteLine("\nOrder successful.");
                 }
                 else
                 {
@@ -592,11 +573,11 @@ namespace PRG2_Assignment
             }
             //3.check if the screening in the selected order is screened
             Screening findScreening = null;
-            //5. retrieve the selected movie screening
+            // retrieve the selected movie screening
             for (int j = 0; j < sList.Count; j++)
             {
                 Screening s = sList[j];
-                if (s.ScreeningNo == 1013)
+                if (findOrderNo.tList[0].ScreeningNo == s.ScreeningNo)
                 {
                     findScreening = s;
                 }
@@ -614,14 +595,18 @@ namespace PRG2_Assignment
             else
             {
                 //4. update seat remaining for the movie screening based on the selected order
-                //findScreening.SeatsRemaining += ;
-                //Console.WriteLine(findScreening.SeatsRemaining);
+                for (int k=0;k<findOrderNo.tList.Count;k++)
+                {
+                    findScreening.SeatsRemaining++;
+                    Console.WriteLine(findScreening.SeatsRemaining);
+                }
 
                 //5.change order status to “Cancelled”
                 findOrderNo.Status = "Cancelled";
                 //6.display a message indicating that the amount is refunded
                 Console.WriteLine("${0:c2} has been refunded.", findOrderNo.Amount);
                 Console.WriteLine("Order cancelled successfully.");
+                oList.Remove(findOrderNo);
             }
         }
     }
