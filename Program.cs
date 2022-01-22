@@ -29,7 +29,7 @@ namespace PRG2_Assignment
             ReadMovie(mList);
             ReadScreening(sList, cList, mList);
 
-            Boolean bookingover = false;
+            bool bookingover = false;
             while (bookingover == false)
             {
                 Console.WriteLine("\n"); //better formatting
@@ -59,7 +59,7 @@ namespace PRG2_Assignment
 
                 else if (userOption == "5") //order movie tickets
                 {
-                    OrderTicket(mList, sList, cList, tList);
+                    OrderTicket(mList, sList, cList, tList, oList);
                 }
 
                 else if (userOption == "6") //cancel ticket
@@ -164,7 +164,7 @@ namespace PRG2_Assignment
                 {
                     List<string> genrelist = new List<string>(); // ------------ create a new string everytime 
                     string slash = "/";
-                    Boolean sResult = genreGiven.Contains(slash);
+                    bool sResult = genreGiven.Contains(slash);
 
                     if (sResult == true)
                     {
@@ -337,33 +337,77 @@ namespace PRG2_Assignment
                 int cinemaOption = Convert.ToInt32(Console.ReadLine());
                 Cinema cinema = cList[cinemaOption - 1];
 
+                //List will contain all the existing screening dates
+                List<DateTime> sDates = new List<DateTime>();
                 for (int j = 0; j < sList.Count; j++)
                 {
-                    Screening screening = sList[j];
-                    if (screening.Cinema == cinema && screening.ScreeningDateTime.Date == newSDateTime.Date)  //find that day n the cinema hall 
+                    Screening s = sList[j];
+                    sDates.Add(s.ScreeningDateTime.Date);
+                }
+                sDates.Distinct().ToList(); //remove duplicated dates
+                bool dateExists = false;
+                for (int d = 0; d < sDates.Count; d++)
+                {
+                    if(newSDateTime.Date == sDates[d])
                     {
-                        DateTime screeningtime = screening.ScreeningDateTime;
-                        DateTime blockoff = screeningtime.AddMinutes(Convert.ToDouble(screening.Movie.Duration + 30)); //30mins for cleaning, newSDateTime must be after 
-                        DateTime blockoff2 = screeningtime.AddMinutes(-Convert.ToDouble(movie.Duration + 30)); //movie must end before next screening 
+                        dateExists = true;
+                    }
+                }
 
-                        Console.WriteLine(blockoff2);
-                        Console.WriteLine(blockoff);
+                //List will contain all the existing cinema halls
+                List<Cinema> cinemasInSList = new List<Cinema>();
+                for (int j = 0; j < sList.Count; j++)
+                {
+                    Screening s = sList[j];
+                    cinemasInSList.Add(s.Cinema);
+                }
+                cinemasInSList.Distinct().ToList(); //remove duplicated cinemas
+                bool cinemaExists = false;
+                for (int c = 0; c < cinemasInSList.Count; c++)
+                {
+                    if (cinema == cinemasInSList[c])
+                    {
+                        cinemaExists = true;
+                    }
+                }
 
-                        if (newSDateTime < blockoff2 || newSDateTime > blockoff) // if newSDateTime is valid
+
+                if (dateExists == true && cinemaExists == true)
+                {
+
+                    for (int j = 0; j < sList.Count; j++)
+                    {
+                        Screening screening = sList[j];
+                        if (screening.Cinema == cinema && screening.ScreeningDateTime.Date == newSDateTime.Date)  //find that day n the cinema hall 
                         {
-                            success = true;
-                            break;
+                            DateTime screeningtime = screening.ScreeningDateTime;
+                            DateTime blockoff = screeningtime.AddMinutes(Convert.ToDouble(screening.Movie.Duration + 30)); //30mins for cleaning, newSDateTime must be after 
+                            DateTime blockoff2 = screeningtime.AddMinutes(-Convert.ToDouble(movie.Duration + 30)); //movie must end before next screening 
+
+                            Console.WriteLine(blockoff2);
+                            Console.WriteLine(blockoff);
+
+                            if (newSDateTime < blockoff2 || newSDateTime > blockoff) // if newSDateTime is valid
+                            {
+                                success = true;
+                                break;
+                            }
+                            else
+                            {
+                                continue;
+                            }
                         }
+
                         else
                         {
                             continue;
                         }
                     }
+                }
 
-                    else
-                    {
-                        continue;
-                    }
+                else 
+                {
+                    success = true;
                 }
 
                 //7. create a Screening object with the information given and add to the relevantscreening list
@@ -390,10 +434,76 @@ namespace PRG2_Assignment
         }
 
         // ------------------- 6) Delete a Movie Screening Session -------------------
+        static void DeleteScreeningSession (List<Order> oList, List<Screening> sList)
+        {
+            //1. list all movie screening sessions that have not sold any tickets 
+            List<int> ticketsSold = new List<int>();
+            foreach (Order o in oList)
+            {
+                ticketsSold.Add(o.tList[0].ScreeningNo); //add each screening number that has order
+            }
+            ticketsSold.Distinct().ToList(); //remove duplicated screening number
 
-        //1. list all movie screening sessions that have not sold any tickets 
+            List<int> noTicketsSold = new List<int>();
+            foreach (Screening s in sList)
+            {
+                noTicketsSold.Add(s.ScreeningNo); //add all screening numbers into list
+            }
 
+            foreach (int i in ticketsSold)
+            {
+                noTicketsSold.Remove(i); //remove screening numbers that has order
+                                           // noTicketsSold will be left with screening numbers that has no order
+            }
 
+            Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+            for (int s = 0; s < sList.Count; s++)
+            {
+                Screening screening = sList[s];
+                for (int i = 0; i < noTicketsSold.Count; i++)
+                {
+                    int sNo = noTicketsSold[i];
+                    if (screening.ScreeningNo == sNo)
+                    {
+                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screening.ScreeningNo, screening.ScreeningDateTime, screening.ScreeningType, screening.Cinema.Name, screening.Cinema.HallNo);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+            }
+
+            //2. prompt user to select a session
+            Console.Write("\nSelect a Movie Screening: ");
+            int screeningOption = Convert.ToInt32(Console.ReadLine());
+
+            bool success = false;
+            //3. delete the selected movie screening from sList
+            for (int i = 0; i < sList.Count; i++)
+            {
+                Screening s = sList[i];
+                if (s.ScreeningNo == screeningOption)
+                {
+                    sList.Remove(s);
+                    success = true;
+                    Console.WriteLine("Sucessful. Screening {} was removed!", s.ScreeningNo);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            //4.display the status of the removal(i.e.successful or unsuccessful)
+            if (success == false)
+            {
+                Console.WriteLine("Unsucessful. Please try again.");
+            }
+
+        }
+        
         //=====================================================  Order  ===================================================
 
         // ------------------- 7) Order Ticket/s -------------------
