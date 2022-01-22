@@ -436,13 +436,21 @@ namespace PRG2_Assignment
         // ------------------- 6) Delete a Movie Screening Session -------------------
         static void DeleteScreeningSession (List<Order> oList, List<Screening> sList)
         {
+            Console.WriteLine(oList.Count());
             //1. list all movie screening sessions that have not sold any tickets 
             List<int> ticketsSold = new List<int>();
             foreach (Order o in oList)
             {
                 ticketsSold.Add(o.tList[0].ScreeningNo); //add each screening number that has order
+                Console.WriteLine(o.orderNo);
+                Console.WriteLine(o.tList[0].ScreeningNo);
             }
             ticketsSold.Distinct().ToList(); //remove duplicated screening number
+            Console.WriteLine(ticketsSold.Count());
+            for (int k = 0; k<ticketsSold.Count; k++)
+            {
+                Console.WriteLine(ticketsSold[k]);
+            }
 
             List<int> noTicketsSold = new List<int>();
             foreach (Screening s in sList)
@@ -456,14 +464,19 @@ namespace PRG2_Assignment
                                            // noTicketsSold will be left with screening numbers that has no order
             }
 
+            for (int j= 0;j< noTicketsSold.Count; j++)
+            {
+                Console.WriteLine(noTicketsSold[j]);
+            }
+            Console.WriteLine(noTicketsSold.Count());
+
             Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
             for (int s = 0; s < sList.Count; s++)
             {
                 Screening screening = sList[s];
                 for (int i = 0; i < noTicketsSold.Count; i++)
                 {
-                    int sNo = noTicketsSold[i];
-                    if (screening.ScreeningNo == sNo)
+                    if (screening.ScreeningNo == noTicketsSold[i])
                     {
                         Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screening.ScreeningNo, screening.ScreeningDateTime, screening.ScreeningType, screening.Cinema.Name, screening.Cinema.HallNo);
                     }
