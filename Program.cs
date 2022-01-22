@@ -22,6 +22,7 @@ namespace PRG2_Assignment
             List<Movie> mList = new List<Movie>();
             List<Screening> sList = new List<Screening>();
             List<Ticket> tList = new List<Ticket>();
+            List<Order> oList = new List<Order>();
 
             //----------- Reading CSV & storing as objects + Populate lists -----------
             ReadCinema(cList);
@@ -58,12 +59,12 @@ namespace PRG2_Assignment
 
                 else if (userOption == "5") //order movie tickets
                 {
-                    OrderTicket(mList, sList, cList, tList);
+                    OrderTicket(mList, sList, cList, tList,oList);
                 }
 
                 else if (userOption == "6") //cancel ticket
                 {
-                    Console.WriteLine("waiting to implement heh");
+                    CancelOrder(mList, sList, oList);
                 }
 
                 else if (userOption == "0") //exit
@@ -394,7 +395,7 @@ namespace PRG2_Assignment
         //=====================================================  Order  ===================================================
 
         // ------------------- 7) Order Ticket/s -------------------
-        static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList, List<Ticket> tList)
+        static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList, List<Ticket> tList, List<Order> oList)
         {
             //1.list all movies
             //2.prompt user to select a movie
@@ -498,7 +499,7 @@ namespace PRG2_Assignment
                     //d. update seats remaining for the movie screening
                     if (ticketType == 1)
                     {
-                        Console.WriteLine("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                        Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
                         string levelOfStudy = Console.ReadLine();
                         Ticket t = new Student(findScreening, levelOfStudy);
                         newOrder.AddTicket(t);
@@ -524,7 +525,7 @@ namespace PRG2_Assignment
                     }
                     else
                     {
-                        Console.WriteLine("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                        Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
                         string pOffer = Console.ReadLine().ToUpper();
                         if (pOffer == "Y")
                         {
@@ -543,28 +544,84 @@ namespace PRG2_Assignment
                         findScreening.SeatsRemaining--;
                     }
                 }
-
+                OrderNo++;
                 //10. list amount payable
                 if (totalPrice>0)
                 {
                     Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
                     //11. prompt user to press any key to make payment
-                    Console.Write("Press any key to make payment ");
+                    Console.Write("\nPress any key to make payment ");
                     Console.ReadKey();
 
                     //12. fill in the necessary details to the new order (e.g amount)
                     newOrder.Amount = totalPrice;
                     //13. change order status to “Paid”
                     newOrder.Status = "Paid";
-                    Console.WriteLine("Order successful.");
+                    Console.WriteLine("\nOrder successful.");
+                    oList.Add(newOrder);  //add order to orderList so can cancel in 8
                 }
                 else
                 {
-                    Console.WriteLine("Order unsuccessful, please try again.");
+                    Console.WriteLine("\nOrder unsuccessful, please try again.");
                 }
             }
         } 
 
         // ------------------- 8) Cancel order of ticket -------------------
+        static void CancelOrder(List<Movie> mList, List<Screening> sList,List<Order> oList)
+        {
+            //1. prompt user for order number
+            Console.Write("Enter your order number: ");
+            int userOrderNo = Convert.ToInt32(Console.ReadLine());
+            //2. retrieve the selected order
+            Order findOrderNo = null;
+            for (int i = 0; i < oList.Count; i++)
+            {
+                Order o = oList[i];
+                if (o.orderNo==userOrderNo)
+                {
+                    Console.WriteLine("works");
+                    findOrderNo = o;
+                    Console.WriteLine(findOrderNo.orderNo);
+                }
+                else
+                {
+                    Console.WriteLine("The order number is invalid.");
+                }
+            }
+            //3.check if the screening in the selected order is screened
+            Screening findScreening = null;
+            //5. retrieve the selected movie screening
+            for (int j = 0; j < sList.Count; j++)
+            {
+                Screening s = sList[j];
+                if (s.ScreeningNo == 1013)
+                {
+                    findScreening = s;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            if (DateTime.Now>findScreening.ScreeningDateTime)
+            {
+                Console.WriteLine("Request to cancel order denied. The order has already been screened.");
+                //7. display the status of the cancelation (i.e. successful or unsuccessful)
+                Console.WriteLine("Order cancellation was unsuccessful.");
+            }
+            else
+            {
+                //4. update seat remaining for the movie screening based on the selected order
+                //findScreening.SeatsRemaining += ;
+                //Console.WriteLine(findScreening.SeatsRemaining);
+
+                //5.change order status to “Cancelled”
+                findOrderNo.Status = "Cancelled";
+                //6.display a message indicating that the amount is refunded
+                Console.WriteLine("${0:c2} has been refunded.", findOrderNo.Amount);
+                Console.WriteLine("Order cancelled successfully.");
+            }
+        }
     }
 }
