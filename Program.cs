@@ -545,7 +545,6 @@ namespace PRG2_Assignment
             {
                 //7. prompt user if all ticket holders meet the movie classification requirements 
                 Movie z = findScreening.Movie;
-                Console.WriteLine(z.Classification);
                 bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
                 Console.WriteLine("Seats initially: " + findScreening.SeatsRemaining);
                 if (z.Classification == "PG13")
@@ -671,7 +670,7 @@ namespace PRG2_Assignment
                     //13. change order status to “Paid”
                     newOrder.Status = "Paid";
                     oList.Add(newOrder);
-                    Console.WriteLine("\nOrder successful.");
+                    Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.",newOrder.orderNo);
                 }
                 else
                 {
