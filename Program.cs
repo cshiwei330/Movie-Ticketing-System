@@ -587,6 +587,10 @@ namespace PRG2_Assignment
                         meetrq++;
                     }
                 }
+                else
+                {
+                    meetrq++;
+                }
 
                 double totalPrice = 0;
                 //8. create an Order object with the status “Unpaid”
