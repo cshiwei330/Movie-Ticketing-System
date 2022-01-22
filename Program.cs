@@ -691,61 +691,44 @@ namespace PRG2_Assignment
             int userOrderNo = Convert.ToInt32(Console.ReadLine());
             //2. retrieve the selected order
             Order findOrderNo = null;
+            bool orderNoFound = false;
             for (int i = 0; i < oList.Count; i++)
             {
                 Order o = oList[i];
                 if (o.orderNo==userOrderNo)
                 {
                     findOrderNo = o;
+                    orderNoFound = true;
                 }
                 else
                 {
-                    Console.WriteLine("The order number is invalid.");
+                    continue;
                 }
             }
-            //3.check if the screening in the selected order is screened
-            Screening findScreening = null;
-            // retrieve the selected movie screening
-            for (int j = 0; j < sList.Count; j++)
+            if (orderNoFound==false)
             {
-                Console.WriteLine("in for loop");
-                Console.WriteLine(sList[j].ScreeningNo);
-                Screening s = sList[j];
-                for (int k = 0; k <tList.Count;k++)
-                {
-                    Console.WriteLine(tList[k].ScreeningNo);
-                    Console.WriteLine("in  ticket for loop");
-                    if (findOrderNo.tList[k].ScreeningNo == s.ScreeningNo)
-                    {
-                        if (DateTime.Now > findScreening.ScreeningDateTime)
-                        {
-                            Console.WriteLine("Request to cancel order denied. The order has already been screened.");
-                            //7. display the status of the cancelation (i.e. successful or unsuccessful)
-                            Console.WriteLine("Order cancellation was unsuccessful.");
-                        }
-                        else
-                        {
-                            //4. update seat remaining for the movie screening based on the selected order
-                            for (int l = 0; l < findOrderNo.tList.Count; l++)
-                            {
-                                findScreening.SeatsRemaining++;
-                                Console.WriteLine(findScreening.SeatsRemaining);
-                            }
+                Console.WriteLine("The order number is invalid.");
+            }
 
-                            //5.change order status to “Cancelled”
-                            findOrderNo.Status = "Cancelled";
-                            //6.display a message indicating that the amount is refunded
-                            Console.WriteLine("${0:c2} has been refunded.", findOrderNo.Amount);
-                            Console.WriteLine("Order cancelled successfully.");
-                            oList.Remove(findOrderNo);   // remove order form order list
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("NO SCREENING NUMBER");
-                        continue;
-                    }
-                }
+            //3.check if the screening in the selected order is screened
+            if (DateTime.Now > findOrderNo.tList[0].Screening.ScreeningDateTime)
+            {
+                Console.WriteLine("Request to cancel order denied. The movie has already been screened.");
+                //7. display the status of the cancelation (i.e. successful or unsuccessful)
+                Console.WriteLine("Order cancellation was unsuccessful.");
+            }
+            else
+            {
+                //4. update seat remaining for the movie screening based on the selected order
+                int seatsRemaining=findOrderNo.tList.Count();
+                findOrderNo.tList[0].SeatsRemaining+= seatsRemaining;
+
+                //5.change order status to “Cancelled”
+                findOrderNo.Status = "Cancelled";
+                //6.display a message indicating that the amount is refunded
+                Console.WriteLine("${0:c2} has been refunded.", findOrderNo.Amount);
+                Console.WriteLine("Order cancelled successfully.");
+                oList.Remove(findOrderNo);   // remove order form order list
             }
         }
     }
