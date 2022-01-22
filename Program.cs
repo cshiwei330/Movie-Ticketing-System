@@ -22,6 +22,7 @@ namespace PRG2_Assignment
             List<Movie> mList = new List<Movie>();
             List<Screening> sList = new List<Screening>();
             List<Ticket> tList = new List<Ticket>();
+            List<Order> oList = new List<Order>();
 
             //----------- Reading CSV & storing as objects + Populate lists -----------
             ReadCinema(cList);
@@ -390,11 +391,13 @@ namespace PRG2_Assignment
 
         // ------------------- 6) Delete a Movie Screening Session -------------------
 
+        //1. list all movie screening sessions that have not sold any tickets 
+
 
         //=====================================================  Order  ===================================================
 
         // ------------------- 7) Order Ticket/s -------------------
-        static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList, List<Ticket> tList)
+        static void OrderTicket(List<Movie> mList, List<Screening> sList, List<Cinema> cList, List<Ticket> tList, List<Order> oList)
         {
             //1.list all movies
             //2.prompt user to select a movie
@@ -556,6 +559,7 @@ namespace PRG2_Assignment
                     newOrder.Amount = totalPrice;
                     //13. change order status to “Paid”
                     newOrder.Status = "Paid";
+                    oList.Add(newOrder);
                     Console.WriteLine("Order successful.");
                 }
                 else
