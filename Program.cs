@@ -318,11 +318,11 @@ namespace PRG2_Assignment
 
             //3. prompt user to enter a screening type 
             Console.Write("Enter screening type (2D/3D): "); //******need validations
-            string sType = Console.ReadLine();
+            string sType = Console.ReadLine().ToUpper();
 
             //4. prompt user to enter a screening date and time (check to see if the datetime entered is after the opening date of the movie)
             Console.Write("Enter screening date and time: ");
-            DateTime newSDateTime = Convert.ToDateTime(Console.ReadLine()); //******need validations
+            DateTime newSDateTime = Convert.ToDateTime(Console.ReadLine().ToUpper()); //******need validations
 
             int count2 = 01;
             bool success = false; //for 6. 
@@ -613,7 +613,6 @@ namespace PRG2_Assignment
                             string levelOfStudy = Console.ReadLine();
                             Ticket t = new Student(findScreening, levelOfStudy);
                             newOrder.AddTicket(t);
-                            tList.Add(t);
                             totalPrice += t.CalculatePrice();
                             findScreening.SeatsRemaining--;
                         }
@@ -626,7 +625,6 @@ namespace PRG2_Assignment
                             {
                                 Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
                                 newOrder.AddTicket(t);
-                                tList.Add(t);
                                 totalPrice += t.CalculatePrice();
                                 findScreening.SeatsRemaining--;
                             }
@@ -644,7 +642,6 @@ namespace PRG2_Assignment
                                 bool popcornOffer = true;
                                 Ticket t = new Adult(findScreening, popcornOffer);
                                 newOrder.AddTicket(t);
-                                tList.Add(t);
                                 totalPrice += t.CalculatePrice();
                             }
                             else
@@ -652,7 +649,6 @@ namespace PRG2_Assignment
                                 bool popcornOffer = false;
                                 Ticket t = new Adult(findScreening, popcornOffer);
                                 newOrder.AddTicket(t);
-                                tList.Add(t);
                                 totalPrice += t.CalculatePrice();
                             }
                             findScreening.SeatsRemaining--;
@@ -714,7 +710,7 @@ namespace PRG2_Assignment
             //3.check if the screening in the selected order is screened
             if (DateTime.Now > findOrderNo.tList[0].Screening.ScreeningDateTime)
             {
-                Console.WriteLine("Request to cancel order denied. The movie has already been screened.");
+                Console.WriteLine("\nRequest to cancel order denied. The movie has already been screened.");
                 //7. display the status of the cancelation (i.e. successful or unsuccessful)
                 Console.WriteLine("Order cancellation was unsuccessful.");
             }
@@ -727,7 +723,7 @@ namespace PRG2_Assignment
                 //5.change order status to “Cancelled”
                 findOrderNo.Status = "Cancelled";
                 //6.display a message indicating that the amount is refunded
-                Console.WriteLine("${0:c2} has been refunded.", findOrderNo.Amount);
+                Console.WriteLine("\n${0:c2} has been refunded.", findOrderNo.Amount);
                 Console.WriteLine("Order cancelled successfully.");
                 oList.Remove(findOrderNo);   // remove order form order list
             }
