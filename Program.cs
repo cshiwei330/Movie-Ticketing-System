@@ -373,20 +373,52 @@ namespace PRG2_Assignment
             }
 
             //4. prompt user to enter a screening date and time (check to see if the datetime entered is after the opening date of the movie)
-            Console.Write("\nEnter screening date and time: ");
-            DateTime newSDateTime = Convert.ToDateTime(Console.ReadLine().ToUpper()); 
+            string temp = null; //[validation]
+            DateTime newSDateTime = Convert.ToDateTime("01/01/2022 00:00:00"); //assign newSDateTime to a random datetime first
+            bool validnewSDateTime = false; 
+            while(!validnewSDateTime)
+            {
+                Console.Write("\nEnter screening date and time: ");
+                temp = Console.ReadLine();
+
+                if (DateTime.TryParse(temp, out newSDateTime))
+                {
+                    validnewSDateTime = true;
+                }
+
+                else
+                {
+                    Console.WriteLine("Incorrect formatting of screening date and time. Please try again.");
+                }
+            }
 
             bool success = false; //for 6. 
-            if (movie.OpeningDate < newSDateTime)
+            if (movie.OpeningDate < newSDateTime) 
             {
                 //5. list all cinema halls
                 DisplayCinema(cList);
 
                 //6. prompt user to select a cinema hall (check to see if the cinema hall is available at the datetime entered in point 4)
                 //[need to consider the movie duration and cleaning time]
-                Console.Write("Select a Cinema & Hall: ");
-                int cinemaOption = Convert.ToInt32(Console.ReadLine());
-                Cinema cinema = cList[cinemaOption - 1];
+
+                Cinema cinema = null;
+                bool validCinema = false; //[validation]
+                while(!validCinema)
+                {
+                    try
+                    {
+                        Console.Write("Select a Cinema & Hall: ");
+                        int cinemaOption = Convert.ToInt32(Console.ReadLine());
+                        cinema = cList[cinemaOption - 1];
+                        validCinema = true;
+                    }
+
+                    catch
+                    {
+                        Console.WriteLine("Invalid choice. Please enter the number next to the cinema you want");
+                    }
+                }
+               
 
                 //List will contain all the existing screening dates
                 List<DateTime> sDates = new List<DateTime>();
@@ -434,9 +466,6 @@ namespace PRG2_Assignment
                             DateTime screeningtime = screening.ScreeningDateTime;
                             DateTime blockoff = screeningtime.AddMinutes(Convert.ToDouble(screening.Movie.Duration + 30)); //30mins for cleaning, newSDateTime must be after 
                             DateTime blockoff2 = screeningtime.AddMinutes(-Convert.ToDouble(movie.Duration + 30)); //movie must end before next screening 
-
-                            Console.WriteLine(blockoff2);
-                            Console.WriteLine(blockoff);
 
                             if (newSDateTime < blockoff2 || newSDateTime > blockoff) // if newSDateTime is valid
                             {
