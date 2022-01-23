@@ -568,8 +568,32 @@ namespace PRG2_Assignment
             }
 
             //2. prompt user to select a session
-            Console.Write("\nSelect a Movie Screening: ");
-            int screeningOption = Convert.ToInt32(Console.ReadLine());
+            bool validScreeningNo = false;
+            int screeningOption = 0;
+
+            while (!validScreeningNo)
+            {
+                try
+                {
+                    Console.Write("\nSelect a Movie Screening: ");
+                    screeningOption = Convert.ToInt32(Console.ReadLine());
+
+                    if (noTicketsSold.Contains(screeningOption))
+                    {
+                        validScreeningNo = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice. Unable to remove a screening that contains orders. ");
+                    }
+                }
+
+                catch
+                {
+                    Console.WriteLine("Invalid choice. Please enter the number next to the cinema you want");
+                }
+            }
+            
 
             bool success = false;
             //3. delete the selected movie screening from sList
