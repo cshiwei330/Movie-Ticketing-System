@@ -74,7 +74,7 @@ namespace PRG2_Assignment
                 
                 else if (userOption=="7") //recommended movies
                 {
-                    RecommendMovies(cList);
+                    RecommendMovies(mList,sList);
                     Console.WriteLine("\n");
                 }
 
@@ -124,6 +124,8 @@ namespace PRG2_Assignment
                 "\n4. Delete Movie Screening" +
                 "\n5. Order Movie Tickets" +
                 "\n6. Cancel Ticket" +
+                "\n7. Recommended Movies" +
+                "\n8. View Available Seats for a Screening Session" +
                 "\n0. Exit" +
                 "\n----------------------------");
         }
@@ -847,10 +849,46 @@ namespace PRG2_Assignment
         //=====================================================  Advanced  ===================================================
 
         // ------------------- 3.1) Recommend movies based on sales of tickets sold -------------------
-        static void RecommendMovies(List<Cinema> cList)
+        static void RecommendMovies(List<Movie> mList, List<Screening> sList)
         {
-            //find cap of cinema hall, find number of seats remaining, to find number of seats sold . 
             List<int> seatsSold = new List<int>();
+            for (int x=0;x<mList.Count;x++)
+            {
+                int totalCap = 0;
+                int totalAvail = 0;
+                int totalSold = 0;
+                Movie m = mList[x];
+                foreach (Screening s in sList)
+                {
+                    //Screening s = sList[i];
+                    if (s.Movie.Title == m.Title)
+                    {
+                        totalCap += s.Cinema.Capacity;
+                        totalAvail += s.SeatsRemaining;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    totalSold = totalCap - totalAvail;
+                    //Console.WriteLine("Total sold: " + totalSold);
+                    seatsSold.Add(totalSold);
+
+                }
+                Console.WriteLine("Total sold: "+totalSold);
+                //Console.WriteLine("\n");
+                //Console.WriteLine(seatsSold);
+
+            }
+            //Console.WriteLine("List of Recommended Movies"); // need to sort in order
+            //int n = 1;
+            //for (int y=0;y<seatsSold.Count;y++)
+            //{
+            //    Console.WriteLine("{0}\t{1,-35}", n,seatsSold);
+            //    n++;
+            //}
+            
+            
         }
 
         // ------------------- 3.2) Display available seats of screening session in descending order -------------------
