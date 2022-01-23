@@ -706,60 +706,54 @@ namespace PRG2_Assignment
             //7. prompt user if all ticket holders meet the movie classification requirements 
             Movie z = findScreening.Movie;
             bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
-            
-            if (z.Classification == "PG13")
-            {
-                Console.Write("Are all ticket holders above the age of 13?[Y/N] : ");
-                string metRequirements = Console.ReadLine().ToUpper();
-                if (metRequirements == "N")
-                {
-                    Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 13 is not met.");
-                }
-                else if (metRequirements == "Y")
-                {
-                    meetrq = true;
-                }
-                else
-                {
-                    Console.WriteLine("Please enter either Y or N");
-                }
-            }
-            else if (z.Classification == "M18")
-            {
-                Console.Write("Are all ticket holders above the age of 18?[Y/N] : ");
-                string metRequirements = Console.ReadLine().ToUpper();
-                if (metRequirements == "N")
-                {
-                    Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 18 is not met.");
-                }
-                else if (metRequirements == "Y")
-                {
-                    meetrq = true;
-                }
-                else
-                {
-                    Console.WriteLine("Please enter either Y or N");
-                }
-            }
-            else if (z.Classification == "R21")
-            {
-                Console.Write("Are all ticket holders above the age of 21?[Y/N] : ");
-                string metRequirements = Console.ReadLine().ToUpper();
-                if (metRequirements == "N")
-                {
-                    Console.WriteLine("Unable to purchase ticket as the minimum age requirement of 21 is not met.");
-                }
-                else
-                {
-                    meetrq = true;
-                }
-            }
-            else
-            {
-                meetrq = true;
-            }
 
-            double totalPrice = 0; ////////////////////////////////////
+            string[] ages = { "13", "18", "21" };
+            List<string> ageList = new List<string>();
+            ageList.AddRange(ages);
+            bool valid = false;
+
+            while (!valid)
+            {
+                string age = null;
+                if (z.Classification == "PG13")
+                {
+                    age = ageList[0];
+                }
+                else if (z.Classification == "M18")
+                {
+                    age = ageList[1];
+                }
+                else if (z.Classification == "R21")
+                {
+                    age = ageList[2];
+                }
+                else
+                {
+                    meetrq = true;
+                    break; 
+                }
+
+                Console.Write("Are all ticket holders above the age of {0}?[Y/N] : ", age);
+                string metRequirements = Console.ReadLine().ToUpper();
+                if (metRequirements == "N" || metRequirements == "Y")
+                {
+                    valid = true;
+                    if (metRequirements == "N")
+                    {
+                        Console.WriteLine("Unable to purchase ticket as the minimum age requirement of {0} is not met.", age);
+                    }
+                    else 
+                    {
+                        meetrq = true;
+                    }
+                }
+               
+                else
+                {
+                    Console.WriteLine("Please enter either Y or N\n");
+                }
+
+            }
             
             //9.
             if (meetrq == true)
@@ -767,6 +761,7 @@ namespace PRG2_Assignment
                 //8. create an Order object with the status “Unpaid”
                 Order newOrder = new Order(OrderNo, DateTime.Now);
                 newOrder.Status = "Unpaid";
+                double totalPrice = 0;
 
                 for (int k = 1; k <= toOrder; k++)
                 {
