@@ -975,22 +975,23 @@ namespace PRG2_Assignment
                 int totalAvail = 0;
                 int totalSold = 0;
                 Movie m = mList[x];
-
                 foreach (Screening s in sList)
                 {
-                    if (s.Movie.Title == m.Title)
+                    if (s.Movie.Title == m.Title)  // retrieve screenings of the movie
                     {
                         totalCap += s.Cinema.Capacity;
                         totalAvail += s.SeatsRemaining;
                     }
                     totalSold = totalCap - totalAvail;
                 }
-                seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));
-
+                seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
             }
-            Console.WriteLine("List of Recommended Movies"); // need to sort in order
-            seatsSold.Sort();
+
+            Console.WriteLine("List of Recommended Movies"); 
+            seatsSold=seatsSold.OrderBy(seatsSold => seatsSold.Item2).ToList(); // sort list in descending order
+            seatsSold.Reverse();
             int n = 1;
+            Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
             for (int y=0;y<mList.Count;y++)
             {
                 Console.WriteLine("{0,-3} {1,-35} {2,-6}", n,seatsSold[y].Item1, seatsSold[y].Item2);
