@@ -80,7 +80,7 @@ namespace PRG2_Assignment
 
                 else if (userOption=="8") //available seats of screening session
                 {
-                    DisplayAvailableSeats();
+                    DisplayAvailableSeats(sList);
                     Console.WriteLine("\n");
                 }
 
@@ -1009,9 +1009,16 @@ namespace PRG2_Assignment
         }
 
         // ------------------- 3.2) Display available seats of screening session in descending order -------------------
-        static void DisplayAvailableSeats()
+        static void DisplayAvailableSeats(List <Screening> sList)
         {
-            //
+            List<Screening> byRemainingSeats = sList.OrderBy(Screening => Screening.SeatsRemaining).ToList();
+            byRemainingSeats.Reverse();
+
+            Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-25}{4,-15}{5,-20}","Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
+            foreach (Screening s in byRemainingSeats)
+            {
+                Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-15}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
+            }
         }
     }
 }
