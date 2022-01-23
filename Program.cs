@@ -71,6 +71,18 @@ namespace PRG2_Assignment
                     CancelOrder(oList);
                     Console.WriteLine("\n"); 
                 }
+                
+                else if (userOption=="7") //recommended movies
+                {
+                    RecommendMovies(cList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption=="8") //available seats of screening session
+                {
+                    DisplayAvailableSeats();
+                    Console.WriteLine("\n");
+                }
 
                 else if (userOption == "0") //exit
                 {
@@ -806,6 +818,21 @@ namespace PRG2_Assignment
                 Console.WriteLine("Order cancelled successfully.");
                 oList.Remove(findOrderNo);   // remove order form order list
             }
+        }
+
+        //=====================================================  Advanced  ===================================================
+
+        // ------------------- 3.1) Recommend movies based on sales of tickets sold -------------------
+        static void RecommendMovies(List<Cinema> cList)
+        {
+            //find cap of cinema hall, find number of seats remaining, to find number of seats sold . 
+            List<int> seatsSold = new List<int>();
+        }
+
+        // ------------------- 3.2) Display available seats of screening session in descending order -------------------
+        static void DisplayAvailableSeats()
+        {
+            //
         }
     }
 }
