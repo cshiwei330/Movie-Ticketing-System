@@ -968,44 +968,34 @@ namespace PRG2_Assignment
         // ------------------- 3.1) Recommend movies based on sales of tickets sold -------------------
         static void RecommendMovies(List<Movie> mList, List<Screening> sList)
         {
-            List<int> seatsSold = new List<int>();
+            List<Tuple<string, int>> seatsSold=new List<Tuple<string, int>>();
             for (int x=0;x<mList.Count;x++)
             {
                 int totalCap = 0;
                 int totalAvail = 0;
                 int totalSold = 0;
                 Movie m = mList[x];
+
                 foreach (Screening s in sList)
                 {
-                    //Screening s = sList[i];
                     if (s.Movie.Title == m.Title)
                     {
                         totalCap += s.Cinema.Capacity;
                         totalAvail += s.SeatsRemaining;
                     }
-                    else
-                    {
-                        continue;
-                    }
                     totalSold = totalCap - totalAvail;
-                    //Console.WriteLine("Total sold: " + totalSold);
-                    seatsSold.Add(totalSold);
-
                 }
-                Console.WriteLine("Total sold: "+totalSold);
-                //Console.WriteLine("\n");
-                //Console.WriteLine(seatsSold);
+                seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));
 
             }
-            //Console.WriteLine("List of Recommended Movies"); // need to sort in order
-            //int n = 1;
-            //for (int y=0;y<seatsSold.Count;y++)
-            //{
-            //    Console.WriteLine("{0}\t{1,-35}", n,seatsSold);
-            //    n++;
-            //}
-            
-            
+            Console.WriteLine("List of Recommended Movies"); // need to sort in order
+            seatsSold.Sort();
+            int n = 1;
+            for (int y=0;y<mList.Count;y++)
+            {
+                Console.WriteLine("{0,-3} {1,-35} {2,-6}", n,seatsSold[y].Item1, seatsSold[y].Item2);
+                n++;
+            }
         }
 
         // ------------------- 3.2) Display available seats of screening session in descending order -------------------
