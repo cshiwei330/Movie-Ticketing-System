@@ -119,7 +119,7 @@ namespace PRG2_Assignment
                         Console.WriteLine("\n");
                     }
 
-                    else if (userOption == "9") //recommended movies
+                    else if (userOption == "9") //recommended movies based on number of tickets sold 
                     {
                         RecommendMovies(mList, sList);
                         Console.WriteLine("\n");
@@ -197,13 +197,6 @@ namespace PRG2_Assignment
                     }
                 }
             }
-
-            // ------------------- Integer Validation -------------------
-            static bool BetweenRange(int min, int max, int option)
-            {
-                return (option <= max && option >= min);
-            }
-
             //=====================================================  General  ===================================================
 
             // ------------------- 1) Load Cinema Data & Populate Cinema List -----------------------------------------------------
@@ -213,8 +206,19 @@ namespace PRG2_Assignment
                 for (int i = 1; i < cdata.Length; i++)
                 {
                     string[] cvalues = cdata[i].Split(",");
-                    cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
-                }
+                    int count = cvalues.Count();
+
+                    if (count ==3) // [validation of data set]
+                    {
+                        cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
+                    }
+
+                    else
+                    {
+                        continue;
+                    }
+                    
+                }        
             }
 
 
@@ -225,35 +229,44 @@ namespace PRG2_Assignment
                 for (int i = 1; i < mdata.Length; i++)
                 {
                     string[] mvalues = mdata[i].Split(",");
-                    string genreGiven = mvalues[2]; // ------------ stores the genre given in csv 
-
-                    static List<string> generateGenre(string genreGiven) //method to return genre list for movies obj
+                    int count = mvalues.Count();
+                    if (count == 5) // [validation of data set]
                     {
-                        List<string> genrelist = new List<string>(); // ------------ create a new string everytime 
-                        string slash = "/";
-                        bool sResult = genreGiven.Contains(slash);
+                        string genreGiven = mvalues[2]; // ------------ stores the genre given in csv 
 
-                        if (sResult == true)
+                        static List<string> generateGenre(string genreGiven) //method to return genre list for movies obj
                         {
-                            string[] genres = genreGiven.Split("/");
-                            for (int j = 0; j < genres.Length; j++)
+                            List<string> genrelist = new List<string>(); // ------------ create a new string everytime 
+                            string slash = "/";
+                            bool sResult = genreGiven.Contains(slash);
+
+                            if (sResult == true)
                             {
-                                genrelist.Add(genres[j]); // ------------ add each genre into list
+                                string[] genres = genreGiven.Split("/");
+                                for (int j = 0; j < genres.Length; j++)
+                                {
+                                    genrelist.Add(genres[j]); // ------------ add each genre into list
+                                }
                             }
-                        }
-                        else
-                        {
-                            genrelist.Add(genreGiven);
+                            else
+                            {
+                                genrelist.Add(genreGiven);
+                            }
+
+                            return genrelist;
                         }
 
-                        return genrelist;
+                        List<string> genreResults = generateGenre(genreGiven);
+
+                        Movie m = new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults);
+                        mList.Add(m);
+                        m.AddGenre(genreGiven);
                     }
-
-                    List<string> genreResults = generateGenre(genreGiven);
-
-                    Movie m = new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults);
-                    mList.Add(m);
-                    m.AddGenre(genreGiven);
+                    else
+                    {
+                        continue; 
+                    }
+                    
                 }
             }
 
@@ -264,52 +277,59 @@ namespace PRG2_Assignment
                 for (int i = 1; i < sdata.Length; i++)
                 {
                     string[] svalues = sdata[i].Split(",");
-                    string cinemaName = svalues[2];
-                    int hallNo = Convert.ToInt32(svalues[3]);
-                    static Cinema CinemaSearch(List<Cinema> cList, string cinemaName, int hallNo)
+                    int count = svalues.Count();
+                    if (count == 5)  // [validation of data set]
                     {
-                        for (int i = 0; i < cList.Count; i++)
+                        string cinemaName = svalues[2];
+                        int hallNo = Convert.ToInt32(svalues[3]);
+                        static Cinema CinemaSearch(List<Cinema> cList, string cinemaName, int hallNo)
                         {
-                            Cinema c = cList[i];
-                            if (cinemaName == c.Name && hallNo == c.HallNo)
+                            for (int i = 0; i < cList.Count; i++)
                             {
-                                return c;
+                                Cinema c = cList[i];
+                                if (cinemaName == c.Name && hallNo == c.HallNo)
+                                {
+                                    return c;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
                             }
-                            else
-                            {
-                                continue;
-                            }
+                            return null;
                         }
-                        return null;
-                    }
-                    Cinema result = CinemaSearch(cList, cinemaName, hallNo);
+                        Cinema result = CinemaSearch(cList, cinemaName, hallNo);
 
-                    string movieName = svalues[4];
-                    static Movie MovieSearch(List<Movie> mList, string movieName)
+                        string movieName = svalues[4];
+                        static Movie MovieSearch(List<Movie> mList, string movieName)
+                        {
+                            for (int a = 0; a < mList.Count; a++)
+                            {
+                                Movie m = mList[a];
+                                if (movieName == m.Title)
+                                {
+                                    return m;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                            return null;
+                        }
+                        Movie result2 = MovieSearch(mList, movieName);
+                        Screening newscr = new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2);
+                        newscr.SeatsRemaining = result.Capacity;
+                        sList.Add(newscr);
+                        ScreeningNo++;
+                    }
+                    
+                    else
                     {
-                        for (int a = 0; a < mList.Count; a++)
-                        {
-                            Movie m = mList[a];
-                            if (movieName == m.Title)
-                            {
-                                return m;
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-                        return null;
+                        continue;
                     }
-                    Movie result2 = MovieSearch(mList, movieName);
-                    Screening newscr = new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2);
-                    newscr.SeatsRemaining = result.Capacity;
-                    sList.Add(newscr);
-                    ScreeningNo++;
-
                 }
             }
-
 
             // ------------------- 3) List all Movies Details -------------------
             static void DisplayMovieDetails(List<Movie> mList)
