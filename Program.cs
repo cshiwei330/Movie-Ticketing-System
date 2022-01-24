@@ -1036,8 +1036,8 @@ namespace PRG2_Assignment
                 }
 
                 Console.WriteLine("List of Recommended Movies");
-                seatsSold = seatsSold.OrderBy(seatsSold => seatsSold.Item2).ToList(); // sort list in descending order
-                seatsSold.Reverse();
+                seatsSold = seatsSold.OrderBy(seatsSold => seatsSold.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
+                seatsSold.Reverse();                                                        // sort list in descending order
                 int n = 1;
                 Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
                 for (int y = 0; y < mList.Count; y++)
@@ -1059,6 +1059,9 @@ namespace PRG2_Assignment
                     Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-15}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
                 }
             }
+
+            // ------------------- 3.3) Top sales chart of the Cinema Name -------------------
+
         }
     }
 }
