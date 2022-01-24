@@ -386,7 +386,7 @@ namespace PRG2_Assignment
                 }
 
                 //4. retrieve and display screening sessions for that movie
-                Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
 
                 List<int> sNoBasedOnMovie = new List<int>();
 
@@ -396,7 +396,7 @@ namespace PRG2_Assignment
                     if (screen.Movie == m)
                     {
                         sNoBasedOnMovie.Add(screen.ScreeningNo); // for 7) [validation]
-                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo);
+                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-15}{5,-20}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo, screen.SeatsRemaining);
                     }
                     else
                     {
@@ -630,7 +630,7 @@ namespace PRG2_Assignment
                     {
                         if (screening.ScreeningNo == noTicketsSold[i])
                         {
-                            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", screening.ScreeningNo, screening.ScreeningDateTime, screening.ScreeningType, screening.Cinema.Name, screening.Cinema.HallNo);
+                            Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", screening.ScreeningNo, screening.ScreeningDateTime, screening.ScreeningType, screening.Cinema.Name, screening.Cinema.HallNo, screening.SeatsRemaining);
                         }
                         else
                         {
@@ -818,7 +818,7 @@ namespace PRG2_Assignment
 
                     else
                     {
-                        Console.WriteLine("Please enter either Y or N\n");
+                        Console.WriteLine("Please enter either Y or N.\n");
                     }
 
                 }
@@ -1073,10 +1073,10 @@ namespace PRG2_Assignment
                 List<Screening> byRemainingSeats = sList.OrderBy(Screening => Screening.SeatsRemaining).ToList();
                 byRemainingSeats.Reverse();
 
-                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-25}{4,-15}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
+                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
                 foreach (Screening s in byRemainingSeats)
                 {
-                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-15}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
+                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
                 }
             }
 
