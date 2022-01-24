@@ -25,78 +25,124 @@ namespace PRG2_Assignment
             List<Order> oList = new List<Order>();
 
             //----------- Reading CSV & storing as objects + Populate lists -----------
-            ReadCinema(cList);
-            ReadMovie(mList);
-            ReadScreening(sList, cList, mList);
 
             bool bookingover = false;
-            while (bookingover == false)
+            bool loadedMnC = false;
+            bool loadedS = false;
+
+            while (!bookingover)
             {
                 DisplayMenu();
                 Console.Write("Enter your option: ");
                 string userOption = Console.ReadLine();
+                if (!loadedMnC)
+                {
+                    if (userOption == "1")
+                    {
+                        ReadMovie(mList);
+                        ReadCinema(cList);
+                        Console.WriteLine("Loading of Movie and Cinema Data completed.\n");
+                        loadedMnC = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please load Movie and Cinema Data first.\n");
+                    }
 
-                if (userOption == "1") //display movies
-                {
-                    DisplayMovieDetails(mList);
-                    Console.WriteLine("\n"); //better formatting
                 }
+                else if (loadedMnC && !loadedS)
+                {
+                    if (userOption == "1") //load movie and cinema data
+                    {
+                        Console.WriteLine("You have already loaded Movie and Cinema Data.\n");
+                    }
+                    else if (userOption == "2") //load screening data
+                    {
+                        ReadScreening(sList, cList, mList);
+                        Console.WriteLine("Loading of Screening Data completed.\n");
+                        loadedS = true;
+                    }
 
-                else if (userOption == "2") //display movie screenings
-                {
-                    ListMovieScreenings(mList, sList);
-                    Console.WriteLine("\n"); 
-                }
-
-                else if (userOption == "3") //add movie screening
-                {
-                    AddScreeningSession(mList, sList, cList);
-                    Console.WriteLine("\n"); 
-                }
-
-                else if (userOption == "4") //delete movie screening
-                {
-                    DeleteScreeningSession(oList, sList);
-                    Console.WriteLine("\n"); 
-                }
-
-                else if (userOption == "5") //order movie tickets
-                {
-                    OrderTicket(mList, sList, oList);
-                    Console.WriteLine("\n"); 
-                }
-
-                else if (userOption == "6") //cancel ticket
-                {
-                    CancelOrder(oList);
-                    Console.WriteLine("\n"); 
-                }
-                
-                else if (userOption=="7") //recommended movies
-                {
-                    RecommendMovies(mList,sList);
-                    Console.WriteLine("\n");
-                }
-
-                else if (userOption=="8") //available seats of screening session
-                {
-                    DisplayAvailableSeats(sList);
-                    Console.WriteLine("\n");
-                }
-
-                else if (userOption == "0") //exit
-                {
-                    Console.WriteLine("Thanks for using our Movie Ticket System! We hope to see you again :)");
-                    bookingover = true;
+                    else if (userOption == "3") //display movies
+                    {
+                        DisplayMovieDetails(mList);
+                        Console.WriteLine("\n"); //better formatting
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please Screening Data first.\n");
+                    }
                 }
 
                 else
                 {
-                    Console.WriteLine("Invalid choice.");
+                    if (userOption == "1") //load movie and cinema data
+                    {
+                        Console.WriteLine("You have already loaded Movie and Cinema Data.\n");
+                    }
+                    else if (userOption == "2") //load screening data
+                    {
+                        Console.WriteLine("You have already loaded Screening Data.\n");
+                    }
+                    else if (userOption == "3") //display movies
+                    {
+                        DisplayMovieDetails(mList);
+                        Console.WriteLine("\n"); //better formatting
+                    }
+                    if (userOption == "4") //display movie screenings
+                    {
+                        ListMovieScreenings(mList, sList);
+                        Console.WriteLine("\n");
+                    }
 
+                    else if (userOption == "5") //add movie screening
+                    {
+                        AddScreeningSession(mList, sList, cList);
+                        Console.WriteLine("\n");
+                    }
+
+                    else if (userOption == "6") //delete movie screening
+                    {
+                        DeleteScreeningSession(oList, sList);
+                        Console.WriteLine("\n");
+                    }
+
+                    else if (userOption == "7") //order movie tickets
+                    {
+                        OrderTicket(mList, sList, oList);
+                        Console.WriteLine("\n");
+                    }
+
+                    else if (userOption == "8") //cancel ticket
+                    {
+                        CancelOrder(oList);
+                        Console.WriteLine("\n");
+                    }
+
+                    else if (userOption == "9") //recommended movies
+                    {
+                        RecommendMovies(mList, sList);
+                        Console.WriteLine("\n");
+                    }
+
+                    else if (userOption == "10") //available seats of screening session
+                    {
+                        DisplayAvailableSeats(sList);
+                        Console.WriteLine("\n");
+                    }
+
+                    else if (userOption == "0") //exit
+                    {
+                        Console.WriteLine("Thanks for using our Movie Ticket System! We hope to see you again :)");
+                        bookingover = true;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Invalid choice.");
+
+                    }
                 }
-
-            }
         }
 
         //=====================================================  To be removed/might be useful  ===================================================
@@ -118,15 +164,17 @@ namespace PRG2_Assignment
         {
             Console.WriteLine("Movie Tickting System" +
                 "\n----------------------------" +
-                "\n1. View All Movies" +
-                "\n2. View Available Screening for Movie" +
-                "\n3. Add Movie Screening" +
-                "\n4. Delete Movie Screening" +
-                "\n5. Order Movie Tickets" +
-                "\n6. Cancel Ticket" +
-                "\n7. Recommended Movies" +
-                "\n8. View Available Seats for a Screening Session" +
-                "\n0. Exit" +
+                "\n1.  Load Movie and Cinema Data" +
+                "\n2.  Load Screening Data" +
+                "\n3.  View All Movies" +
+                "\n4.  View Available Screening for Movie" +
+                "\n5.  Add Movie Screening" +
+                "\n6.  Delete Movie Screening" +
+                "\n7.  Order Movie Tickets" +
+                "\n8.  Cancel Ticket" +
+                "\n9.  Recommended Movies" +
+                "\n10. View Available Seats for Screening Sessions in descending order" +
+                "\n0.  Exit" +
                 "\n----------------------------");
         }
         // ------------------- Display Cinemas -------------------
