@@ -21,7 +21,6 @@ namespace PRG2_Assignment
             List<Cinema> cList = new List<Cinema>();
             List<Movie> mList = new List<Movie>();
             List<Screening> sList = new List<Screening>();
-            List<Ticket> tList = new List<Ticket>();
             List<Order> oList = new List<Order>();
 
             //----------- Reading CSV & storing as objects + Populate lists -----------
@@ -396,7 +395,7 @@ namespace PRG2_Assignment
                     if (screen.Movie == m)
                     {
                         sNoBasedOnMovie.Add(screen.ScreeningNo); // for 7) [validation]
-                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-15}{5,-20}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo, screen.SeatsRemaining);
+                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo, screen.SeatsRemaining);
                     }
                     else
                     {
@@ -606,7 +605,7 @@ namespace PRG2_Assignment
                 for (int o = 0; o < oList.Count; o++)
                 {
                     Order order = oList[o];
-                    ticketsSold.Add(order.tList[0].Screening.ScreeningNo); //add screnning number to list 
+                    ticketsSold.Add(order.TList[0].Screening.ScreeningNo); //add screnning number to list 
                 }
                 ticketsSold.Distinct().ToList(); //remove duplicated screening number
 
@@ -622,7 +621,7 @@ namespace PRG2_Assignment
                                              // noTicketsSold will be left with screening numbers that has no order
                 }
 
-                Console.WriteLine("\n{0}{1,-18}{2,-28}{3,-19}{4,-25}{5,-40}", "", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
                 for (int s = 0; s < sList.Count; s++)
                 {
                     Screening screening = sList[s];
@@ -1010,7 +1009,7 @@ namespace PRG2_Assignment
                 }
 
                 //3.check if the screening in the selected order is screened
-                if (DateTime.Now > findOrderNo.tList[0].Screening.ScreeningDateTime)
+                if (DateTime.Now > findOrderNo.TList[0].Screening.ScreeningDateTime)
                 {
                     Console.WriteLine("\nRequest to cancel order denied. The movie has already been screened.");
                     //7. display the status of the cancelation (i.e. successful or unsuccessful)
@@ -1019,8 +1018,8 @@ namespace PRG2_Assignment
                 else
                 {
                     //4. update seat remaining for the movie screening based on the selected order
-                    int seatsRemaining = findOrderNo.tList.Count();
-                    findOrderNo.tList[0].SeatsRemaining += seatsRemaining;
+                    int seatsRemaining = findOrderNo.TList.Count();
+                    findOrderNo.TList[0].SeatsRemaining += seatsRemaining;
 
                     //5.change order status to “Cancelled”
                     findOrderNo.Status = "Cancelled";

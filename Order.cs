@@ -36,7 +36,7 @@ namespace PRG2_Assignment
             get { return status; }
             set { status = value; }
         }
-        public List<Ticket> tList { get; set; } = new List<Ticket>();
+        public List<Ticket> TList { get; set; } = new List<Ticket>();
         public Order() { }
         public Order(int orderNo, DateTime orderDateTime)
         {
@@ -45,7 +45,7 @@ namespace PRG2_Assignment
         }
         public void AddTicket(Ticket t)
         {
-            tList.Add(t);
+            TList.Add(t);
         }
         public override string ToString()
         {
