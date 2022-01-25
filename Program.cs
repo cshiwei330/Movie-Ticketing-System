@@ -130,6 +130,12 @@ namespace PRG2_Assignment
                         Console.WriteLine("\n");
                     }
 
+                    else if (userOption == "11")
+                    {
+                        SalesByCinema(cList, oList);
+                        Console.WriteLine("\n");
+                    }
+
                     else if (userOption == "0") //exit
                     {
                         Console.WriteLine("Thanks for using our Movie Ticket System! We hope to see you again :)");
@@ -173,6 +179,7 @@ namespace PRG2_Assignment
                     "\n8.  Cancel Ticket" +
                     "\n9.  Recommended Movies" +
                     "\n10. View Available Seats for Screening Sessions in descending order" +
+                    "\n11. View Top Sales by Cinema" +
                     "\n0.  Exit" +
                     "\n----------------------------");
             }
@@ -207,7 +214,7 @@ namespace PRG2_Assignment
                     string[] cvalues = cdata[i].Split(",");
                     int count = cvalues.Count();
 
-                    if (count ==3) // [validation of data set]
+                    if (count == 3) // [validation of data set]
                     {
                         cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
                     }
@@ -216,8 +223,8 @@ namespace PRG2_Assignment
                     {
                         continue;
                     }
-                    
-                }        
+
+                }
             }
 
 
@@ -263,9 +270,9 @@ namespace PRG2_Assignment
                     }
                     else
                     {
-                        continue; 
+                        continue;
                     }
-                    
+
                 }
             }
 
@@ -322,7 +329,7 @@ namespace PRG2_Assignment
                         sList.Add(newscr);
                         ScreeningNo++;
                     }
-                    
+
                     else
                     {
                         continue;
@@ -1080,7 +1087,46 @@ namespace PRG2_Assignment
             }
 
             // ------------------- 3.3) Top sales chart of the Cinema Name -------------------
+            static void SalesByCinema(List<Cinema> cList, List<Order> oList)
+            {
+                List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>();
+                List<string> cinemaNames = new List<string>();
+                foreach (Cinema c in cList)
+                {
+                    cinemaNames.Add(c.Name);
+                }
+                cinemaNames.Distinct().ToList();
+                cinemaNames.ForEach(l => Console.WriteLine(l));
+                //foreach (string s in cinemaNames)
+                //{
+                //    Console.WriteLine(s);
 
+                //}
+                for (int i=0;i<cinemaNames.Count;i++)
+                {
+                    double totalSales = 0;
+                    foreach (Order o in oList)
+                    {
+                        if (o.TList[0].Screening.Cinema.Name == cinemaNames[i])
+                        {
+                            totalSales += o.Amount;
+                            Console.WriteLine(totalSales);
+                        }
+                    }
+                    SalesByCinema.Add(new Tuple<string, double>(cinemaNames[i], totalSales));
+                }
+
+                Console.WriteLine("Top Sales by Cinema");
+                SalesByCinema = SalesByCinema.OrderBy(SalesByCinema => SalesByCinema.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
+                SalesByCinema.Reverse();                                                        // sort list in descending order
+                int n = 1;
+                Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Total Sales");
+                for (int j = 0; j < SalesByCinema.Count; j++)
+                {
+                    Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, SalesByCinema[j].Item1, SalesByCinema[j].Item2);
+                    n++;
+                }
+            }
         }
     }
 }
