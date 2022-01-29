@@ -148,6 +148,12 @@ namespace PRG2_Assignment
 
                     else if (userOption == "11")
                     {
+                        DisplayTop3();
+                        Console.WriteLine("\n");
+                    }
+
+                    else if (userOption == "12")
+                    {
                         SalesByCinema(cList, oList);
                         Console.WriteLine("\n");
                     }
@@ -193,9 +199,10 @@ namespace PRG2_Assignment
                     "\n6.  Delete Movie Screening" +
                     "\n7.  Order Movie Tickets" +
                     "\n8.  Cancel Ticket" +
-                    "\n9.  Recommended Movies" +
-                    "\n10. Available Seats for Screening Sessions" +
-                    "\n11. Top Sales by Cinema" +
+                    "\n9.  Recommended Movies Based on Sales" +
+                    "\n10. Available Seats in Screening Sessions" +
+                    "\n11. Top 3 Movies Based on Number of Tickets Sold " +
+                    "\n12. Top Sales by Cinema" +
                     "\n0.  Exit" +
                     "\n----------------------------");
             }
@@ -1093,57 +1100,26 @@ namespace PRG2_Assignment
                         }
                     }
                     totalSold.Add(new Tuple<string, double>(m.Title, totalCosts));     // add movie title and total amount sold into a list
-                    if (totalCosts > Compare)
-                    {
-                        Compare = totalCosts;
-                    }
+                    totalCosts = 0;
                 }
-                Console.WriteLine("List of Recommended Movies");
+                totalSold.Sort((a, b) => a.Item2.CompareTo(b.Item2));   // Sort based on sales amount
+                totalSold.Reverse();     // Highest sales first
 
-
-                //for (int x = 0; x < mList.Count; x++)
-                //{
-                //    Movie m = mList[x];
-                //    movieRec.Add(m.Title);
-                //    foreach (Order o in oList)
-                //    {
-                //        if (o.TList[0].Screening.Movie.Title == m.Title)  // retrieve screenings of the movie
-                //        {
-                //            totalCosts += o.Amount;
-                //        }
-                //    }
-                //    totalSales.Add(totalCosts);
-                //    totalCosts = 0;
-                //}
-                //// Compare sales for each movie and append to list with highest sales first
-                //for (int i=0; i<movieRec.Count;i++)
-                //{
-                //    for (int j=0;j<totalSales.Count;j++)
-                //    {
-                //        if (totalSales[j]>Compare)
-                //        {
-                //            Compare = totalSales[j];
-                //            counter = j;
-                //        }
-                //    }
-
-                //Console.WriteLine("List of Recommended Movies");
-                //int n = 1;
-                //Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Total Amount Sold");
-                //for (int y = 0; y < 3; y++)     // Show only top 3 movies in sorted list
-                //{ 
-                //    if (sortedSales[y]!=0)
-                //    {
-                //        Console.WriteLine("{0,-3} {1,-35} {2,-6:c2}", n, sortedMovies[y], sortedSales[y]);
-                //    }
-                //    else
-                //    {
-                //        continue;  // If no sales, don't display
-                //    }
-                //    n++;
-                //}
-
-
+                Console.WriteLine("\nList of Recommended Movies");
+                int n = 1;
+                Console.WriteLine("\n{0,-3} {1,-35} {2,-6}", "  ", "Title", "Total Amount Sold");
+                for (int y = 0; y<mList.Count; y++)
+                {
+                    if (totalSold[y].Item2 != 0)
+                    {
+                        Console.WriteLine("{0,-3} {1,-35} {2,-6:c2}", n, totalSold[y].Item1, totalSold[y].Item2);
+                    }
+                    else
+                    {
+                        continue;  // If no sales, don't display
+                    }
+                    n++;
+                }
             }
 
             // ------------------- 3.2) Display available seats of screening session in descending order -------------------
@@ -1155,6 +1131,12 @@ namespace PRG2_Assignment
                 {
                     Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
                 }
+            }
+
+            // ------------------- 3.3) Top 3 movies based on tickets sold -------------------
+            static void DisplayTop3()
+            {
+
             }
 
             // ------------------- 3.3) Top sales chart of the Cinema Name -------------------
@@ -1190,7 +1172,7 @@ namespace PRG2_Assignment
 
                 SalesByCinema.Sort((a, b) => a.Item2.CompareTo(b.Item2)); //sort based on salesAmount
                 SalesByCinema.Reverse(); //highest salesAmount will be first 
-                Console.WriteLine("Top Sales by Cinema");
+                Console.WriteLine("\nTop Sales by Cinema");
 
                 int n = 1;
                 for (int j = 0; j < cinemaNames.Count; j++)
@@ -1198,42 +1180,6 @@ namespace PRG2_Assignment
                     Console.WriteLine("{0,-3} {1,-20} {2,-6:c2}", n, SalesByCinema[j].Item1, SalesByCinema[j].Item2);
                     n++;
                 }
-
-                //List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>();
-                //List<string> cinemaNames = new List<string>();
-                //cinemaNames.Add("Singa West");
-                //cinemaNames.Add("Singa North");
-                //cinemaNames.Add("Singa South");
-                //cinemaNames.Add("Singa East");
-                //cinemaNames.Add("Singa Central");
-                //foreach (string s in cinemaNames)
-                //{
-                //    Console.WriteLine(s);
-
-                //}
-                //for (int i = 0; i < cinemaNames.Count; i++)
-                //{
-                //    double totalSales = 0;
-                //    foreach (Order o in oList)
-                //    {
-                //        if (o.TList[0].Screening.Cinema.Name == cinemaNames[i])
-                //        {
-                //            totalSales += o.Amount;
-                //        }
-                //    }
-                //    SalesByCinema.Add(new Tuple<string, double>(cinemaNames[i], totalSales));
-                //}
-
-                //Console.WriteLine("Top Sales by Cinema");
-                //SalesByCinema = SalesByCinema.OrderBy(SalesByCinema => SalesByCinema.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
-                //SalesByCinema.Reverse();                                                        // sort list in descending order
-                //int n = 1;
-                //Console.WriteLine("\n    {0,-20} {1,-15}", "Title", "Total Sales");
-                //for (int j = 0; j < cinemaNames.Count; j++)
-                //{
-                //    Console.WriteLine("{0,-3} {1,-20} ${2,-6:c2}", n, SalesByCinema[j].Item1, SalesByCinema[j].Item2);
-                //    n++;
-                //}
             }
         }
     }
