@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG2_Assignment
 {
-    class Screening
+    class Screening : IComparable <Screening>
     {
         private int screeningno;
         public int ScreeningNo { get; set; }
@@ -39,6 +39,16 @@ namespace PRG2_Assignment
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        public int CompareSeatsRemaining(Screening s)
+        {
+            if (SeatsRemaining < s.SeatsRemaining)
+                return 1;
+            else if (SeatsRemaining == s.SeatsRemaining)
+                return 0;
+            else
+                return -1;
         }
     }
 }
