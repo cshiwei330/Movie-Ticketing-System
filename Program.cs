@@ -1160,7 +1160,80 @@ namespace PRG2_Assignment
             // ------------------- 3.3) Top sales chart of the Cinema Name -------------------
             static void SalesByCinema(List<Cinema> cList, List<Order> oList)
             {
-                
+                List<string> cinemaNames = new List<string>(); //list will contains cinema names 
+                for (int c = 0; c < cList.Count; c++)
+                {
+                    if (cinemaNames.Contains(cList[c].Name)) //avoid adding duplicates 
+                    {
+                        continue;
+                    }
+
+                    else
+                        cinemaNames.Add(cList[c].Name);
+                }
+
+
+                List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>(); // cinemaName, salesAmount 
+
+                for (int i = 0; i < cinemaNames.Count; i++)
+                {
+                    double salesAmount = 0;
+                    foreach (Order o in oList)
+                    {
+                        if (o.TList[0].Screening.Cinema.Name == cinemaNames[i])
+                        {
+                            salesAmount += o.Amount;
+                        }
+                    }
+                    SalesByCinema.Add(new Tuple<string, double>(cinemaNames[i], salesAmount));
+                }
+
+                SalesByCinema.Sort((a, b) => a.Item2.CompareTo(b.Item2)); //sort based on salesAmount
+                SalesByCinema.Reverse(); //highest salesAmount will be first 
+                Console.WriteLine("Top Sales by Cinema");
+
+                int n = 1;
+                for (int j = 0; j < cinemaNames.Count; j++)
+                {
+                    Console.WriteLine("{0,-3} {1,-20} {2,-6:c2}", n, SalesByCinema[j].Item1, SalesByCinema[j].Item2);
+                    n++;
+                }
+
+                //List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>();
+                //List<string> cinemaNames = new List<string>();
+                //cinemaNames.Add("Singa West");
+                //cinemaNames.Add("Singa North");
+                //cinemaNames.Add("Singa South");
+                //cinemaNames.Add("Singa East");
+                //cinemaNames.Add("Singa Central");
+                //foreach (string s in cinemaNames)
+                //{
+                //    Console.WriteLine(s);
+
+                //}
+                //for (int i = 0; i < cinemaNames.Count; i++)
+                //{
+                //    double totalSales = 0;
+                //    foreach (Order o in oList)
+                //    {
+                //        if (o.TList[0].Screening.Cinema.Name == cinemaNames[i])
+                //        {
+                //            totalSales += o.Amount;
+                //        }
+                //    }
+                //    SalesByCinema.Add(new Tuple<string, double>(cinemaNames[i], totalSales));
+                //}
+
+                //Console.WriteLine("Top Sales by Cinema");
+                //SalesByCinema = SalesByCinema.OrderBy(SalesByCinema => SalesByCinema.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
+                //SalesByCinema.Reverse();                                                        // sort list in descending order
+                //int n = 1;
+                //Console.WriteLine("\n    {0,-20} {1,-15}", "Title", "Total Sales");
+                //for (int j = 0; j < cinemaNames.Count; j++)
+                //{
+                //    Console.WriteLine("{0,-3} {1,-20} ${2,-6:c2}", n, SalesByCinema[j].Item1, SalesByCinema[j].Item2);
+                //    n++;
+                //}
             }
         }
     }
