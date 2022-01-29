@@ -38,10 +38,17 @@ namespace PRG2_Assignment
                 {
                     if (userOption == "1")
                     {
-                        ReadMovie(mList);
-                        ReadCinema(cList);
-                        Console.WriteLine("Loading of Movie and Cinema Data completed.\n");
-                        loadedMnC = true;
+                        if (File.Exists("Movie.csv") && File.Exists("Cinema.csv"))
+                        {
+                            ReadMovie(mList);
+                            ReadCinema(cList);
+                            Console.WriteLine("Loading of Movie and Cinema Data completed.\n");
+                            loadedMnC = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please make sure that relevant files exists.");
+                        }
                     }
                     else
                     {
@@ -57,9 +64,17 @@ namespace PRG2_Assignment
                     }
                     else if (userOption == "2") //load screening data
                     {
-                        ReadScreening(sList, cList, mList);
-                        Console.WriteLine("Loading of Screening Data completed.\n");
-                        loadedS = true;
+                        if (File.Exists("Screening.csv"))
+                        {
+                            ReadScreening(sList, cList, mList);
+                            Console.WriteLine("Loading of Screening Data completed.\n");
+                            loadedS = true;
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Please make sure that Screening.csv exists.");
+                        }    
                     }
 
                     else if (userOption == "3") //display movies
@@ -212,9 +227,8 @@ namespace PRG2_Assignment
                 for (int i = 1; i < cdata.Length; i++)
                 {
                     string[] cvalues = cdata[i].Split(",");
-                    int count = cvalues.Count();
 
-                    if (count == 3) // [validation of data set]
+                    if (cvalues.Length == 3) // [validation of data set]
                     {
                         cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
                     }
@@ -235,8 +249,7 @@ namespace PRG2_Assignment
                 for (int i = 1; i < mdata.Length; i++)
                 {
                     string[] mvalues = mdata[i].Split(",");
-                    int count = mvalues.Count();
-                    if (count == 5) // [validation of data set]
+                    if (mvalues.Length == 5) // [validation of data set]
                     {
                         string genreGiven = mvalues[2]; // ------------ stores the genre given in csv 
 
@@ -283,8 +296,7 @@ namespace PRG2_Assignment
                 for (int i = 1; i < sdata.Length; i++)
                 {
                     string[] svalues = sdata[i].Split(",");
-                    int count = svalues.Count();
-                    if (count == 5)  // [validation of data set]
+                    if (svalues.Length == 5)  // [validation of data set]
                     {
                         string cinemaName = svalues[2];
                         int hallNo = Convert.ToInt32(svalues[3]);
@@ -521,9 +533,17 @@ namespace PRG2_Assignment
                     for (int j = 0; j < sList.Count; j++)
                     {
                         Screening s = sList[j];
-                        sDates.Add(s.ScreeningDateTime.Date);
+
+                        if (sDates.Contains(s.ScreeningDateTime.Date)) //avoid adding duplicates
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            sDates.Add(s.ScreeningDateTime.Date);
+                        }
                     }
-                    sDates.Distinct().ToList(); //remove duplicated dates
+
                     bool dateExists = false;
                     for (int d = 0; d < sDates.Count; d++)
                     {
@@ -538,9 +558,18 @@ namespace PRG2_Assignment
                     for (int j = 0; j < sList.Count; j++)
                     {
                         Screening s = sList[j];
-                        cinemasInSList.Add(s.Cinema);
+
+                        if (cinemasInSList.Contains(s.Cinema)) //avoid adding duplicates
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            cinemasInSList.Add(s.Cinema);
+                        }
+
                     }
-                    cinemasInSList.Distinct().ToList(); //remove duplicated cinemas
+
                     bool cinemaExists = false;
                     for (int c = 0; c < cinemasInSList.Count; c++)
                     {
@@ -549,7 +578,6 @@ namespace PRG2_Assignment
                             cinemaExists = true;
                         }
                     }
-
 
                     if (dateExists == true && cinemaExists == true)
                     {
@@ -617,9 +645,15 @@ namespace PRG2_Assignment
                 for (int o = 0; o < oList.Count; o++)
                 {
                     Order order = oList[o];
-                    ticketsSold.Add(order.TList[0].Screening.ScreeningNo); //add screnning number to list 
+                    if (ticketsSold.Contains(order.TList[0].Screening.ScreeningNo)) //avoid adding duplicates
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        ticketsSold.Add(order.TList[0].Screening.ScreeningNo); //add screening number to list
+                    }
                 }
-                ticketsSold.Distinct().ToList(); //remove duplicated screening number
 
                 List<int> noTicketsSold = new List<int>();
                 foreach (Screening s in sList)
