@@ -7,7 +7,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 
 namespace PRG2_Assignment
 {
@@ -1060,7 +1060,7 @@ namespace PRG2_Assignment
                 else
                 {
                     //4. update seat remaining for the movie screening based on the selected order
-                    int seatsRemaining = findOrderNo.TList.Count();
+                    int seatsRemaining = findOrderNo.TList.Count;
                     findOrderNo.TList[0].SeatsRemaining += seatsRemaining;
 
                     //5.change order status to “Cancelled”
