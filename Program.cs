@@ -7,7 +7,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 
 namespace PRG2_Assignment
 {
@@ -39,10 +39,17 @@ namespace PRG2_Assignment
                 {
                     if (userOption == "1")
                     {
-                        ReadMovie(mList);
-                        ReadCinema(cList);
-                        Console.WriteLine("Loading of Movie and Cinema Data completed.\n");
-                        loadedMnC = true;
+                        if (File.Exists("Movie.csv") && File.Exists("Cinema.csv"))
+                        {
+                            ReadMovie(mList);
+                            ReadCinema(cList);
+                            Console.WriteLine("Loading of Movie and Cinema Data completed.\n");
+                            loadedMnC = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please make sure that relevant files exists.");
+                        }
                     }
                     else
                     {
@@ -58,9 +65,17 @@ namespace PRG2_Assignment
                     }
                     else if (userOption == "2") //load screening data
                     {
-                        ReadScreening(sList, cList, mList);
-                        Console.WriteLine("Loading of Screening Data completed.\n");
-                        loadedS = true;
+                        if (File.Exists("Screening.csv"))
+                        {
+                            ReadScreening(sList, cList, mList);
+                            Console.WriteLine("Loading of Screening Data completed.\n");
+                            loadedS = true;
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Please make sure that Screening.csv exists.");
+                        }    
                     }
 
                     else if (userOption == "3") //display movies
@@ -213,9 +228,8 @@ namespace PRG2_Assignment
                 for (int i = 1; i < cdata.Length; i++)
                 {
                     string[] cvalues = cdata[i].Split(",");
-                    int count = cvalues.Count();
 
-                    if (count == 3) // [validation of data set]
+                    if (cvalues.Length == 3) // [validation of data set]
                     {
                         cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
                     }
@@ -236,8 +250,7 @@ namespace PRG2_Assignment
                 for (int i = 1; i < mdata.Length; i++)
                 {
                     string[] mvalues = mdata[i].Split(",");
-                    int count = mvalues.Count();
-                    if (count == 5) // [validation of data set]
+                    if (mvalues.Length == 5) // [validation of data set]
                     {
                         string genreGiven = mvalues[2]; // ------------ stores the genre given in csv 
 
@@ -284,8 +297,7 @@ namespace PRG2_Assignment
                 for (int i = 1; i < sdata.Length; i++)
                 {
                     string[] svalues = sdata[i].Split(",");
-                    int count = svalues.Count();
-                    if (count == 5)  // [validation of data set]
+                    if (svalues.Length == 5)  // [validation of data set]
                     {
                         string cinemaName = svalues[2];
                         int hallNo = Convert.ToInt32(svalues[3]);
@@ -328,6 +340,7 @@ namespace PRG2_Assignment
                         Screening newscr = new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2);
                         newscr.SeatsRemaining = result.Capacity;
                         sList.Add(newscr);
+                        result2.AddScreening(newscr);
                         ScreeningNo++;
                     }
 
@@ -367,7 +380,7 @@ namespace PRG2_Assignment
 
 
             // ------------------- 4) List Movie Screenings -------------------
-            static List<int> ListMovieScreenings(List<Movie> mList, List<Screening> sList)
+            static Movie ListMovieScreenings(List<Movie> mList, List<Screening> sList)
             {
                 //1. list all movies 
                 DisplayMovieDetails(mList);
@@ -395,22 +408,12 @@ namespace PRG2_Assignment
                 //4. retrieve and display screening sessions for that movie
                 Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
 
-                List<int> sNoBasedOnMovie = new List<int>();
-
-                for (int s = 0; s < sList.Count; s++)
+                foreach (Screening s in m.screeningList)
                 {
-                    Screening screen = sList[s];
-                    if (screen.Movie == m)
-                    {
-                        sNoBasedOnMovie.Add(screen.ScreeningNo); // for 7) [validation]
-                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo, screen.SeatsRemaining);
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
                 }
-                return sNoBasedOnMovie;
+
+                return m;
             }
 
             //=====================================================  Screening  ===================================================
@@ -522,9 +525,17 @@ namespace PRG2_Assignment
                     for (int j = 0; j < sList.Count; j++)
                     {
                         Screening s = sList[j];
-                        sDates.Add(s.ScreeningDateTime.Date);
+
+                        if (sDates.Contains(s.ScreeningDateTime.Date)) //avoid adding duplicates
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            sDates.Add(s.ScreeningDateTime.Date);
+                        }
                     }
-                    sDates.Distinct().ToList(); //remove duplicated dates
+
                     bool dateExists = false;
                     for (int d = 0; d < sDates.Count; d++)
                     {
@@ -539,9 +550,18 @@ namespace PRG2_Assignment
                     for (int j = 0; j < sList.Count; j++)
                     {
                         Screening s = sList[j];
-                        cinemasInSList.Add(s.Cinema);
+
+                        if (cinemasInSList.Contains(s.Cinema)) //avoid adding duplicates
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            cinemasInSList.Add(s.Cinema);
+                        }
+
                     }
-                    cinemasInSList.Distinct().ToList(); //remove duplicated cinemas
+
                     bool cinemaExists = false;
                     for (int c = 0; c < cinemasInSList.Count; c++)
                     {
@@ -550,7 +570,6 @@ namespace PRG2_Assignment
                             cinemaExists = true;
                         }
                     }
-
 
                     if (dateExists == true && cinemaExists == true)
                     {
@@ -618,9 +637,15 @@ namespace PRG2_Assignment
                 for (int o = 0; o < oList.Count; o++)
                 {
                     Order order = oList[o];
-                    ticketsSold.Add(order.TList[0].Screening.ScreeningNo); //add screnning number to list 
+                    if (ticketsSold.Contains(order.TList[0].Screening.ScreeningNo)) //avoid adding duplicates
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        ticketsSold.Add(order.TList[0].Screening.ScreeningNo); //add screening number to list
+                    }
                 }
-                ticketsSold.Distinct().ToList(); //remove duplicated screening number
 
                 List<int> noTicketsSold = new List<int>();
                 foreach (Screening s in sList)
@@ -688,6 +713,7 @@ namespace PRG2_Assignment
                     if (s.ScreeningNo == screeningOption)
                     {
                         sList.Remove(s);
+                        s.Movie.screeningList.Remove(s); //remove screening from the screeningList in movie obj
                         success = true;
                         Console.WriteLine("Sucessful. Screening {0} was removed!", s.ScreeningNo);
                     }
@@ -713,7 +739,7 @@ namespace PRG2_Assignment
                 //1.list all movies
                 //2.prompt user to select a movie
                 //3.list all movie screenings of the selected movie
-                List<int> sBasedOnMovie = ListMovieScreenings(mList, sList);
+                Movie m = ListMovieScreenings(mList, sList);
 
                 //4. prompt user to select movie screening
                 bool validMovieScreening = false;
@@ -726,11 +752,15 @@ namespace PRG2_Assignment
                         Console.Write("\nSelect a Movie Screening: ");
                         screeningOption = Convert.ToInt32(Console.ReadLine());
 
-                        if (sBasedOnMovie.Contains(screeningOption))
+                        for (int s = 0; s < m.screeningList.Count; s++)
                         {
-                            validMovieScreening = true;
+                            if (m.screeningList[s].ScreeningNo == screeningOption)
+                                validMovieScreening = true;
+                            else
+                                continue;
                         }
-                        else
+
+                        if (validMovieScreening == false)
                         {
                             Console.WriteLine("Invalid choice. The screening number that you have entered is not for the movie you chose.");
                         }
@@ -1032,7 +1062,7 @@ namespace PRG2_Assignment
                 else
                 {
                     //4. update seat remaining for the movie screening based on the selected order
-                    int seatsRemaining = findOrderNo.TList.Count();
+                    int seatsRemaining = findOrderNo.TList.Count;
                     findOrderNo.TList[0].SeatsRemaining += seatsRemaining;
 
                     //5.change order status to “Cancelled”
