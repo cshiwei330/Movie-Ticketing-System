@@ -148,7 +148,7 @@ namespace PRG2_Assignment
 
                     else if (userOption == "11")
                     {
-                        DisplayTop3();
+                        DisplayTop3(mList);
                         Console.WriteLine("\n");
                     }
 
@@ -805,7 +805,7 @@ namespace PRG2_Assignment
                         Console.Write("Enter number of tickets to order: ");
                         toOrder = Convert.ToInt32(Console.ReadLine());
 
-                        if (toOrder < findScreening.SeatsRemaining) //check if figure entered is more than the available seats for the screening
+                        if (toOrder <= findScreening.SeatsRemaining) //check if figure entered is more than the available seats for the screening
                         {
                             validtoOrder = true;
                         }
@@ -1126,16 +1126,44 @@ namespace PRG2_Assignment
             static void DisplayAvailableSeats(List<Screening> sList)
             {
                 sList.Sort();
-                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
+                Console.WriteLine("\n{0,-27}{1,-18}{2,-28}{3,-19}{4,-22}{5,-17}{6,-20}", "Movie Title: ", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
                 foreach (Screening s in sList)
                 {
-                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
+                    Console.WriteLine("{0,-27}{1,-18}{2,-28}{3,-19}{4,-22}{5,-17}{6,-20}",s.Movie.Title, s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
                 }
             }
 
             // ------------------- 3.3) Top 3 movies based on tickets sold -------------------
-            static void DisplayTop3()
+            static void DisplayTop3(List<Movie> mList)
             {
+                List<Tuple<string, int>> seatsSold = new List<Tuple<string, int>>();
+                for (int x = 0; x < mList.Count; x++)
+                {
+                    int totalCap = 0;
+                    int totalAvail = 0;
+                    int totalSold = 0;
+                    Movie m = mList[x];
+                    foreach (Screening s in mList[x].screeningList)
+                    {    
+                        totalCap += s.Cinema.Capacity;
+                        totalAvail += s.SeatsRemaining;
+                        totalSold = totalCap - totalAvail;
+                    }
+                    seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
+                }
+
+
+                seatsSold.Sort((a, b) => a.Item2.CompareTo(b.Item2)); 
+                seatsSold.Reverse();
+
+                Console.WriteLine("List of Recommended Movies");
+                int n = 1;
+                Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
+                for (int y = 0; y < 3; y++)
+                {
+                    Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, seatsSold[y].Item1, seatsSold[y].Item2);
+                    n++;
+                }
 
             }
 
@@ -1172,8 +1200,8 @@ namespace PRG2_Assignment
 
                 SalesByCinema.Sort((a, b) => a.Item2.CompareTo(b.Item2)); //sort based on salesAmount
                 SalesByCinema.Reverse(); //highest salesAmount will be first 
-                Console.WriteLine("\nTop Sales by Cinema");
 
+                Console.WriteLine("\nSales by Cinema");
                 int n = 1;
                 for (int j = 0; j < cinemaNames.Count; j++)
                 {
