@@ -22,7 +22,6 @@ namespace PRG2_Assignment
             List<Movie> mList = new List<Movie>();
             List<Screening> sList = new List<Screening>();
             List<Order> oList = new List<Order>();
-            List<Tuple<string, double>> totalSold = new List<Tuple<string, double>>();
 
             //----------- Reading CSV & storing as objects + Populate lists -----------
 
@@ -1088,7 +1087,6 @@ namespace PRG2_Assignment
             {
                 List<Tuple<string, double>> totalSold = new List<Tuple<string, double>>();
                 double totalCosts = 0;
-                double Compare = 0;
                 for (int x = 0; x < mList.Count; x++)
                 {
                     Movie m = mList[x];
