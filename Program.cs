@@ -120,7 +120,7 @@ namespace PRG2_Assignment
 
                     else if (userOption == "9") //recommended movies based on number of tickets sold 
                     {
-                        RecommendMovies(mList, sList);
+                        RecommendMovies(mList, oList);
                         Console.WriteLine("\n");
                     }
 
@@ -1045,37 +1045,68 @@ namespace PRG2_Assignment
             //=====================================================  Advanced  ===================================================
 
             // ------------------- 3.1) Recommend movies based on sales of tickets sold -------------------
-            static void RecommendMovies(List<Movie> mList, List<Screening> sList)
+            static void RecommendMovies(List<Movie> mList, List<Order> oList)
             {
-                List<Tuple<string, int>> seatsSold = new List<Tuple<string, int>>();
+                List<Tuple<string, double>> totalSold = new List<Tuple<string, double>>();
+                double totalCosts = 0.0;
                 for (int x = 0; x < mList.Count; x++)
                 {
-                    int totalCap = 0;
-                    int totalAvail = 0;
-                    int totalSold = 0;
                     Movie m = mList[x];
-                    foreach (Screening s in sList)
+                    foreach (Order o in oList)
                     {
-                        if (s.Movie.Title == m.Title)  // retrieve screenings of the movie
+                        if (o.TList[0].Screening.Movie.Title == m.Title)  // retrieve screenings of the movie
                         {
-                            totalCap += s.Cinema.Capacity;
-                            totalAvail += s.SeatsRemaining;
+                            totalCosts += o.Amount;
+                            Console.WriteLine(totalCosts);
                         }
-                        totalSold = totalCap - totalAvail;
                     }
-                    seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
+                    totalSold.Add(new Tuple<string, double>(m.Title, totalCosts));  // add movie title and total seats sold into a list
                 }
 
                 Console.WriteLine("List of Recommended Movies");
-                seatsSold = seatsSold.OrderBy(seatsSold => seatsSold.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
-                seatsSold.Reverse();                                                        // sort list in descending order
+                totalSold = totalSold.OrderBy(totalSold => totalSold.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
+                totalSold.Reverse();                                                        // sort list in descending order
                 int n = 1;
-                Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
+                Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Total Amount Sold ($)");
                 for (int y = 0; y < mList.Count; y++)
                 {
-                    Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, seatsSold[y].Item1, seatsSold[y].Item2);
+                    Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, totalSold[y].Item1, totalSold[y].Item2);
                     n++;
                 }
+                //for (int x = 0; x < mList.Count; x++)
+                //{
+                //    int totalCap = 0;
+                //    int totalAvail = 0;
+                //    int totalSold = 0;
+                //    Movie m = mList[x];
+                //    foreach (Screening s in sList)
+                //    {
+                //        if (s.Movie.Title == m.Title)  // retrieve screenings of the movie
+                //        {
+                //            totalCap += s.Cinema.Capacity;
+                //            totalAvail += s.SeatsRemaining;
+                //        }
+                //        totalSold = totalCap - totalAvail;
+                //    }
+                //    seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
+                //}
+
+                    //Console.WriteLine("List of Recommended Movies");
+                    //seatsSold.Sort();
+                    ////foreach (Movie m in mList)
+                    ////{
+                    ////     Console.WriteLine()
+                    ////}
+                    //seatsSold = seatsSold.OrderBy(seatsSold => seatsSold.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
+                    //seatsSold.Reverse();                                                        // sort list in descending order
+                    //int n = 1;
+                    //Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
+                    //for (int y = 0; y < mList.Count; y++)
+                    //{
+                    //    Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, seatsSold[y].Item1, seatsSold[y].Item2);
+                    //    n++;
+                    //}
+
             }
 
             // ------------------- 3.2) Display available seats of screening session in descending order -------------------
@@ -1090,46 +1121,6 @@ namespace PRG2_Assignment
             }
 
             // ------------------- 3.3) Top sales chart of the Cinema Name -------------------
-            //static void SalesByCinema(List<Cinema> cList, List<Order> oList)
-            //{
-            //    List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>();
-            //    List<string> cinemaNames = new List<string>();
-            //    foreach (Cinema c in cList)
-            //    {
-            //        cinemaNames.Add(c.Name);
-            //    }
-            //    cinemaNames.Distinct().ToList();
-            //    //foreach (string s in cinemaNames)
-            //    //{
-            //    //    Console.WriteLine(s);
-
-            //    //}
-            //    for (int i=0;i<cinemaNames.Count;i++)
-            //    {
-            //        double totalSales = 0;
-            //        foreach (Order o in oList)
-            //        {
-            //            if (o.TList[0].Screening.Cinema.Name == cinemaNames[i])
-            //            {
-            //                totalSales += o.Amount;
-            //                Console.WriteLine(totalSales);
-            //            }
-            //        }
-            //        SalesByCinema.Add(new Tuple<string, double>(cinemaNames[i], totalSales));
-            //    }
-
-            //    Console.WriteLine("Top Sales by Cinema");
-            //    SalesByCinema = SalesByCinema.OrderBy(SalesByCinema => SalesByCinema.Item2).ToList();       // Item1=Movie Title, Item2=Number of seats sold
-            //    SalesByCinema.Reverse();                                                        // sort list in descending order
-            //    int n = 1;
-            //    Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Total Sales");
-            //    for (int j = 0; j < SalesByCinema.Count; j++)
-            //    {
-            //        Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, SalesByCinema[j].Item1, SalesByCinema[j].Item2);
-            //        n++;
-            //    }
-            //}
-
             static void SalesByCinema(List<Cinema> cList, List<Order> oList)
             {
                 List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>();
