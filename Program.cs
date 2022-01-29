@@ -339,6 +339,7 @@ namespace PRG2_Assignment
                         Screening newscr = new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2);
                         newscr.SeatsRemaining = result.Capacity;
                         sList.Add(newscr);
+                        result2.AddScreening(newscr);
                         ScreeningNo++;
                     }
 
@@ -378,7 +379,7 @@ namespace PRG2_Assignment
 
 
             // ------------------- 4) List Movie Screenings -------------------
-            static List<int> ListMovieScreenings(List<Movie> mList, List<Screening> sList)
+            static Movie ListMovieScreenings(List<Movie> mList, List<Screening> sList)
             {
                 //1. list all movies 
                 DisplayMovieDetails(mList);
@@ -406,22 +407,12 @@ namespace PRG2_Assignment
                 //4. retrieve and display screening sessions for that movie
                 Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
 
-                List<int> sNoBasedOnMovie = new List<int>();
-
-                for (int s = 0; s < sList.Count; s++)
+                foreach (Screening s in m.screeningList)
                 {
-                    Screening screen = sList[s];
-                    if (screen.Movie == m)
-                    {
-                        sNoBasedOnMovie.Add(screen.ScreeningNo); // for 7) [validation]
-                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", screen.ScreeningNo, screen.ScreeningDateTime, screen.ScreeningType, screen.Cinema.Name, screen.Cinema.HallNo, screen.SeatsRemaining);
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
                 }
-                return sNoBasedOnMovie;
+
+                return m;
             }
 
             //=====================================================  Screening  ===================================================
@@ -721,6 +712,7 @@ namespace PRG2_Assignment
                     if (s.ScreeningNo == screeningOption)
                     {
                         sList.Remove(s);
+                        s.Movie.screeningList.Remove(s); //remove screening from the screeningList in movie obj
                         success = true;
                         Console.WriteLine("Sucessful. Screening {0} was removed!", s.ScreeningNo);
                     }
@@ -746,7 +738,7 @@ namespace PRG2_Assignment
                 //1.list all movies
                 //2.prompt user to select a movie
                 //3.list all movie screenings of the selected movie
-                List<int> sBasedOnMovie = ListMovieScreenings(mList, sList);
+                Movie m = ListMovieScreenings(mList, sList);
 
                 //4. prompt user to select movie screening
                 bool validMovieScreening = false;
@@ -759,11 +751,15 @@ namespace PRG2_Assignment
                         Console.Write("\nSelect a Movie Screening: ");
                         screeningOption = Convert.ToInt32(Console.ReadLine());
 
-                        if (sBasedOnMovie.Contains(screeningOption))
+                        for (int s = 0; s < m.screeningList.Count; s++)
                         {
-                            validMovieScreening = true;
+                            if (m.screeningList[s].ScreeningNo == screeningOption)
+                                validMovieScreening = true;
+                            else
+                                continue;
                         }
-                        else
+
+                        if (validMovieScreening == false)
                         {
                             Console.WriteLine("Invalid choice. The screening number that you have entered is not for the movie you chose.");
                         }
