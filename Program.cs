@@ -474,6 +474,11 @@ namespace PRG2_Assignment
 
                     if (DateTime.TryParse(temp, out newSDateTime))
                     {
+                        if (newSDateTime < DateTime.Now)
+                        {
+                            Console.WriteLine("Screening date and time must be after now. " + "(" + Convert.ToString(DateTime.Now) + ")");
+                            continue;
+                        }
                         validnewSDateTime = true;
                     }
 
@@ -1107,11 +1112,9 @@ namespace PRG2_Assignment
             // ------------------- 3.2) Display available seats of screening session in descending order -------------------
             static void DisplayAvailableSeats(List<Screening> sList)
             {
-                List<Screening> byRemainingSeats = sList.OrderBy(Screening => Screening.SeatsRemaining).ToList();
-                byRemainingSeats.Reverse();
-
+                sList.Sort();
                 Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
-                foreach (Screening s in byRemainingSeats)
+                foreach (Screening s in sList)
                 {
                     Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
                 }
