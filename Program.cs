@@ -474,6 +474,11 @@ namespace PRG2_Assignment
 
                     if (DateTime.TryParse(temp, out newSDateTime))
                     {
+                        if (newSDateTime < DateTime.Now)
+                        {
+                            Console.WriteLine("Screening date and time must be after now. " + "(" + Convert.ToString(DateTime.Now) + ")");
+                            continue;
+                        }
                         validnewSDateTime = true;
                     }
 
