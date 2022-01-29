@@ -41,7 +41,7 @@ namespace PRG2_Assignment
             return base.ToString();
         }
 
-        public int CompareSeatsRemaining(Screening s)
+        public int CompareTo(Screening s)
         {
             if (SeatsRemaining < s.SeatsRemaining)
                 return 1;
