@@ -213,31 +213,30 @@ namespace PRG2_Assignment
             // ------------------- 1) Load Cinema Data & Populate Cinema List -----------------------------------------------------
             static void ReadCinema(List<Cinema> cList)
             {
-                string[] cdata = File.ReadAllLines("Cinema.csv");
+                string[] cdata = File.ReadAllLines("Cinema.csv");  // read cinema csv into string array
                 for (int i = 1; i < cdata.Length; i++)
                 {
-                    string[] cvalues = cdata[i].Split(",");
+                    string[] cvalues = cdata[i].Split(",");  // split the data in csv by commas
 
                     if (cvalues.Length == 3) // [validation of data set]
                     {
-                        cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2])));
+                        cList.Add(new Cinema(cvalues[0], Convert.ToInt32(cvalues[1]), Convert.ToInt32(cvalues[2]))); // convert to respective datatypes
                     }
 
                     else
                     {
                         continue;
                     }
-
                 }
             }
 
             // ------------------- 1) Load Movie Data & Populate Movie List --------------------------------------------------------
             static void ReadMovie(List<Movie> mList)
             {
-                string[] mdata = File.ReadAllLines("Movie.csv");
+                string[] mdata = File.ReadAllLines("Movie.csv"); // read movie csv into string array
                 for (int i = 1; i < mdata.Length; i++)
                 {
-                    string[] mvalues = mdata[i].Split(",");
+                    string[] mvalues = mdata[i].Split(",");  // split the data in csv by commas
                     if (mvalues.Length == 5) // [validation of data set]
                     {
                         string genreGiven = mvalues[2]; // ------------ stores the genre given in csv 
@@ -250,7 +249,7 @@ namespace PRG2_Assignment
 
                             if (sResult == true)
                             {
-                                string[] genres = genreGiven.Split("/");
+                                string[] genres = genreGiven.Split("/");  // split the genres by slash
                                 for (int j = 0; j < genres.Length; j++)
                                 {
                                     genrelist.Add(genres[j]); // ------------ add each genre into list
@@ -266,35 +265,34 @@ namespace PRG2_Assignment
 
                         List<string> genreResults = generateGenre(genreGiven);
 
-                        Movie m = new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults);
-                        mList.Add(m);
+                        Movie m = new Movie(mvalues[0], Convert.ToInt32(mvalues[1]), Convert.ToString(mvalues[3]), Convert.ToDateTime(mvalues[4]), genreResults); // convert to respective datatypes
+                        mList.Add(m);  // add movie object into movie list
                         m.AddGenre(genreGiven);
                     }
                     else
                     {
                         continue;
                     }
-
                 }
             }
 
             //------------------- 2) Load Screening Data & Populate Screening List --------------------------------------------------
             static void ReadScreening(List<Screening> sList, List<Cinema> cList, List<Movie> mList)
             {
-                string[] sdata = File.ReadAllLines("Screening.csv");
+                string[] sdata = File.ReadAllLines("Screening.csv");  // read screening csv into string array
                 for (int i = 1; i < sdata.Length; i++)
                 {
-                    string[] svalues = sdata[i].Split(",");
+                    string[] svalues = sdata[i].Split(","); // split data in csv by commas
                     if (svalues.Length == 5)  // [validation of data set]
                     {
-                        string cinemaName = svalues[2];
-                        int hallNo = Convert.ToInt32(svalues[3]);
+                        string cinemaName = svalues[2];  // assign the cinema name
+                        int hallNo = Convert.ToInt32(svalues[3]);  // assign the hall number
                         static Cinema CinemaSearch(List<Cinema> cList, string cinemaName, int hallNo)
                         {
                             for (int i = 0; i < cList.Count; i++)
                             {
                                 Cinema c = cList[i];
-                                if (cinemaName == c.Name && hallNo == c.HallNo)
+                                if (cinemaName == c.Name && hallNo == c.HallNo) // search for cinema with matching cinema name+hallno
                                 {
                                     return c;
                                 }
@@ -313,7 +311,7 @@ namespace PRG2_Assignment
                             for (int a = 0; a < mList.Count; a++)
                             {
                                 Movie m = mList[a];
-                                if (movieName == m.Title)
+                                if (movieName == m.Title)  // search for movie with the same title
                                 {
                                     return m;
                                 }
@@ -326,10 +324,10 @@ namespace PRG2_Assignment
                         }
                         Movie result2 = MovieSearch(mList, movieName);
                         Screening newscr = new Screening(ScreeningNo, Convert.ToDateTime(svalues[0]), svalues[1], result, result2);
-                        newscr.SeatsRemaining = result.Capacity;
-                        sList.Add(newscr);
+                        newscr.SeatsRemaining = result.Capacity;  // update seats remaining of the new screening with the cinema hall capacity
+                        sList.Add(newscr);  // add new screening to screening list
                         result2.AddScreening(newscr);
-                        ScreeningNo++;
+                        ScreeningNo++; // increase screening number by 1
                     }
 
                     else
@@ -652,7 +650,7 @@ namespace PRG2_Assignment
                                              // noTicketsSold will be left with screening numbers that has no order
                 }
 
-                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
                 for (int s = 0; s < sList.Count; s++)
                 {
                     Screening screening = sList[s];
@@ -730,7 +728,7 @@ namespace PRG2_Assignment
                 //1.list all movies
                 //2.prompt user to select a movie
                 //3.list all movie screenings of the selected movie
-                Movie m = ListMovieScreenings(mList, sList);
+                Movie m = ListMovieScreenings(mList, sList);   // display all screenings available for the selected movie
 
                 if (m.screeningList.Count != 0)
                 {
@@ -747,23 +745,22 @@ namespace PRG2_Assignment
 
                             for (int s = 0; s < m.screeningList.Count; s++)
                             {
-                                if (m.screeningList[s].ScreeningNo == screeningOption)
+                                if (m.screeningList[s].ScreeningNo == screeningOption)  // test if screening number exists
                                     validMovieScreening = true;
                                 else
                                     continue;
                             }
 
-                            if (validMovieScreening == false)
+                            if (validMovieScreening == false)   // reject if screening number for another movie is given
                             {
                                 Console.WriteLine("Invalid choice. The screening number that you have entered is not for the movie you chose.");
                             }
                         }
-                        catch
+                        catch   // reject if screening number does not exist
                         {
                             Console.WriteLine("Invalid choice. Please enter the screening number of the screening you want.");
                         }
                     }
-
 
                     Screening findScreening = null;
                     //5. retrieve the selected movie screening
@@ -795,12 +792,12 @@ namespace PRG2_Assignment
                             {
                                 validtoOrder = true;
                             }
-                            else
+                            else  // reject if tickets to order>available
                             {
                                 Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
                             }
                         }
-                        catch
+                        catch   // reject if the input is not a number
                         {
                             Console.WriteLine("Invalid input. Number of tickets should be a number.");
                         }
@@ -810,7 +807,7 @@ namespace PRG2_Assignment
                     Movie z = findScreening.Movie;
                     bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
 
-                    string[] ages = { "13", "18", "21" };
+                    string[] ages = { "13", "18", "21" };   // ages to meet for the different movie classifications
                     List<string> ageList = new List<string>();
                     ageList.AddRange(ages);
                     bool valid = false;
@@ -836,12 +833,12 @@ namespace PRG2_Assignment
                             break;
                         }
 
-                        Console.Write("Are all ticket holders above the age of {0}?[Y/N] : ", age);
-                        string metRequirements = Console.ReadLine().ToUpper();
+                        Console.Write("Are all ticket holders above the age of {0}?[Y/N] : ", age);  // prompt if all buyers meet the age requirement
+                        string metRequirements = Console.ReadLine().ToUpper();  // change all inputs to caps, for validation
                         if (metRequirements == "N" || metRequirements == "Y")
                         {
                             valid = true;
-                            if (metRequirements == "N")
+                            if (metRequirements == "N")  // reject as age requirement not met
                             {
                                 Console.WriteLine("Unable to purchase ticket as the minimum age requirement of {0} is not met.", age);
                             }
@@ -851,11 +848,10 @@ namespace PRG2_Assignment
                             }
                         }
 
-                        else
+                        else  // reject if Y/N not entered
                         {
                             Console.WriteLine("Please enter either Y or N.\n");
                         }
-
                     }
 
                     //9.
@@ -866,7 +862,7 @@ namespace PRG2_Assignment
                         newOrder.Status = "Unpaid";
                         double totalPrice = 0;
 
-                        for (int k = 1; k <= toOrder; k++)
+                        for (int k = 1; k <= toOrder; k++) // loop as many times as the number of tickets to be bought
                         {
                             bool validTicketType = false;
                             while (!validTicketType)
@@ -884,23 +880,22 @@ namespace PRG2_Assignment
                                     while (!validLevelOfStudy)
                                     {
                                         Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
-                                        string levelOfStudy = Console.ReadLine().ToLower();
+                                        string levelOfStudy = Console.ReadLine().ToLower();  // change all inputs to lower, for validation
 
                                         if (levelOfStudy == "primary" || levelOfStudy == "secondary" || levelOfStudy == "tertiary")
                                         {
                                             validLevelOfStudy = true;
-                                            Ticket t = new Student(findScreening, levelOfStudy);
+                                            Ticket t = new Student(findScreening, levelOfStudy);   // new ticket object & add to order
                                             newOrder.AddTicket(t);
                                             totalPrice += t.CalculatePrice();
-                                            findScreening.SeatsRemaining--;
+                                            findScreening.SeatsRemaining--;  // update seats remaining
                                         }
 
-                                        else
+                                        else  // if input isn't what is accepted
                                         {
                                             Console.WriteLine("Invalid input. Please check your spelling.");
                                         }
                                     }
-
                                 }
                                 else if (ticketType == "2")
                                 {
@@ -909,29 +904,29 @@ namespace PRG2_Assignment
                                     while (!validpOffer)
                                     {
                                         Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                                        string pOffer = Console.ReadLine().ToUpper();
+                                        string pOffer = Console.ReadLine().ToUpper(); // change all inputs to caps, for validation
 
                                         if (pOffer == "Y" || pOffer == "N")
                                         {
                                             validpOffer = true;
-                                            findScreening.SeatsRemaining--;
+                                            findScreening.SeatsRemaining--; // update seats remaining
 
                                             if (pOffer == "Y")
                                             {
                                                 bool popcornOffer = true;
-                                                Ticket t = new Adult(findScreening, popcornOffer);
+                                                Ticket t = new Adult(findScreening, popcornOffer); // new adult object & add to order
                                                 newOrder.AddTicket(t);
-                                                totalPrice += t.CalculatePrice();
+                                                totalPrice += t.CalculatePrice(); // with popcorn, +$3 to original adult ticket price
                                             }
                                             else
                                             {
                                                 bool popcornOffer = false;
-                                                Ticket t = new Adult(findScreening, popcornOffer);
+                                                Ticket t = new Adult(findScreening, popcornOffer); // new adult object & add to order
                                                 newOrder.AddTicket(t);
                                                 totalPrice += t.CalculatePrice();
                                             }
                                         }
-                                        else
+                                        else  // if input isn't what is accepted
                                         {
                                             Console.WriteLine("Invalid input. Please enter either Y or N.");
                                         }
@@ -948,40 +943,40 @@ namespace PRG2_Assignment
                                             Console.Write("Enter your year of birth: ");
                                             int yearOfBirth = Convert.ToInt32(Console.ReadLine());
                                             int accepted = DateTime.Now.Year - 55;
-                                            if (yearOfBirth < accepted)
+                                            if (yearOfBirth < accepted)  // test if age is 55 and above
                                             {
                                                 Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
-                                                newOrder.AddTicket(t);
+                                                newOrder.AddTicket(t);             // new senior citizen object & add to order
                                                 totalPrice += t.CalculatePrice();
-                                                findScreening.SeatsRemaining--;
+                                                findScreening.SeatsRemaining--;   // update seat remaining
                                                 validYearOfBirth = true;
                                                 validTicketType = true;
                                             }
-                                            else if (yearOfBirth > DateTime.Now.Year)
+                                            else if (yearOfBirth > DateTime.Now.Year)  // birth year must be 2022 and before
                                             {
                                                 Console.WriteLine("Invalid input. Year of birth cannot be in the future.");
                                             }
-                                            else
+                                            else   // age must be >=55
                                             {
                                                 Console.WriteLine("You need to be above age 55 to be considered Senior Citizen");
                                                 validYearOfBirth = true;
                                             }
                                         }
-                                        catch
+                                        catch  // reject if input is invalid
                                         {
                                             Console.WriteLine("Invalid input. Please enter a valid year.");
                                         }
                                     }
                                 }
 
-                                else
+                                else  // if input more than number of choices given
                                 {
                                     Console.WriteLine("Please enter the number next to ticket type. ");
                                 }
                             }
 
                         }
-                        OrderNo++;
+                        OrderNo++;  // increase order number by 1
 
                         //10. list amount payable
                         if (totalPrice > 0)
@@ -999,7 +994,7 @@ namespace PRG2_Assignment
                             //totalSold.Add(new Tuple<string, double>(newOrder.TList[0].Screening.Movie.Title, newOrder.Amount));
                             Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.", newOrder.orderNo);
                         }
-                        else
+                        else  // if total price is not greater than $0
                         {
                             Console.WriteLine("\nOrder unsuccessful, please try again.");
                         }
@@ -1014,58 +1009,62 @@ namespace PRG2_Assignment
                 Order findOrderNo = null;
                 bool orderNoFound = false;
 
-                while (!orderNoFound)
+                if (oList.Count!=0)
                 {
-                    try
+                    while (!orderNoFound)
                     {
-                        //1. prompt user for order number
-                        Console.Write("Enter your order number: ");
-                        int userOrderNo = Convert.ToInt32(Console.ReadLine());
-                        for (int i = 0; i < oList.Count; i++)
+                        try
                         {
-                            Order o = oList[i];
-                            if (o.orderNo == userOrderNo)
+                            //1. prompt user for order number
+                            Console.Write("Enter your order number: ");
+                            int userOrderNo = Convert.ToInt32(Console.ReadLine());
+                            for (int i = 0; i < oList.Count; i++)
                             {
-                                findOrderNo = o;
-                                orderNoFound = true;
+                                Order o = oList[i];
+                                if (o.orderNo == userOrderNo)
+                                {
+                                    findOrderNo = o;
+                                    orderNoFound = true;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
                             }
-                            else
+
+                            if (findOrderNo == null)  // if order number does not exist
                             {
-                                continue;
+                                Console.WriteLine("The order number you have keyed in is not in our records. Please try again.");
                             }
                         }
-
-                        if (findOrderNo == null)
+                        catch    // if input is not numbers
                         {
-                            Console.WriteLine("The order number you have keyed in is not in our records. Please try again.");
+                            Console.WriteLine("Invalid input. Order Number should only contain numbers.");
                         }
                     }
-                    catch
+
+                    //3.check if the screening in the selected order is screened
+                    if (DateTime.Now > findOrderNo.TList[0].Screening.ScreeningDateTime)
                     {
-                        Console.WriteLine("Invalid input. Order Number should only contain numbers.");
+                        Console.WriteLine("\nRequest to cancel order denied. The movie has already been screened.");
+                        //7. display the status of the cancelation (i.e. successful or unsuccessful)
+                        Console.WriteLine("Order cancellation was unsuccessful.");
+                    }
+                    else
+                    {
+                        //4. update seat remaining for the movie screening based on the selected order
+                        int seatsRemaining = findOrderNo.TList.Count;
+                        findOrderNo.TList[0].SeatsRemaining += seatsRemaining;
+
+                        //5.change order status to “Cancelled”
+                        findOrderNo.Status = "Cancelled";
+                        //6.display a message indicating that the amount is refunded
+                        Console.WriteLine("\n${0:c2} has been refunded.", findOrderNo.Amount);
+                        Console.WriteLine("Order cancelled successfully.");
+                        oList.Remove(findOrderNo);   // remove order form order list
                     }
                 }
-
-                //3.check if the screening in the selected order is screened
-                if (DateTime.Now > findOrderNo.TList[0].Screening.ScreeningDateTime)
-                {
-                    Console.WriteLine("\nRequest to cancel order denied. The movie has already been screened.");
-                    //7. display the status of the cancelation (i.e. successful or unsuccessful)
-                    Console.WriteLine("Order cancellation was unsuccessful.");
-                }
-                else
-                {
-                    //4. update seat remaining for the movie screening based on the selected order
-                    int seatsRemaining = findOrderNo.TList.Count;
-                    findOrderNo.TList[0].SeatsRemaining += seatsRemaining;
-
-                    //5.change order status to “Cancelled”
-                    findOrderNo.Status = "Cancelled";
-                    //6.display a message indicating that the amount is refunded
-                    Console.WriteLine("\n${0:c2} has been refunded.", findOrderNo.Amount);
-                    Console.WriteLine("Order cancelled successfully.");
-                    oList.Remove(findOrderNo);   // remove order form order list
-                }
+                Console.WriteLine("There are no orders available to be cancelled.");
             }
 
             //*****************************************************  ADVANCED  **********************************************************
@@ -1073,39 +1072,46 @@ namespace PRG2_Assignment
             // ------------------- 3.1) Recommend movies based on sales of tickets sold -------------------
             static void RecommendMovies(List<Movie> mList, List<Order> oList)
             {
-                List<Tuple<string, double>> totalSold = new List<Tuple<string, double>>();
-                double totalCosts = 0;
-                for (int x = 0; x < mList.Count; x++)
+                if (oList.Count != 0)
                 {
-                    Movie m = mList[x];
-                    foreach (Order o in oList)
+                    List<Tuple<string, double>> totalSold = new List<Tuple<string, double>>();  // create list storing tuples that contain movie name+sales amount
+                    double totalCosts = 0;
+                    for (int x = 0; x < mList.Count; x++)
                     {
-                        if (o.TList[0].Screening.Movie.Title == m.Title)     // find movie titles from orders
+                        Movie m = mList[x];
+                        foreach (Order o in oList)
                         {
-                            totalCosts += o.Amount;
+                            if (o.TList[0].Screening.Movie.Title == m.Title)     // find movie titles from orders
+                            {
+                                totalCosts += o.Amount;
+                            }
                         }
+                        totalSold.Add(new Tuple<string, double>(m.Title, totalCosts));     // add movie title and total amount sold into a list
+                        totalCosts = 0;
                     }
-                    totalSold.Add(new Tuple<string, double>(m.Title, totalCosts));     // add movie title and total amount sold into a list
-                    totalCosts = 0;
-                }
-                totalSold.Sort((a, b) => a.Item2.CompareTo(b.Item2));   // Sort based on sales amount
-                totalSold.Reverse();     // Highest sales first
+                    totalSold.Sort((a, b) => a.Item2.CompareTo(b.Item2));   // Sort based on sales amount
+                    totalSold.Reverse();     // Highest sales first
 
-                Console.WriteLine("\nList of Recommended Movies");
-                int n = 1;
-                Console.WriteLine("{0,-3} {1,-35} {2,-6}", "  ", "Title", "Total Amount Sold");
-                for (int y = 0; y<mList.Count; y++)
-                {
-                    if (totalSold[y].Item2 != 0)
+                    Console.WriteLine("\nList of Recommended Movies");
+                    int n = 1;
+                    Console.WriteLine("{0,-3} {1,-35} {2,-6}", "  ", "Title", "Total Amount Sold");
+                    for (int y = 0; y < mList.Count; y++)
                     {
-                        Console.WriteLine("{0,-3} {1,-35} {2,-6:c2}", n, totalSold[y].Item1, totalSold[y].Item2);
+                        if (totalSold[y].Item2 != 0)
+                        {
+                            Console.WriteLine("{0,-3} {1,-35} {2,-6:c2}", n, totalSold[y].Item1, totalSold[y].Item2);
+                        }
+                        else
+                        {
+                            continue;  // If no sales, don't display
+                        }
+                        n++;
                     }
-                    else
-                    {
-                        continue;  // If no sales, don't display
-                    }
-                    n++;
                 }
+                else
+                {
+                    Console.WriteLine("No orders to recommend movies.");
+                }  
             }
 
             // ------------------- 3.2) Display available seats of screening session in descending order -------------------
@@ -1181,17 +1187,17 @@ namespace PRG2_Assignment
                     }
 
                     else
-                        cinemaNames.Add(cList[c].Name);
+                        cinemaNames.Add(cList[c].Name);  // add the unique cinema names into the list
                 }
 
-                List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>(); // cinemaName, salesAmount 
+                List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>(); // create a list storing tuples that contain the cinemaName+salesAmount 
 
                 for (int i = 0; i < cinemaNames.Count; i++)
                 {
                     double salesAmount = 0;
                     foreach (Order o in oList)
                     {
-                        if (o.TList[0].Screening.Cinema.Name == cinemaNames[i])
+                        if (o.TList[0].Screening.Cinema.Name == cinemaNames[i])  // find cinema names from orders
                         {
                             salesAmount += o.Amount;
                         }
@@ -1204,7 +1210,7 @@ namespace PRG2_Assignment
 
                 Console.WriteLine("\nSales by Cinema");
                 int n = 1;
-                for (int j = 0; j < cinemaNames.Count; j++)
+                for (int j = 0; j < cinemaNames.Count; j++)  // display sales amount for all cinemas, even if sales is $0
                 {
                     Console.WriteLine("{0,-3} {1,-20} {2,-6:c2}", n, SalesByCinema[j].Item1, SalesByCinema[j].Item2);
                     n++;
