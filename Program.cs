@@ -1098,7 +1098,10 @@ namespace PRG2_Assignment
                     oList.Remove(findOrderNo);   // remove order form order list
                 }
             }
-            Console.WriteLine("There are no orders available to be cancelled.");
+            else
+            {
+                Console.WriteLine("There are no orders available to be cancelled.");
+            }
         }
 
 
