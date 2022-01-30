@@ -632,7 +632,6 @@ namespace PRG2_Assignment
                 {
                     Console.WriteLine("Screening date and time must be after opening date");
                 }
-
             }
 
             // ------------------- 6) Delete a Movie Screening Session -------------------
@@ -680,7 +679,6 @@ namespace PRG2_Assignment
                             continue;
                         }
                     }
-
                 }
 
                 //2. prompt user to select a session
@@ -734,7 +732,6 @@ namespace PRG2_Assignment
                 {
                     Console.WriteLine("Unsucessful. Please try again.");
                 }
-
             }
 
             //=====================================================  Order  ===================================================
@@ -757,7 +754,6 @@ namespace PRG2_Assignment
                     {
                         Console.Write("\nSelect a Movie Screening: ");
                         screeningOption = Convert.ToInt32(Console.ReadLine());
-
                         for (int s = 0; s < m.screeningList.Count; s++)
                         {
                             if (m.screeningList[s].ScreeningNo == screeningOption)
@@ -776,7 +772,6 @@ namespace PRG2_Assignment
                         Console.WriteLine("Invalid choice. Please enter the screening number of the screening you want.");
                     }
                 }
-
 
                 Screening findScreening = null;
                 //5. retrieve the selected movie screening
@@ -992,7 +987,6 @@ namespace PRG2_Assignment
                                 Console.WriteLine("Please enter the number next to ticket type. ");
                             }
                         }
-
                     }
                     OrderNo++;
 
@@ -1080,7 +1074,7 @@ namespace PRG2_Assignment
                 }
             }
 
-            //=====================================================  Advanced  ===================================================
+            //*****************************************************  ADVANCED  **********************************************************
 
             // ------------------- 3.1) Recommend movies based on sales of tickets sold -------------------
             static void RecommendMovies(List<Movie> mList, List<Order> oList)
@@ -1092,7 +1086,7 @@ namespace PRG2_Assignment
                     Movie m = mList[x];
                     foreach (Order o in oList)
                     {
-                        if (o.TList[0].Screening.Movie.Title == m.Title)     // retrieve screenings of the movie
+                        if (o.TList[0].Screening.Movie.Title == m.Title)     // find movie titles from orders
                         {
                             totalCosts += o.Amount;
                         }
@@ -1105,7 +1099,7 @@ namespace PRG2_Assignment
 
                 Console.WriteLine("\nList of Recommended Movies");
                 int n = 1;
-                Console.WriteLine("\n{0,-3} {1,-35} {2,-6}", "  ", "Title", "Total Amount Sold");
+                Console.WriteLine("{0,-3} {1,-35} {2,-6}", "  ", "Title", "Total Amount Sold");
                 for (int y = 0; y<mList.Count; y++)
                 {
                     if (totalSold[y].Item2 != 0)
@@ -1150,19 +1144,24 @@ namespace PRG2_Assignment
                     seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
                 }
 
-
                 seatsSold.Sort((a, b) => a.Item2.CompareTo(b.Item2)); 
                 seatsSold.Reverse();
 
-                Console.WriteLine("List of Recommended Movies");
+                Console.WriteLine("\nTop 3 Movies based on tickets sold");
                 int n = 1;
-                Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
+                Console.WriteLine("    {0,-35} {1,-15}", "Title", "Tickets Sold");
                 for (int y = 0; y < 3; y++)
                 {
-                    Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, seatsSold[y].Item1, seatsSold[y].Item2);
+                    if (seatsSold[y].Item2 != 0)
+                    {
+                        Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, seatsSold[y].Item1, seatsSold[y].Item2);
+                    }
+                    else
+                    {
+                        continue;
+                    }
                     n++;
                 }
-
             }
 
             // ------------------- 3.3) Top sales chart of the Cinema Name -------------------
@@ -1179,7 +1178,6 @@ namespace PRG2_Assignment
                     else
                         cinemaNames.Add(cList[c].Name);
                 }
-
 
                 List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>(); // cinemaName, salesAmount 
 
