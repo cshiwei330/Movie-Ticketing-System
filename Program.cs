@@ -23,8 +23,6 @@ namespace PRG2_Assignment
             List<Screening> sList = new List<Screening>();
             List<Order> oList = new List<Order>();
 
-            //----------- Reading CSV & storing as objects + Populate lists -----------
-
             bool bookingover = false;
             bool loadedMnC = false;
             bool loadedS = false;
@@ -103,7 +101,7 @@ namespace PRG2_Assignment
                         DisplayMovieDetails(mList);
                         Console.WriteLine("\n"); //better formatting
                     }
-                    if (userOption == "4") //display movie screenings
+                    else if (userOption == "4") //display movie screenings
                     {
                         ListMovieScreenings(mList, sList);
                         Console.WriteLine("\n");
@@ -147,7 +145,7 @@ namespace PRG2_Assignment
 
                     else if (userOption == "11")
                     {
-                        DisplayTop3(mList);
+                        DisplayTop3(mList, oList);
                         Console.WriteLine("\n");
                     }
 
@@ -1132,37 +1130,51 @@ namespace PRG2_Assignment
             }
 
             // ------------------- 3.3) Top 3 movies based on tickets sold -------------------
-            static void DisplayTop3(List<Movie> mList)
+            static void DisplayTop3(List<Movie> mList, List<Order> oList)
             {
-                List<Tuple<string, int>> seatsSold = new List<Tuple<string, int>>();
-                for (int x = 0; x < mList.Count; x++)
+                if (oList.Count != 0)
                 {
-                    int totalCap = 0;
-                    int totalAvail = 0;
-                    int totalSold = 0;
-                    Movie m = mList[x];
-                    foreach (Screening s in mList[x].screeningList)
-                    {    
-                        totalCap += s.Cinema.Capacity;
-                        totalAvail += s.SeatsRemaining;
-                        totalSold = totalCap - totalAvail;
+                    List<Tuple<string, int>> seatsSold = new List<Tuple<string, int>>();
+                    for (int x = 0; x < mList.Count; x++)
+                    {
+                        int totalCap = 0;
+                        int totalAvail = 0;
+                        int totalSold = 0;
+                        Movie m = mList[x];
+                        foreach (Screening s in mList[x].screeningList)
+                        {
+                            totalCap += s.Cinema.Capacity;
+                            totalAvail += s.SeatsRemaining;
+                            totalSold = totalCap - totalAvail;
+                        }
+                        seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
                     }
-                    seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
+
+                    seatsSold.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+                    seatsSold.Reverse();
+
+                    Console.WriteLine("List of Recommended Movies");
+                    int n = 1;
+                    Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
+                    for (int y = 0; y < 3; y++)
+                    {
+                        if (seatsSold[y].Item2 != 0)
+                        {
+                            Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, seatsSold[y].Item1, seatsSold[y].Item2);
+                            n++;
+                        }
+
+                    }
+
+                    if (n != 4)
+                    {
+                        Console.WriteLine("\nNot enough orders to determine top 3.");
+                    }
                 }
-
-
-                seatsSold.Sort((a, b) => a.Item2.CompareTo(b.Item2)); 
-                seatsSold.Reverse();
-
-                Console.WriteLine("List of Recommended Movies");
-                int n = 1;
-                Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
-                for (int y = 0; y < 3; y++)
+                else
                 {
-                    Console.WriteLine("{0,-3} {1,-35} {2,-6}", n, seatsSold[y].Item1, seatsSold[y].Item2);
-                    n++;
+                    Console.WriteLine("No orders to determine Top 3 Movies.");
                 }
-
             }
 
             // ------------------- 3.3) Top sales chart of the Cinema Name -------------------
