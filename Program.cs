@@ -87,6 +87,7 @@ namespace PRG2_Assignment
                 DisplayMenu();
                 Console.Write("Enter your option: ");
                 string userOption = Console.ReadLine();
+
                 if (userOption == "1") //load movie and cinema data
                 {
                     Console.WriteLine("You have already loaded Movie and Cinema Data.\n");
@@ -162,7 +163,7 @@ namespace PRG2_Assignment
 
                 else 
                 {
-                    Console.WriteLine("Invalid choice.");
+                    Console.WriteLine("Invalid choice.\n");
                 }
             }
         }
@@ -1025,7 +1026,6 @@ namespace PRG2_Assignment
                         //13. change order status to “Paid”
                         newOrder.Status = "Paid";
                         oList.Add(newOrder);
-                        //totalSold.Add(new Tuple<string, double>(newOrder.TList[0].Screening.Movie.Title, newOrder.Amount));
                         Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.", newOrder.orderNo);
                     }
                     else  // if total price is not greater than $0
@@ -1088,7 +1088,7 @@ namespace PRG2_Assignment
                 {
                     //4. update seat remaining for the movie screening based on the selected order
                     int seatsRemaining = findOrderNo.TList.Count;
-                    findOrderNo.TList[0].SeatsRemaining += seatsRemaining;
+                    findOrderNo.TList[0].Screening.SeatsRemaining += seatsRemaining;
 
                     //5.change order status to “Cancelled”
                     findOrderNo.Status = "Cancelled";
@@ -1187,7 +1187,7 @@ namespace PRG2_Assignment
                 seatsSold.Sort((a, b) => a.Item2.CompareTo(b.Item2)); //sort based on total number of tickets sold 
                 seatsSold.Reverse();
 
-                Console.WriteLine("List of Recommended Movies");
+                Console.WriteLine("\nList of Recommended Movies");
                 int n = 1;
                 Console.WriteLine("\n    {0,-35} {1,-15}", "Title", "Tickets Sold");
                 for (int y = 0; y < 3; y++)
