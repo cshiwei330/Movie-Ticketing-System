@@ -649,7 +649,7 @@ namespace PRG2_Assignment
                                          //noTicketsSold will be left with screening numbers that has no order
             }
 
-            Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+            Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
             for (int s = 0; s < sList.Count; s++)
             {
                 Screening screening = sList[s];
