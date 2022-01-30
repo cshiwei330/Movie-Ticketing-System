@@ -7,7 +7,6 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-//using System.Linq;
 
 namespace PRG2_Assignment
 {
@@ -23,161 +22,147 @@ namespace PRG2_Assignment
             List<Screening> sList = new List<Screening>();
             List<Order> oList = new List<Order>();
 
-            bool bookingover = false;
             bool loadedMnC = false;
             bool loadedS = false;
 
+            while (!loadedMnC)
+            {
+                DisplayMenu();
+                Console.Write("Enter your option: ");
+                string userOption = Console.ReadLine();
+                if (userOption == "1")
+                {
+                    if (File.Exists("Movie.csv") && File.Exists("Cinema.csv"))
+                    {
+                        ReadMovie(mList);
+                        ReadCinema(cList);
+                        Console.WriteLine("Loading of Movie and Cinema Data completed.\n");
+                        loadedMnC = true;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please make sure that relevant files exists.");
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Please load Movie and Cinema Data first.\n");
+                }
+            }
+
+            while (!loadedS)
+            {
+                DisplayMenu();
+                Console.Write("Enter your option: ");
+                string userOption = Console.ReadLine();
+                if (userOption == "1") //load movie and cinema data
+                {
+                    Console.WriteLine("You have already loaded Movie and Cinema Data.\n");
+                }
+                else if (userOption == "2") //load screening data
+                {
+                    ReadScreening(sList, cList, mList);
+                    Console.WriteLine("Loading of Screening Data completed.\n");
+                    loadedS = true;
+                    break;
+                }
+
+                else if (userOption == "3") //display movies
+                {
+                    DisplayMovieDetails(mList);
+                    Console.WriteLine("\n"); //better formatting
+                }
+                else
+                {
+                    Console.WriteLine("Please Screening Data first.\n");
+                }
+            }
+
+            bool bookingover = false;
             while (!bookingover)
             {
                 DisplayMenu();
                 Console.Write("Enter your option: ");
                 string userOption = Console.ReadLine();
-                if (!loadedMnC)
+                if (userOption == "1") //load movie and cinema data
                 {
-                    if (userOption == "1")
-                    {
-                        if (File.Exists("Movie.csv") && File.Exists("Cinema.csv"))
-                        {
-                            ReadMovie(mList);
-                            ReadCinema(cList);
-                            Console.WriteLine("Loading of Movie and Cinema Data completed.\n");
-                            loadedMnC = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please make sure that relevant files exists.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please load Movie and Cinema Data first.\n");
-                    }
-
+                    Console.WriteLine("You have already loaded Movie and Cinema Data.\n");
                 }
-                else if (loadedMnC && !loadedS)
+                else if (userOption == "2") //load screening data
                 {
-                    if (userOption == "1") //load movie and cinema data
-                    {
-                        Console.WriteLine("You have already loaded Movie and Cinema Data.\n");
-                    }
-                    else if (userOption == "2") //load screening data
-                    {
-                        if (File.Exists("Screening.csv"))
-                        {
-                            ReadScreening(sList, cList, mList);
-                            Console.WriteLine("Loading of Screening Data completed.\n");
-                            loadedS = true;
-                        }
+                    Console.WriteLine("You have already loaded Screening Data.\n");
+                }
+                else if (userOption == "3") //display movies
+                {
+                    DisplayMovieDetails(mList);
+                    Console.WriteLine("\n"); //better formatting
+                }
+                else if (userOption == "4") //display movie screenings
+                {
+                    ListMovieScreenings(mList, sList);
+                    Console.WriteLine("\n");
+                }
 
-                        else
-                        {
-                            Console.WriteLine("Please make sure that Screening.csv exists.");
-                        }    
-                    }
+                else if (userOption == "5") //add movie screening
+                {
+                    AddScreeningSession(mList, sList, cList);
+                    Console.WriteLine("\n");
+                }
 
-                    else if (userOption == "3") //display movies
-                    {
-                        DisplayMovieDetails(mList);
-                        Console.WriteLine("\n"); //better formatting
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please Screening Data first.\n");
-                    }
+                else if (userOption == "6") //delete movie screening
+                {
+                    DeleteScreeningSession(oList, sList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption == "7") //order movie tickets
+                {
+                    OrderTicket(mList, sList, oList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption == "8") //cancel ticket
+                {
+                    CancelOrder(oList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption == "9") //recommended movies based on number of tickets sold 
+                {
+                    RecommendMovies(mList, oList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption == "10") //available seats of screening session
+                {
+                    DisplayAvailableSeats(sList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption == "11")
+                {
+                    DisplayTop3(mList, oList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption == "12")
+                {
+                    SalesByCinema(cList, oList);
+                    Console.WriteLine("\n");
+                }
+
+                else if (userOption == "0") //exit
+                {
+                    Console.WriteLine("Thanks for using our Movie Ticket System! We hope to see you again :)");
+                    bookingover = true;
                 }
 
                 else
                 {
-                    if (userOption == "1") //load movie and cinema data
-                    {
-                        Console.WriteLine("You have already loaded Movie and Cinema Data.\n");
-                    }
-                    else if (userOption == "2") //load screening data
-                    {
-                        Console.WriteLine("You have already loaded Screening Data.\n");
-                    }
-                    else if (userOption == "3") //display movies
-                    {
-                        DisplayMovieDetails(mList);
-                        Console.WriteLine("\n"); //better formatting
-                    }
-                    else if (userOption == "4") //display movie screenings
-                    {
-                        ListMovieScreenings(mList, sList);
-                        Console.WriteLine("\n");
-                    }
+                    Console.WriteLine("Invalid choice.");
 
-                    else if (userOption == "5") //add movie screening
-                    {
-                        AddScreeningSession(mList, sList, cList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "6") //delete movie screening
-                    {
-                        DeleteScreeningSession(oList, sList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "7") //order movie tickets
-                    {
-                        OrderTicket(mList, sList, oList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "8") //cancel ticket
-                    {
-                        CancelOrder(oList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "9") //recommended movies based on number of tickets sold 
-                    {
-                        RecommendMovies(mList, oList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "10") //available seats of screening session
-                    {
-                        DisplayAvailableSeats(sList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "11")
-                    {
-                        DisplayTop3(mList, oList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "12")
-                    {
-                        SalesByCinema(cList, oList);
-                        Console.WriteLine("\n");
-                    }
-
-                    else if (userOption == "0") //exit
-                    {
-                        Console.WriteLine("Thanks for using our Movie Ticket System! We hope to see you again :)");
-                        bookingover = true;
-                    }
-
-                    else
-                    {
-                        Console.WriteLine("Invalid choice.");
-
-                    }
-                }
-            }
-
-            //=====================================================  To be removed/might be useful  ===================================================
-
-            //------------------- Display Screening (for checking) ------------------------------
-            static void DisplayScreening(List<Screening> sList)  //to be deleted
-            {
-                Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Movie Title: ");
-                foreach (Screening s in sList)
-                {
-                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-25}{4,-40}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Movie.Title);
                 }
             }
 
@@ -410,13 +395,19 @@ namespace PRG2_Assignment
                 }
 
                 //4. retrieve and display screening sessions for that movie
-                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
 
-                foreach (Screening s in m.screeningList)
+                if (m.screeningList.Count == 0)
                 {
-                    Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
+                    Console.WriteLine("This movie does not have any screenings yet.");
                 }
-
+                else
+                {
+                    Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
+                    foreach (Screening s in m.screeningList)
+                    {
+                        Console.WriteLine("{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", s.ScreeningNo, s.ScreeningDateTime, s.ScreeningType, s.Cinema.Name, s.Cinema.HallNo, s.SeatsRemaining);
+                    }
+                }
                 return m;
             }
 
@@ -745,274 +736,277 @@ namespace PRG2_Assignment
                 //3.list all movie screenings of the selected movie
                 Movie m = ListMovieScreenings(mList, sList);
 
-                //4. prompt user to select movie screening
-                bool validMovieScreening = false;
-                int screeningOption = 0;
-
-                while (!validMovieScreening)
+                if (m.screeningList.Count != 0)
                 {
-                    try
-                    {
-                        Console.Write("\nSelect a Movie Screening: ");
-                        screeningOption = Convert.ToInt32(Console.ReadLine());
+                    //4. prompt user to select movie screening
+                    bool validMovieScreening = false;
+                    int screeningOption = 0;
 
-                        for (int s = 0; s < m.screeningList.Count; s++)
+                    while (!validMovieScreening)
+                    {
+                        try
                         {
-                            if (m.screeningList[s].ScreeningNo == screeningOption)
-                                validMovieScreening = true;
-                            else
-                                continue;
+                            Console.Write("\nSelect a Movie Screening: ");
+                            screeningOption = Convert.ToInt32(Console.ReadLine());
+
+                            for (int s = 0; s < m.screeningList.Count; s++)
+                            {
+                                if (m.screeningList[s].ScreeningNo == screeningOption)
+                                    validMovieScreening = true;
+                                else
+                                    continue;
+                            }
+
+                            if (validMovieScreening == false)
+                            {
+                                Console.WriteLine("Invalid choice. The screening number that you have entered is not for the movie you chose.");
+                            }
                         }
-
-                        if (validMovieScreening == false)
+                        catch
                         {
-                            Console.WriteLine("Invalid choice. The screening number that you have entered is not for the movie you chose.");
+                            Console.WriteLine("Invalid choice. Please enter the screening number of the screening you want.");
                         }
                     }
-                    catch
+
+
+                    Screening findScreening = null;
+                    //5. retrieve the selected movie screening
+                    for (int i = 0; i < sList.Count; i++)
                     {
-                        Console.WriteLine("Invalid choice. Please enter the screening number of the screening you want.");
-                    }
-                }
-
-
-                Screening findScreening = null;
-                //5. retrieve the selected movie screening
-                for (int i = 0; i < sList.Count; i++)
-                {
-                    Screening s = sList[i];
-                    if (s.ScreeningNo == screeningOption)
-                    {
-                        findScreening = s;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-
-                //6.prompt user to enter the total number of tickets to order
-                bool validtoOrder = false;
-                int toOrder = 0;
-
-                while (!validtoOrder)
-                {
-                    try
-                    {
-                        Console.Write("Enter number of tickets to order: ");
-                        toOrder = Convert.ToInt32(Console.ReadLine());
-
-                        if (toOrder <= findScreening.SeatsRemaining) //check if figure entered is more than the available seats for the screening
+                        Screening s = sList[i];
+                        if (s.ScreeningNo == screeningOption)
                         {
-                            validtoOrder = true;
+                            findScreening = s;
                         }
                         else
                         {
-                            Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
+                            continue;
                         }
                     }
-                    catch
-                    {
-                        Console.WriteLine("Invalid input. Number of tickets should be a number.");
-                    }
-                }
 
-                //7. prompt user if all ticket holders meet the movie classification requirements 
-                Movie z = findScreening.Movie;
-                bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
+                    //6.prompt user to enter the total number of tickets to order
+                    bool validtoOrder = false;
+                    int toOrder = 0;
 
-                string[] ages = { "13", "18", "21" };
-                List<string> ageList = new List<string>();
-                ageList.AddRange(ages);
-                bool valid = false;
-
-                while (!valid)
-                {
-                    string age = null;
-                    if (z.Classification == "PG13")
+                    while (!validtoOrder)
                     {
-                        age = ageList[0];
-                    }
-                    else if (z.Classification == "M18")
-                    {
-                        age = ageList[1];
-                    }
-                    else if (z.Classification == "R21")
-                    {
-                        age = ageList[2];
-                    }
-                    else
-                    {
-                        meetrq = true;
-                        break;
-                    }
-
-                    Console.Write("Are all ticket holders above the age of {0}?[Y/N] : ", age);
-                    string metRequirements = Console.ReadLine().ToUpper();
-                    if (metRequirements == "N" || metRequirements == "Y")
-                    {
-                        valid = true;
-                        if (metRequirements == "N")
+                        try
                         {
-                            Console.WriteLine("Unable to purchase ticket as the minimum age requirement of {0} is not met.", age);
+                            Console.Write("Enter number of tickets to order: ");
+                            toOrder = Convert.ToInt32(Console.ReadLine());
+
+                            if (toOrder <= findScreening.SeatsRemaining) //check if figure entered is more than the available seats for the screening
+                            {
+                                validtoOrder = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Insufficient number of available seats for {0} people.", toOrder);
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Invalid input. Number of tickets should be a number.");
+                        }
+                    }
+
+                    //7. prompt user if all ticket holders meet the movie classification requirements 
+                    Movie z = findScreening.Movie;
+                    bool meetrq = false;  // true if buyers meet age requirement to prompt for ticket type to purchase
+
+                    string[] ages = { "13", "18", "21" };
+                    List<string> ageList = new List<string>();
+                    ageList.AddRange(ages);
+                    bool valid = false;
+
+                    while (!valid)
+                    {
+                        string age = null;
+                        if (z.Classification == "PG13")
+                        {
+                            age = ageList[0];
+                        }
+                        else if (z.Classification == "M18")
+                        {
+                            age = ageList[1];
+                        }
+                        else if (z.Classification == "R21")
+                        {
+                            age = ageList[2];
                         }
                         else
                         {
                             meetrq = true;
+                            break;
                         }
-                    }
 
-                    else
-                    {
-                        Console.WriteLine("Please enter either Y or N.\n");
-                    }
-
-                }
-
-                //9.
-                if (meetrq == true)
-                {
-                    //8. create an Order object with the status “Unpaid”
-                    Order newOrder = new Order(OrderNo, DateTime.Now);
-                    newOrder.Status = "Unpaid";
-                    double totalPrice = 0;
-
-                    for (int k = 1; k <= toOrder; k++)
-                    {
-                        bool validTicketType = false;
-                        while (!validTicketType)
+                        Console.Write("Are all ticket holders above the age of {0}?[Y/N] : ", age);
+                        string metRequirements = Console.ReadLine().ToUpper();
+                        if (metRequirements == "N" || metRequirements == "Y")
                         {
-                            Console.Write("\n[1] Student\n[2] Adult\n[3] Senior Citizen");
-                            Console.Write("\nEnter the type of ticket to purchase for person {0} (Student/Adult/Senior Citizen): ", k);
-                            string ticketType = Console.ReadLine();
-                            //a. prompt user for a response depending on the type of ticket ordered:
-                            //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
-                            //d. update seats remaining for the movie screening
-                            if (ticketType == "1")
+                            valid = true;
+                            if (metRequirements == "N")
                             {
-                                validTicketType = true;
-                                bool validLevelOfStudy = false;
-                                while (!validLevelOfStudy)
-                                {
-                                    Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
-                                    string levelOfStudy = Console.ReadLine().ToLower();
-
-                                    if (levelOfStudy == "primary" || levelOfStudy == "secondary" || levelOfStudy == "tertiary")
-                                    {
-                                        validLevelOfStudy = true;
-                                        Ticket t = new Student(findScreening, levelOfStudy);
-                                        newOrder.AddTicket(t);
-                                        totalPrice += t.CalculatePrice();
-                                        findScreening.SeatsRemaining--;
-                                    }
-
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid input. Please check your spelling.");
-                                    }
-                                }
-
+                                Console.WriteLine("Unable to purchase ticket as the minimum age requirement of {0} is not met.", age);
                             }
-                            else if (ticketType == "2")
+                            else
                             {
-                                validTicketType = true;
-                                bool validpOffer = false;
-                                while (!validpOffer)
-                                {
-                                    Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
-                                    string pOffer = Console.ReadLine().ToUpper();
-
-                                    if (pOffer == "Y" || pOffer == "N")
-                                    {
-                                        validpOffer = true;
-                                        findScreening.SeatsRemaining--;
-
-                                        if (pOffer == "Y")
-                                        {
-                                            bool popcornOffer = true;
-                                            Ticket t = new Adult(findScreening, popcornOffer);
-                                            newOrder.AddTicket(t);
-                                            totalPrice += t.CalculatePrice();
-                                        }
-                                        else
-                                        {
-                                            bool popcornOffer = false;
-                                            Ticket t = new Adult(findScreening, popcornOffer);
-                                            newOrder.AddTicket(t);
-                                            totalPrice += t.CalculatePrice();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid input. Please enter either Y or N.");
-                                    }
-                                }
+                                meetrq = true;
                             }
+                        }
 
-                            else if (ticketType == "3")
+                        else
+                        {
+                            Console.WriteLine("Please enter either Y or N.\n");
+                        }
+
+                    }
+
+                    //9.
+                    if (meetrq == true)
+                    {
+                        //8. create an Order object with the status “Unpaid”
+                        Order newOrder = new Order(OrderNo, DateTime.Now);
+                        newOrder.Status = "Unpaid";
+                        double totalPrice = 0;
+
+                        for (int k = 1; k <= toOrder; k++)
+                        {
+                            bool validTicketType = false;
+                            while (!validTicketType)
                             {
-                                bool validYearOfBirth = false;
-                                while (!validYearOfBirth)
+                                Console.Write("\n[1] Student\n[2] Adult\n[3] Senior Citizen");
+                                Console.Write("\nEnter the type of ticket to purchase for person {0} (Student/Adult/Senior Citizen): ", k);
+                                string ticketType = Console.ReadLine();
+                                //a. prompt user for a response depending on the type of ticket ordered:
+                                //b. create a Ticket object (Student, SeniorCitizen or Adult) with the information given
+                                //d. update seats remaining for the movie screening
+                                if (ticketType == "1")
                                 {
-                                    try
+                                    validTicketType = true;
+                                    bool validLevelOfStudy = false;
+                                    while (!validLevelOfStudy)
                                     {
-                                        Console.Write("Enter your year of birth: ");
-                                        int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-                                        int accepted = DateTime.Now.Year - 55;
-                                        if (yearOfBirth < accepted)
+                                        Console.Write("Enter your level of study [Primary, Secondary, Tertiary]: ");
+                                        string levelOfStudy = Console.ReadLine().ToLower();
+
+                                        if (levelOfStudy == "primary" || levelOfStudy == "secondary" || levelOfStudy == "tertiary")
                                         {
-                                            Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
+                                            validLevelOfStudy = true;
+                                            Ticket t = new Student(findScreening, levelOfStudy);
                                             newOrder.AddTicket(t);
                                             totalPrice += t.CalculatePrice();
                                             findScreening.SeatsRemaining--;
-                                            validYearOfBirth = true;
-                                            validTicketType = true;
                                         }
-                                        else if (yearOfBirth > DateTime.Now.Year)
+
+                                        else
                                         {
-                                            Console.WriteLine("Invalid input. Year of birth cannot be in the future.");
+                                            Console.WriteLine("Invalid input. Please check your spelling.");
+                                        }
+                                    }
+
+                                }
+                                else if (ticketType == "2")
+                                {
+                                    validTicketType = true;
+                                    bool validpOffer = false;
+                                    while (!validpOffer)
+                                    {
+                                        Console.Write("Would you like to purchase a popcorn set for $3?[Y/N]: ");
+                                        string pOffer = Console.ReadLine().ToUpper();
+
+                                        if (pOffer == "Y" || pOffer == "N")
+                                        {
+                                            validpOffer = true;
+                                            findScreening.SeatsRemaining--;
+
+                                            if (pOffer == "Y")
+                                            {
+                                                bool popcornOffer = true;
+                                                Ticket t = new Adult(findScreening, popcornOffer);
+                                                newOrder.AddTicket(t);
+                                                totalPrice += t.CalculatePrice();
+                                            }
+                                            else
+                                            {
+                                                bool popcornOffer = false;
+                                                Ticket t = new Adult(findScreening, popcornOffer);
+                                                newOrder.AddTicket(t);
+                                                totalPrice += t.CalculatePrice();
+                                            }
                                         }
                                         else
                                         {
-                                            Console.WriteLine("You need to be above age 55 to be considered Senior Citizen");
-                                            validYearOfBirth = true;
+                                            Console.WriteLine("Invalid input. Please enter either Y or N.");
                                         }
                                     }
-                                    catch
+                                }
+
+                                else if (ticketType == "3")
+                                {
+                                    bool validYearOfBirth = false;
+                                    while (!validYearOfBirth)
                                     {
-                                        Console.WriteLine("Invalid input. Please enter a valid year.");
+                                        try
+                                        {
+                                            Console.Write("Enter your year of birth: ");
+                                            int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+                                            int accepted = DateTime.Now.Year - 55;
+                                            if (yearOfBirth < accepted)
+                                            {
+                                                Ticket t = new SeniorCitizen(findScreening, yearOfBirth);
+                                                newOrder.AddTicket(t);
+                                                totalPrice += t.CalculatePrice();
+                                                findScreening.SeatsRemaining--;
+                                                validYearOfBirth = true;
+                                                validTicketType = true;
+                                            }
+                                            else if (yearOfBirth > DateTime.Now.Year)
+                                            {
+                                                Console.WriteLine("Invalid input. Year of birth cannot be in the future.");
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("You need to be above age 55 to be considered Senior Citizen");
+                                                validYearOfBirth = true;
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("Invalid input. Please enter a valid year.");
+                                        }
                                     }
+                                }
+
+                                else
+                                {
+                                    Console.WriteLine("Please enter the number next to ticket type. ");
                                 }
                             }
 
-                            else
-                            {
-                                Console.WriteLine("Please enter the number next to ticket type. ");
-                            }
                         }
+                        OrderNo++;
 
-                    }
-                    OrderNo++;
+                        //10. list amount payable
+                        if (totalPrice > 0)
+                        {
+                            Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
+                            //11. prompt user to press any key to make payment
+                            Console.Write("\nPress any key to make payment ");
+                            Console.ReadKey();
 
-                    //10. list amount payable
-                    if (totalPrice > 0)
-                    {
-                        Console.WriteLine("Total Amount Payable: ${0:c2}", totalPrice);
-                        //11. prompt user to press any key to make payment
-                        Console.Write("\nPress any key to make payment ");
-                        Console.ReadKey();
-
-                        //12. fill in the necessary details to the new order (e.g amount)
-                        newOrder.Amount = totalPrice;
-                        //13. change order status to “Paid”
-                        newOrder.Status = "Paid";
-                        oList.Add(newOrder);
-                        //totalSold.Add(new Tuple<string, double>(newOrder.TList[0].Screening.Movie.Title, newOrder.Amount));
-                        Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.", newOrder.orderNo);
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nOrder unsuccessful, please try again.");
+                            //12. fill in the necessary details to the new order (e.g amount)
+                            newOrder.Amount = totalPrice;
+                            //13. change order status to “Paid”
+                            newOrder.Status = "Paid";
+                            oList.Add(newOrder);
+                            //totalSold.Add(new Tuple<string, double>(newOrder.TList[0].Screening.Movie.Title, newOrder.Amount));
+                            Console.WriteLine("\nOrder successful. Your order number is {0}.\n**Please note it down as it will be needed if you request for cancellation of order.", newOrder.orderNo);
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nOrder unsuccessful, please try again.");
+                        }
                     }
                 }
             }
@@ -1191,7 +1185,6 @@ namespace PRG2_Assignment
                     else
                         cinemaNames.Add(cList[c].Name);
                 }
-
 
                 List<Tuple<string, double>> SalesByCinema = new List<Tuple<string, double>>(); // cinemaName, salesAmount 
 
