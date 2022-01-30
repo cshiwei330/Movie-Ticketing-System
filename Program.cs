@@ -25,14 +25,14 @@ namespace PRG2_Assignment
             bool loadedMnC = false;
             bool loadedS = false;
 
-            while (!loadedMnC)
+            while (!loadedMnC) // user can only select option 1; loading of movie n cinema data 
             {
                 DisplayMenu();
                 Console.Write("Enter your option: ");
                 string userOption = Console.ReadLine();
-                if (userOption == "1")
+                if (userOption == "1") // load movie and cinema data
                 {
-                    if (File.Exists("Movie.csv") && File.Exists("Cinema.csv"))
+                    if (File.Exists("Movie.csv") && File.Exists("Cinema.csv")) // if file exists [validation]
                     {
                         ReadMovie(mList);
                         ReadCinema(cList);
@@ -52,9 +52,9 @@ namespace PRG2_Assignment
                 }
             }
 
-            while (!loadedS)
-            {
-                DisplayMenu();
+            while (!loadedS) // after loading movie n cinema data, user can view list of movies (option3) 
+            {                                                                    // but not anything else 
+                DisplayMenu();                                             
                 Console.Write("Enter your option: ");
                 string userOption = Console.ReadLine();
                 if (userOption == "1") //load movie and cinema data
@@ -72,7 +72,7 @@ namespace PRG2_Assignment
                 else if (userOption == "3") //display movies
                 {
                     DisplayMovieDetails(mList);
-                    Console.WriteLine("\n"); //better formatting
+                    Console.WriteLine("\n"); 
                 }
                 else
                 {
@@ -80,6 +80,7 @@ namespace PRG2_Assignment
                 }
             }
 
+            // once user has loaded all data:
             bool bookingover = false;
             while (!bookingover)
             {
@@ -97,7 +98,7 @@ namespace PRG2_Assignment
                 else if (userOption == "3") //display movies
                 {
                     DisplayMovieDetails(mList);
-                    Console.WriteLine("\n"); //better formatting
+                    Console.WriteLine("\n"); 
                 }
                 else if (userOption == "4") //display movie screenings
                 {
@@ -129,7 +130,7 @@ namespace PRG2_Assignment
                     Console.WriteLine("\n");
                 }
 
-                else if (userOption == "9") //recommended movies based on number of tickets sold 
+                else if (userOption == "9") //recommended movies based on sales 
                 {
                     RecommendMovies(mList, oList);
                     Console.WriteLine("\n");
@@ -141,13 +142,13 @@ namespace PRG2_Assignment
                     Console.WriteLine("\n");
                 }
 
-                else if (userOption == "11")
+                else if (userOption == "11") //top 3 movies based on number of tickets sold 
                 {
                     DisplayTop3(mList, oList);
                     Console.WriteLine("\n");
                 }
 
-                else if (userOption == "12")
+                else if (userOption == "12") //sales by cinema 
                 {
                     SalesByCinema(cList, oList);
                     Console.WriteLine("\n");
@@ -159,10 +160,9 @@ namespace PRG2_Assignment
                     bookingover = true;
                 }
 
-                else
+                else 
                 {
                     Console.WriteLine("Invalid choice.");
-
                 }
             }
 
@@ -184,7 +184,7 @@ namespace PRG2_Assignment
                     "\n9.  Recommended Movies Based on Sales" +
                     "\n10. Available Seats in Screening Sessions" +
                     "\n11. Top 3 Movies Based on Number of Tickets Sold " +
-                    "\n12. Top Sales by Cinema" +
+                    "\n12. Sales by Cinema" +
                     "\n0.  Exit" +
                     "\n----------------------------");
             }
@@ -289,7 +289,7 @@ namespace PRG2_Assignment
                     {
                         string cinemaName = svalues[2];
                         int hallNo = Convert.ToInt32(svalues[3]);
-                        static Cinema CinemaSearch(List<Cinema> cList, string cinemaName, int hallNo)
+                        static Cinema CinemaSearch(List<Cinema> cList, string cinemaName, int hallNo)  
                         {
                             for (int i = 0; i < cList.Count; i++)
                             {
@@ -334,7 +334,7 @@ namespace PRG2_Assignment
 
                     else
                     {
-                        continue;
+                        continue; 
                     }
                 }
             }
@@ -352,7 +352,7 @@ namespace PRG2_Assignment
                         genres = m.genreList[g];
                     }
 
-                    if (count <= 9)
+                    if (count <= 9) //formatting 
                     {
                         Console.WriteLine("[" + count + "]" + "  {0,-35}{1,-23}{2,-20}{3,-27}{4,-25}", m.Title, m.Duration, m.Classification, m.OpeningDate, genres);
                         count++;
@@ -394,7 +394,6 @@ namespace PRG2_Assignment
                 }
 
                 //4. retrieve and display screening sessions for that movie
-
                 if (m.screeningList.Count == 0)
                 {
                     Console.WriteLine("This movie does not have any screenings yet.");
@@ -445,12 +444,7 @@ namespace PRG2_Assignment
                     Console.Write("\nEnter screening type (2D/3D): ");
                     sType = Console.ReadLine().ToUpper();
 
-                    if (sType == "2D")
-                    {
-                        validScreeningType = true;
-                    }
-
-                    else if (sType == "3D")
+                    if (sType == "2D" || sType == "3D")
                     {
                         validScreeningType = true;
                     }
@@ -470,9 +464,9 @@ namespace PRG2_Assignment
                     Console.Write("\nEnter screening date and time: ");
                     temp = Console.ReadLine();
 
-                    if (DateTime.TryParse(temp, out newSDateTime))
+                    if (DateTime.TryParse(temp, out newSDateTime))  //if valid datetime 
                     {
-                        if (newSDateTime < DateTime.Now)
+                        if (newSDateTime < DateTime.Now)  //new screening datetime cannot be in the past 
                         {
                             Console.WriteLine("Screening date and time must be after now. " + "(" + Convert.ToString(DateTime.Now) + ")");
                             continue;
@@ -487,7 +481,7 @@ namespace PRG2_Assignment
                 }
 
                 bool success = false; //for 6. 
-                if (movie.OpeningDate < newSDateTime)
+                if (movie.OpeningDate < newSDateTime) //check if new screening datetime is after openingdate of movie 
                 {
                     //5. list all cinema halls
                     DisplayCinema(cList);
@@ -509,7 +503,7 @@ namespace PRG2_Assignment
 
                         catch
                         {
-                            Console.WriteLine("Invalid choice. Please enter the number next to the cinema you want");
+                            Console.WriteLine("Invalid choice. Please enter the number next to the cinema you want.");
                         }
                     }
 
@@ -600,17 +594,18 @@ namespace PRG2_Assignment
                         success = true;
                     }
 
-                    //7. create a Screening object with the information given and add to the relevantscreening list
+                    //7. create a Screening object with the information given and add to the relevant screening list
                     if (success == true)
                     {
                         Screening newS = new Screening(ScreeningNo, newSDateTime, sType, cinema, movie);
+                        newS.SeatsRemaining = cinema.Capacity; //assign seats remaining 
                         sList.Add(newS);
-                        ScreeningNo++;
                         movie.AddScreening(newS);
+                        ScreeningNo++;
                         Console.WriteLine("Screening created successfully!");
                     }
 
-                    else if (success == false)
+                    else 
                     {
                         Console.WriteLine("Your selected cinema hall is unavailable to screen at the screening date and time you want.");
                     }
@@ -626,7 +621,7 @@ namespace PRG2_Assignment
             static void DeleteScreeningSession(List<Order> oList, List<Screening> sList)
             {
                 //1. list all movie screening sessions that have not sold any tickets 
-                List<int> ticketsSold = new List<int>();
+                List<int> ticketsSold = new List<int>(); //contains screenings that has tickets 
                 for (int o = 0; o < oList.Count; o++)
                 {
                     Order order = oList[o];
@@ -640,7 +635,7 @@ namespace PRG2_Assignment
                     }
                 }
 
-                List<int> noTicketsSold = new List<int>();
+                List<int> noTicketsSold = new List<int>(); 
                 foreach (Screening s in sList)
                 {
                     noTicketsSold.Add(s.ScreeningNo); //add all screening numbers into list
@@ -649,10 +644,10 @@ namespace PRG2_Assignment
                 foreach (int i in ticketsSold)
                 {
                     noTicketsSold.Remove(i); //remove screening numbers that has order
-                                             // noTicketsSold will be left with screening numbers that has no order
+                                             //noTicketsSold will be left with screening numbers that has no order
                 }
 
-                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ");
+                Console.WriteLine("\n{0,-18}{1,-28}{2,-19}{3,-22}{4,-17}{5,-20}", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining");
                 for (int s = 0; s < sList.Count; s++)
                 {
                     Screening screening = sList[s];
@@ -673,7 +668,7 @@ namespace PRG2_Assignment
                 bool validScreeningNo = false;
                 int screeningOption = 0;
 
-                while (!validScreeningNo)
+                while (!validScreeningNo) //[validation]
                 {
                     try
                     {
@@ -686,13 +681,30 @@ namespace PRG2_Assignment
                         }
                         else
                         {
-                            Console.WriteLine("Invalid choice. Unable to remove a screening that contains orders. ");
+                            bool withinRange = false;
+                            for (int n = 0; n < sList.Count; n++)
+                            {
+                                if (sList[n].ScreeningNo == screeningOption)
+                                {
+                                    Console.WriteLine("Invalid choice. Unable to remove a screening that contains orders. ");
+                                    withinRange = true;
+                                }
+
+                                else
+                                    continue;
+                            }
+
+                            if (!withinRange)
+                            {
+                                Console.WriteLine("The screening number you have entered in not in our records. Please try again.");
+                            }
+
                         }
                     }
 
                     catch
                     {
-                        Console.WriteLine("Invalid choice. Please enter the number next to the cinema you want");
+                        Console.WriteLine("Invalid choice. Please enter the number next to the Screening you want");
                     }
                 }
 
@@ -1111,7 +1123,7 @@ namespace PRG2_Assignment
             // ------------------- 3.2) Display available seats of screening session in descending order -------------------
             static void DisplayAvailableSeats(List<Screening> sList)
             {
-                sList.Sort();
+                sList.Sort(); //used IComparable 
                 Console.WriteLine("\n{0,-27}{1,-18}{2,-28}{3,-19}{4,-22}{5,-17}{6,-20}", "Movie Title: ", "Screening No: ", "DateTime: ", "Screening Type: ", "Cinema Name: ", "Hall Number: ", "Seats Remaining: ");
                 foreach (Screening s in sList)
                 {
@@ -1119,15 +1131,15 @@ namespace PRG2_Assignment
                 }
             }
 
-            // ------------------- 3.3) Top 3 movies based on tickets sold -------------------
+            // ------------------- 3.3) Top 3 movies based on number of tickets sold -------------------
             static void DisplayTop3(List<Movie> mList, List <Order> oList)
             {
-                if (oList.Count != 0)
+                if (oList.Count != 0) //if thrs orders 
                 {
                     List<Tuple<string, int>> seatsSold = new List<Tuple<string, int>>();
                     for (int x = 0; x < mList.Count; x++)
                     {
-                        int totalCap = 0;
+                        int totalCap = 0; 
                         int totalAvail = 0;
                         int totalSold = 0;
                         Movie m = mList[x];
@@ -1140,8 +1152,7 @@ namespace PRG2_Assignment
                         seatsSold.Add(new Tuple<string, int>(m.Title, totalSold));  // add movie title and total seats sold into a list
                     }
 
-
-                    seatsSold.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+                    seatsSold.Sort((a, b) => a.Item2.CompareTo(b.Item2)); //sort based on total number of tickets sold 
                     seatsSold.Reverse();
 
                     Console.WriteLine("List of Recommended Movies");
@@ -1157,7 +1168,7 @@ namespace PRG2_Assignment
 
                     }
 
-                    if (n != 4)
+                    if (n != 4) //if theres not enough orders for three movies 
                     {
                         Console.WriteLine("\nNot enough orders to determine top 3.");
                     }
